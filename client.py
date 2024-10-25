@@ -5,6 +5,7 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 import shared_functions
 import os
+from tqdm import tqdm  # Импортируем tqdm для прогресс-бара
 
 
 async def send_public_key(writer, public_key):
@@ -24,15 +25,20 @@ def create_aes_cipher(aes_key):
     return Cipher(algorithms.AES(aes_key), modes.CTR(b'0' * 16), backend=default_backend())
 
 
-async def save_decrypted_file(reader, file_path, decryptor):
+async def save_decrypted_file(reader, file_path, decryptor, file_size):
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
-    with open(file_path, "wb") as f:
-        while True:
-            data = await reader.read(4096)
-            if not data:
-                break
-            f.write(decryptor.update(data))
-        f.write(decryptor.finalize())
+
+    # Создаем прогресс-бар на основе общего размера файла
+    with tqdm(total=file_size, unit="B", unit_scale=True, desc=file_path) as progress_bar:
+        with open(file_path, "wb") as f:
+            while True:
+                data = await reader.read(4096)
+                if not data:
+                    break
+                f.write(decryptor.update(data))
+                progress_bar.update(len(data))  # Обновляем прогресс-бар
+
+            f.write(decryptor.finalize())
 
 
 async def download_file(ip, port, filename, file_hash):
@@ -53,12 +59,16 @@ async def download_file(ip, port, filename, file_hash):
         padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=None)
     )
 
+    # Чтение размера файла от сервера
+    file_size_data = await reader.read(8)
+    file_size = int.from_bytes(file_size_data, "big")
+
     # Создание объекта AES для расшифровки
     decryptor = create_aes_cipher(aes_key).decryptor()
     file_path = f"./downloaded_files/{filename}"
 
-    # Сохранение расшифрованного файла
-    await save_decrypted_file(reader, file_path, decryptor)
+    # Сохранение расшифрованного файла с прогресс-баром
+    await save_decrypted_file(reader, file_path, decryptor, file_size)
 
     print("✅ File received and decrypted.")
     validate_file(file_path, file_hash)
@@ -117,3 +127,4 @@ async def main():
 
 
 asyncio.run(main())
+input()

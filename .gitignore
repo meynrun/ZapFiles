@@ -1,2 +1,5 @@
-/client_dist/
+/server_files/
+/downloaded_files/
 /server_dist/
+/client_dist/
+/build.bat

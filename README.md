@@ -1,5 +1,9 @@
-# ⚡ZapFiles⚡
-<img src=assets/ZapFiles-logo.png>
+<div align="center">
+  <h1>⚡ZapFiles⚡</h1>
+  <img src="assets/ZapFiles-logo.png" alt="ZapFiles Logo" height="100">
+</div>
+
+
 
 #### Актуальнаая сборка ZapFiles: [*тык*](https://github.com/ahakahacker/ZapFiles/releases/latest)
 

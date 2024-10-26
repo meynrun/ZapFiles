@@ -1,14 +1,32 @@
 import asyncio
+import http.client
+import json
+
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
+
 from functools import partial
 
 from tqdm import tqdm
 
 import shared_functions
 import os
+
+
+def get_public_ip():
+    conn = http.client.HTTPSConnection("api.ipify.org")
+    conn.request("GET", "/?format=json")
+
+    response = conn.getresponse()
+    if response.status == 200:
+        data = response.read().decode("utf-8")
+        ip_info = json.loads(data)
+        return ip_info.get("ip")
+    else:
+        print(f"Error: {response.status} {response.reason}")
+    conn.close()
 
 
 async def handle_client(reader, writer, filepath):
@@ -68,8 +86,9 @@ async def server():
     # Проверка наличия каталога с файлами
     server_files_dir = './server_files'
     if not os.path.exists(server_files_dir):
-        print(f"❌ Directory '{server_files_dir}' does not exist. Exiting...")
-        return
+        print(f"❌ Directory '{server_files_dir}' does not exist. Creating...")
+        os.makedirs(server_files_dir)
+        print("✅ Directory created.")
 
     # Настройка сервера
     print(
@@ -77,16 +96,16 @@ async def server():
         "\n",
         "❗ Hosted files MUST be in './server_files'.",
     )
-
-    key_ip = input("📝 Enter your IP address for key: ")
     host_to = "0.0.0.0"\
         if input("✉️ What network do you want to transfer files over?\n\n1. Public\n2. Local\n\n>> ") == "1"\
         else "localhost"
 
+    key_ip = get_public_ip() if host_to == "0.0.0.0" else input("🔑 Enter local server IP (192.168.X.X or 127.0.0.1): ")
+
     filename = input("💽 Enter filename: ")
     filepath = f"{server_files_dir}/{filename}"
     if not os.path.exists(filepath):
-        print("❌ File not found. Exiting...")
+        print("❌ File not found. Quitting...")
         return
     port = int(input("🚢 Enter port (default: 8888): ") or 8888)
 

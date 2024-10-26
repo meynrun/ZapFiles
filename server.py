@@ -55,7 +55,7 @@ async def handle_client(reader, writer, filepath):
         await writer.wait_closed()
 
 
-async def main():
+async def server():
     # Проверка наличия каталога с файлами
     server_files_dir = './server_files'
     if not os.path.exists(server_files_dir):
@@ -92,6 +92,7 @@ async def main():
         print("🌐 Server is running...")
         await server.serve_forever()
 
+if __name__ == '__main__':
+    asyncio.run(server())
+    input()
 
-asyncio.run(main())
-input()

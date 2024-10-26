@@ -95,7 +95,7 @@ def handle_file_deletion(file_path):
             print("💾 File saved.")
 
 
-async def main():
+async def client():
     server_key = input("🔑 Enter server key: ")
 
     # Разбор ключа сервера
@@ -126,5 +126,7 @@ async def main():
     await download_file(ip, port, filename, file_hash)
 
 
-asyncio.run(main())
-input()
+if __name__ == '__main__':
+    asyncio.run(client())
+    input()
+

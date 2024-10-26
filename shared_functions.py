@@ -12,3 +12,7 @@ def get_file_hash(file_path, algorithm='sha256'):
 
     # Возвращаем хеш-сумму в виде строки
     return hash_func.hexdigest()
+
+
+def clear_console():
+    print('\x1b[2J\x1b[0;0H')

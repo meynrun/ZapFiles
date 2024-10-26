@@ -4,12 +4,19 @@ from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 from functools import partial
+
+from tqdm import tqdm
+
 import shared_functions
 import os
 
 
 async def handle_client(reader, writer, filepath):
     try:
+        # Получаем IP-адрес и порт клиента
+        client_ip, client_port = writer.get_extra_info('peername')
+        print(f"🔗 Client connected from {client_ip}:{client_port}")
+
         # Получение публичного ключа клиента
         public_pem = await reader.read(450)
         public_key = serialization.load_pem_public_key(public_pem, backend=default_backend())
@@ -36,14 +43,16 @@ async def handle_client(reader, writer, filepath):
         aes_cipher = Cipher(algorithms.AES(aes_key), modes.CTR(b'0' * 16), backend=default_backend())
         encryptor = aes_cipher.encryptor()
 
-        with open(filepath, "rb") as f:
-            while True:
-                file_data = f.read(4096)
-                if not file_data:
-                    break
-                encrypted_file_data = encryptor.update(file_data)
-                writer.write(encrypted_file_data)
-                await writer.drain()
+        with tqdm(total=file_size, unit="B", unit_scale=True, desc=filepath) as progress_bar:
+            with open(filepath, "rb") as f:
+                while True:
+                    file_data = f.read(4096)
+                    if not file_data:
+                        break
+                    encrypted_file_data = encryptor.update(file_data)
+                    writer.write(encrypted_file_data)
+                    await writer.drain()
+                    progress_bar.update(len(file_data))
 
         writer.write(encryptor.finalize())
         await writer.drain()
@@ -94,5 +103,5 @@ async def server():
 
 if __name__ == '__main__':
     asyncio.run(server())
-    input()
+    input('\nPress Enter to exit...')
 

@@ -16,4 +16,4 @@ if __name__ == '__main__':
     elif mode == "2":
         asyncio.run(client())
 
-    input()
+    input('\nPress Enter to exit...')

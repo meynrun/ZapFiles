@@ -128,5 +128,5 @@ async def client():
 
 if __name__ == '__main__':
     asyncio.run(client())
-    input()
+    input('\nPress Enter to exit...')
 

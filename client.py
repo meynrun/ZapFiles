@@ -6,6 +6,7 @@ from cryptography.hazmat.backends import default_backend
 from shared import info, warn, error, success, clear_console, get_file_hash
 import os
 from tqdm import tqdm  # Импортируем tqdm для прогресс-бара
+import env
 
 
 async def send_public_key(writer, public_key):
@@ -97,6 +98,10 @@ def handle_file_deletion(file_path):
 
 
 async def client():
+    clear_console()
+    print(env.TITLE)
+
+    # Ввод ключа сервера
     server_key = input("🔑 Enter server key: ")
 
     # Разбор ключа сервера

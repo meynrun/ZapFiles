@@ -8,10 +8,14 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 
 from functools import partial
+from prettytable import PrettyTable
 from tqdm import tqdm
 
-from shared import info, warn, error, success, clear_console, get_file_hash
+from shared import info, warn, error, success, clear_console, get_file_hash, title
 import os
+
+
+server_config = PrettyTable(['🖥️ IP', '🔌 Port', '📄 Filename'])
 
 
 def get_public_ip():
@@ -111,6 +115,14 @@ async def server():
     # Запуск сервера
     server_args = partial(handle_client, filepath=filepath)
     host = await asyncio.start_server(server_args, host_to, port)
+
+    clear_console()
+    title()
+
+    # Добавление информации о сервере в таблицу
+    server_config.add_row([host_to, port, filename])
+
+    print(server_config)
 
     # Генерация публичного ключа сервера
     success(f"🔑 Server key: {key_ip}:{port}:{filename}:{get_file_hash(filepath)}")

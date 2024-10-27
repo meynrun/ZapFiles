@@ -1,5 +1,6 @@
 import hashlib
 import colorama as clr
+import env
 
 
 info_color = clr.Fore.LIGHTBLUE_EX
@@ -20,6 +21,10 @@ def get_file_hash(file_path, algorithm='sha256'):
 
     # Возвращаем хеш-сумму в виде строки
     return hash_func.hexdigest()
+
+
+def title():
+    print(env.TITLE)
 
 
 def clear_console():

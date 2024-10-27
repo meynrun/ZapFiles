@@ -5,6 +5,9 @@ from server import server
 from client import client
 
 if __name__ == '__main__':
+    shared.clear_console()
+    shared.title()
+
     mode = "1"\
         if input("🚀 Enter mode\n\n 1. Host files\n 2. Get files\n\n>> ") == "1"\
         else "2"

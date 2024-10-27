@@ -3,33 +3,33 @@
   <img src="assets/ZapFiles-logo.png" alt="ZapFiles Logo" height="100">
 </div>
 
-#### Актуальная сборка ZapFiles: [*тык*](https://github.com/ahakahacker/ZapFiles/releases/latest/download/main.exe)
+#### Latest ZapFiles Build: [*click*](https://github.com/ahakahacker/ZapFiles/releases/latest/download/main.exe)
 
-**ZapFiles** — это безопасный инструмент для передачи файлов, который обеспечивает конфиденциальность наших данных с помощью надежного шифрования. Легкий в использовании и быстрое решение для обмена файлами, ZapFiles позволяет нам защищать свои файлы при передаче, гарантируя, что только мы и наш получатель сможем их увидеть. 
+**ZapFiles** is a secure file transfer tool that ensures the privacy of your data through reliable encryption.
 
-<h2 align="center">Делимся файлами. Быстро. Безопасно.</h2>
+<h2 align="center">Share Files. Fast. Secure.</h2>
 
-# Как использовать
-### Скачивание файла
-1. Выбираем режим "Get files".
-2. Вставляем ключ сервера в поле ввода.
-3. Ждём скачивания файла.
+# How to Use
+### Downloading a File
+1. Select the "Get files" mode.
+2. Enter the server key in the input field.
+3. Wait for the file to download.
 
-### Раздача файлов
-1. Выбираем режим "Host files".
-2. Выбираем, по какой сети мы хотим передать файл:
-   - Public — для отправки файлов через интернет;
-   - Local — для отправки файлов только по локальной сети (например, внутри одного Wi-Fi).
-3. Вводим имя файла для отправки.
-4. Вводим желаемый порт или оставляем пустым (по умолчанию 8888).
-5. Копируем и отправляем ключ сервера пользователю, которому хотим передать файл.
+### Sharing Files
+1. Select the "Host files" mode.
+2. Choose the network type for file transfer:
+   - Public — to send files over the internet;
+   - Local — to send files only over a local network (e.g., within the same Wi-Fi).
+3. Enter the name of the file to send.
+4. Specify the desired port or leave it blank (default is 8888).
+5. Copy and share the server key with the recipient to initiate the transfer.
 
 # TODO
-- [x] Выбор порта
-- [x] Прогресс-бар
-- [ ] Поддержка хоста нескольких файлов одновременно
+- [x] Port selection
+- [x] Progress bar
+- [ ] Support for hosting multiple files simultaneously
 
-# Возможно будет
-1. [ ] Проброс портов (чтобы открывать порты не приходилось).
-2. [ ] Несколько разных методов шифрования.
-3. [ ] Удобный конфиг для сервера.
+# Possible Future Features
+1. [ ] Included port forwarding
+2. [ ] Multiple encryption methods
+3. [ ] Server config.json

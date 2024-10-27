@@ -3,7 +3,7 @@ from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
-import shared_functions
+from shared import info, warn, error, success, clear_console, get_file_hash
 import os
 from tqdm import tqdm  # Импортируем tqdm для прогресс-бара
 
@@ -70,7 +70,7 @@ async def download_file(ip, port, filename, file_hash):
     # Сохранение расшифрованного файла с прогресс-баром
     await save_decrypted_file(reader, file_path, decryptor, file_size)
 
-    print("✅ File received and decrypted.")
+    success("✅ File received and decrypted.")
     validate_file(file_path, file_hash)
 
     writer.close()
@@ -78,11 +78,11 @@ async def download_file(ip, port, filename, file_hash):
 
 
 def validate_file(file_path, file_hash):
-    print("🔍 Checking file hash...")
-    if shared_functions.get_file_hash(file_path) == file_hash:
-        print("✅ File hash is correct.")
+    info("🔍 Checking file hash...")
+    if get_file_hash(file_path) == file_hash:
+        success("✅ File hash is correct.")
     else:
-        print("❌ File hash is incorrect.")
+        error("❌ File hash is incorrect.")
         handle_file_deletion(file_path)
 
 
@@ -90,9 +90,10 @@ def handle_file_deletion(file_path):
     if os.path.exists(file_path):
         if input("🗑️ Do you want to delete this file? (y/n): ").strip().lower() == "y":
             os.remove(file_path)
-            print("🔥 File deleted.")
+            success("🔥 File deleted.")
         else:
-            print("💾 File saved.")
+            success("💾 File saved.")
+            return
 
 
 async def client():
@@ -103,25 +104,18 @@ async def client():
         ip, port, filename, file_hash = server_key.split(":")
         port = int(port)  # Преобразуем порт в int
     except ValueError:
-        print("❌ Invalid server key format. Please use 'ip:port:filename:file_hash'")
+        error("❌ Invalid server key format. Please use 'ip:port:filename:file_hash'")
         return
 
     # Проверка на наличие файла
     file_path = f"./downloaded_files/{filename}"
-    if os.path.exists(file_path) and shared_functions.get_file_hash(file_path) == file_hash:
-        if input("🗑️ File already exists. Do you want to overwrite it? (y/n): ").strip().lower() == "y":
-            os.remove(file_path)
-        else:
-            print("💾 File saved.")
-            return
+    if os.path.exists(file_path) and get_file_hash(file_path) == file_hash:
+        warn("⚠️ File already exists.")
+        handle_file_deletion(file_path)
 
     elif os.path.exists(file_path):
-        print("❌ File with this name already exists, but with a different hash.")
-        if input("🗑️ Do you want to overwrite it? (y/n): ").strip().lower() == "y":
-            os.remove(file_path)
-        else:
-            print("💾 File saved.")
-            return
+        warn("⚠️ File with this name already exists, but with a different hash.")
+        handle_file_deletion(file_path)
 
     await download_file(ip, port, filename, file_hash)
 

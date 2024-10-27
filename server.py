@@ -94,11 +94,7 @@ async def server():
         print("✅ Directory created.")
 
     # Настройка сервера
-    print(
-        "⚡ ZapFiles ⚡",
-        "\n",
-        "❗ Hosted files MUST be in './server_files'.",
-    )
+    print("❗ Hosted files MUST be in './server_files'.",)
     host_to = "0.0.0.0"\
         if input("✉️ What network do you want to transfer files over?\n\n1. Public\n2. Local\n\n>> ") == "1"\
         else "localhost"

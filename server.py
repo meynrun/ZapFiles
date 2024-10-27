@@ -8,10 +8,9 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 
 from functools import partial
-
 from tqdm import tqdm
 
-import shared_functions
+from shared import info, warn, error, success, clear_console, get_file_hash
 import os
 
 
@@ -33,7 +32,7 @@ async def handle_client(reader, writer, filepath):
     try:
         # Получаем IP-адрес и порт клиента
         client_ip, client_port = writer.get_extra_info('peername')
-        print(f"🔗 Client connected from {client_ip}:{client_port}")
+        info(f"🔗 Client connected from {client_ip}:{client_port}")
 
         # Получение публичного ключа клиента
         public_pem = await reader.read(450)
@@ -74,9 +73,9 @@ async def handle_client(reader, writer, filepath):
 
         writer.write(encryptor.finalize())
         await writer.drain()
-        print("✅ File sent to client.")
+        success("✅ File sent to client.")
     except Exception as e:
-        print(f"❌ Error while handling client: {e}")
+        error(f"❌ Error while handling client: {e}")
     finally:
         writer.close()
         await writer.wait_closed()
@@ -86,7 +85,7 @@ async def server():
     # Проверка наличия каталога с файлами
     server_files_dir = './server_files'
     if not os.path.exists(server_files_dir):
-        print(f"❌ Directory '{server_files_dir}' does not exist. Creating...")
+        warn(f"⚠️ Directory '{server_files_dir}' does not exist. Creating...")
         os.makedirs(server_files_dir)
         print("✅ Directory created.")
 
@@ -105,22 +104,21 @@ async def server():
     filename = input("💽 Enter filename: ")
     filepath = f"{server_files_dir}/{filename}"
     if not os.path.exists(filepath):
-        print("❌ File not found. Quitting...")
+        error("❌ File not found. Quitting...")
         return
     port = int(input("🚢 Enter port (default: 8888): ") or 8888)
 
     # Запуск сервера
     server_args = partial(handle_client, filepath=filepath)
-    server = await asyncio.start_server(server_args, host_to, port)
+    host = await asyncio.start_server(server_args, host_to, port)
 
     # Генерация публичного ключа сервера
-    print(f"🔑 Server key: {key_ip}:{port}:{filename}:{shared_functions.get_file_hash(filepath)}")
+    success(f"🔑 Server key: {key_ip}:{port}:{filename}:{get_file_hash(filepath)}")
 
-    async with server:
-        print("🌐 Server is running...")
-        await server.serve_forever()
+    async with host:
+        info("🌐 Server is running...")
+        await host.serve_forever()
 
 if __name__ == '__main__':
     asyncio.run(server())
     input('\nPress Enter to exit...')
-

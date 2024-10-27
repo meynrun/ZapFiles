@@ -1,4 +1,12 @@
 import hashlib
+import colorama as clr
+
+
+info_color = clr.Fore.LIGHTBLUE_EX
+warn_color = clr.Fore.LIGHTYELLOW_EX
+error_color = clr.Fore.LIGHTRED_EX
+success_color = clr.Fore.LIGHTGREEN_EX
+reset = clr.Style.RESET_ALL
 
 
 def get_file_hash(file_path, algorithm='sha256'):
@@ -16,3 +24,19 @@ def get_file_hash(file_path, algorithm='sha256'):
 
 def clear_console():
     print('\x1b[2J\x1b[0;0H')
+
+
+def info(msg):
+    print(f"{info_color}{msg}{reset}")
+
+
+def warn(msg):
+    print(f"{warn_color}{msg}{reset}")
+
+
+def error(msg):
+    print(f"{error_color}{msg}{reset}")
+
+
+def success(msg):
+    print(f"{success_color}{msg}{reset}")

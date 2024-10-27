@@ -1,5 +1,5 @@
 import asyncio
-import shared_functions
+import shared
 
 from server import server
 from client import client
@@ -9,7 +9,7 @@ if __name__ == '__main__':
         if input("🚀 Enter mode\n\n 1. Host files\n 2. Get files\n\n>> ") == "1"\
         else "2"
 
-    shared_functions.clear_console()
+    shared.clear_console()
 
     if mode == "1":
         asyncio.run(server())

@@ -1,6 +1,9 @@
 @echo off
 title Building...
 
+:: Запрашиваем версию у пользователя
+set /p version="Enter version: "
+
 :: Проверка наличия Nuitka
 where nuitka >nul 2>nul
 if %errorlevel% neq 0 (
@@ -9,7 +12,7 @@ if %errorlevel% neq 0 (
 )
 
 :: Запуск Nuitka
-nuitka .\main.py --standalone --onefile --output-dir=dist --jobs=4
+nuitka .\main.py --follow-imports --output-dir=dist --jobs=4 --show-progress --windows-icon-from-ico="./assets/ZapFiles-icon.ico" --windows-product-name="ZapFiles" --windows-company-name="MeynDev" --windows-file-version="%version%" --windows-product-version="%version%"
 
 :: Проверка успешности компиляции
 if %errorlevel% neq 0 (

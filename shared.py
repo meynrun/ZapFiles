@@ -4,6 +4,38 @@ import json
 import colorama as clr
 import env
 
+from locale import getlocale
+
+clr.init()
+
+locale = getlocale()[0]
+ru_locales = [
+    # Windows 
+    "Russian_Russia",
+    "Russian_Belarus",
+    "Russian_Kazakhstan",
+    "Russian_Ukraine",
+    "Russian_Kyrgyzstan",
+    "Russian_Tajikistan",
+    "Russian_Armenia",
+
+    # macOS и Linux 
+    "ru_RU",
+    "ru_BY",
+    "ru_KZ",
+    "ru_UA",
+    "ru_KG",
+    "ru_TJ",
+    "ru_AM",
+    "ru_RU.UTF-8",
+    "ru_BY.UTF-8",
+    "ru_KZ.UTF-8",
+    "ru_UA.UTF-8",
+    "ru_KG.UTF-8",
+    "ru_TJ.UTF-8",
+    "ru_AM.UTF-8"
+]
+
 
 info_color = clr.Fore.LIGHTBLUE_EX
 warn_color = clr.Fore.LIGHTYELLOW_EX
@@ -17,14 +49,19 @@ def load_lang(lang):
         return json.load(f)
 
 try:
-    lang = load_lang(input("Choose language (ru: official/en: default): ") or "en")
+    if locale in ru_locales:
+        lang = load_lang("ru")
+    else:
+        lang = load_lang("en")
 except FileNotFoundError:
-    print("Language not found. Using default language...")
+    print("Файл локализации не найден. Используется язык по умолчанию.")
+
     try:
         lang = load_lang("en")
     except FileNotFoundError:
-        print("Language not found. Exiting...")
+        print("Файл локализации не найден. Выход из программы.")
         exit(1)
+
 
 
 def get_file_hash(file_path, algorithm='sha256'):

@@ -1,25 +1,19 @@
 @echo off
-title Building...
+title Building All...
 
-:: Запрашиваем версию у пользователя
-set /p version="Enter version: "
-
-:: Проверка наличия Nuitka
-where nuitka >nul 2>nul
+:: Выполнение компиляции
+call build\compile.bat
 if %errorlevel% neq 0 (
-    echo Nuitka is not installed. Please install it first.
+    echo Compilation script failed! Exiting...
     exit /b 1
 )
 
-:: Запуск Nuitka
-nuitka .\main.py --follow-imports --output-dir=dist --jobs=4 --show-progress --windows-icon-from-ico="./assets/ZapFiles-icon.ico" --windows-product-name="ZapFiles" --windows-company-name="MeynDev" --windows-file-version="%version%" --windows-product-version="%version%"
-
-:: Проверка успешности компиляции
+:: Выполнение постобработки
+call build\postprocess.bat
 if %errorlevel% neq 0 (
-    echo Compilation failed!
+    echo Postprocessing script failed! Exiting...
     exit /b 1
-) else (
-    echo Compilation successful!
 )
 
+echo All steps completed successfully!
 exit

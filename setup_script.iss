@@ -2,15 +2,15 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ZapFiles"
-#define MyAppVersion "1.2.0"
-#define MyAppPublisher "Meynrun"
+#define MyAppVersion "1.3"
+#define MyAppPublisher "MeynDev"
 #define MyAppURL "https://github.com/meynrun/ZapFiles"
 #define MyAppExeName "main.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{2842DBE0-330D-4814-9FF9-A8B73753A1AC}
+AppId={{C389AFFF-0E2F-46CB-9213-E4AD9117D1C0}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -28,11 +28,11 @@ ArchitecturesAllowed=x64compatible
 ; the 64-bit view of the registry.
 ArchitecturesInstallIn64BitMode=x64compatible
 DefaultGroupName={#MyAppName}
-AllowNoIcons=yes
 ; Remove the following line to run in administrative install mode (install for all users.)
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 OutputBaseFilename=Setup-x64
+SetupIconFile=C:\Users\ahaka\PycharmProjects\ZapFiles\assets\ZapFiles-icon.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -46,11 +46,11 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "C:\Users\ahaka\PycharmProjects\ZapFiles\dist\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\ahaka\PycharmProjects\ZapFiles\dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]

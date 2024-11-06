@@ -11,6 +11,7 @@ from functools import partial
 from prettytable import PrettyTable
 from tqdm import tqdm
 
+from shared import lang
 from shared import info, warn, error, success, clear_console, get_file_hash, title
 import os
 
@@ -28,7 +29,7 @@ def get_public_ip():
         ip_info = json.loads(data)
         return ip_info.get("ip")
     else:
-        print(f"Error: {response.status} {response.reason}")
+        print("Error: {} {}".format(response.status, response.reason))
     conn.close()
 
 
@@ -36,7 +37,7 @@ async def handle_client(reader, writer, filepath):
     try:
         # Получаем IP-адрес и порт клиента
         client_ip, client_port = writer.get_extra_info('peername')
-        info(f"🔗 Client connected from {client_ip}:{client_port}")
+        info(lang["server.info.peername"].format(client_ip, client_port))
 
         # Получение публичного ключа клиента
         public_pem = await reader.read(450)
@@ -77,9 +78,9 @@ async def handle_client(reader, writer, filepath):
 
         writer.write(encryptor.finalize())
         await writer.drain()
-        success("✅ File sent to client.")
+        success(lang["server.info.fileSent"])
     except Exception as e:
-        error(f"❌ Error while handling client: {e}")
+        error(lang["server.error.errorHandlingClient"].format(e))
     finally:
         writer.close()
         await writer.wait_closed()
@@ -89,24 +90,28 @@ async def server():
     # Проверка наличия каталога с файлами
     server_files_dir = './server_files'
     if not os.path.exists(server_files_dir):
-        warn(f"⚠️ Directory '{server_files_dir}' does not exist. Creating...")
+        warn(lang["server.error.serverFilesDirNotFound"].format(server_files_dir))
         os.makedirs(server_files_dir)
-        print("✅ Directory created.")
+        success(lang["server.info.directoryCreated"])
 
     # Настройка сервера
-    print("❗ Hosted files MUST be in './server_files'.",)
+    print(lang["server.guide.filesMustBeIn"].format(server_files_dir))
     host_to = "0.0.0.0"\
-        if input("✉️ What network do you want to transfer files over?\n\n1. Public\n2. Local\n\n>> ") == "1"\
+        if input(lang["server.input.networkType"]) == "1"\
         else "localhost"
 
-    key_ip = get_public_ip() if host_to == "0.0.0.0" else input("🔑 Enter local server IP (192.168.X.X or 127.0.0.1): ")
+    key_ip = get_public_ip() if host_to == "0.0.0.0" else input(lang["server.input.localIp"])
 
-    filename = input("💽 Enter filename: ")
-    filepath = f"{server_files_dir}/{filename}"
-    if not os.path.exists(filepath):
-        error("❌ File not found. Quitting...")
-        return
-    port = int(input("🚢 Enter port (default: 8888): ") or 8888)
+    # Ввод имени файла
+    while True:
+        filename = input(lang["server.input.filename"]) or os.urandom(1).hex()
+        filepath = f"{server_files_dir}/{filename}"
+        if not os.path.exists(filepath):
+            error(lang["server.error.fileNotFound"])
+        else:
+            break
+
+    port = int(input(lang["server.input.port"]) or 8888)
 
     # Запуск сервера
     server_args = partial(handle_client, filepath=filepath)
@@ -121,12 +126,13 @@ async def server():
     print(server_config)
 
     # Генерация публичного ключа сервера
-    success(f"🔑 Server key: {key_ip}:{port}:{filename}:{get_file_hash(filepath)}")
+    server_key = "{}:{}:{}:{}".format(key_ip, port, filename, get_file_hash(filepath))
+    success(lang["server.info.serverKey"].format(server_key))
 
     async with host:
-        info("🌐 Server is running...")
+        info(lang["server.info.running"])
         await host.serve_forever()
 
 if __name__ == '__main__':
     asyncio.run(server())
-    input('\nPress Enter to exit...')
+    input(lang["main.enterToExit"])

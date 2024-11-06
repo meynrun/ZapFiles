@@ -12,6 +12,13 @@ success_color = clr.Fore.LIGHTGREEN_EX
 reset = clr.Style.RESET_ALL
 
 
+def load_lang(lang):
+    with open(f"lang/{lang}.json", "r", encoding="utf-8") as f:
+        return json.load(f)
+
+lang = load_lang("en_us")
+
+
 def get_file_hash(file_path, algorithm='sha256'):
     # Выбор алгоритма хеширования
     hash_func = hashlib.new(algorithm)
@@ -25,9 +32,7 @@ def get_file_hash(file_path, algorithm='sha256'):
     return hash_func.hexdigest()
 
 
-def load_lang(lang):
-    with open(f"lang/{lang}.json", "r", encoding="utf-8") as f:
-        return json.load(f)
+
 
 
 def title():

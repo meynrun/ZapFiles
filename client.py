@@ -4,7 +4,7 @@ from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 
-from main import lang
+from shared import lang
 from shared import info, warn, error, success, clear_console, get_file_hash
 import os
 from tqdm import tqdm
@@ -73,7 +73,7 @@ async def download_file(ip, port, filename, file_hash):
     # Сохранение расшифрованного файла с прогресс-баром
     await save_decrypted_file(reader, file_path, decryptor, file_size)
 
-    success("✅ File received and decrypted.")
+    success(lang["client.info.fileReceived"])
     validate_file(file_path, file_hash)
 
     writer.close()
@@ -81,21 +81,21 @@ async def download_file(ip, port, filename, file_hash):
 
 
 def validate_file(file_path, file_hash):
-    info("🔍 Checking file hash...")
+    info(lang["client.hash.checking"])
     if get_file_hash(file_path) == file_hash:
-        success("✅ File hash is correct.")
+        success(lang["client.hash.correct"])
     else:
-        error("❌ File hash is incorrect.")
+        error(lang["client.hash.incorrect"])
         handle_file_deletion(file_path)
 
 
 def handle_file_deletion(file_path):
     if os.path.exists(file_path):
-        if input("🗑️ Do you want to delete this file? (y/n): ").strip().lower() == "y":
+        if input(lang["client.choose.delete"]).strip().lower() == "y":
             os.remove(file_path)
-            success("🔥 File deleted.")
+            success(lang["client.info.fileDeleted"])
         else:
-            success("💾 File saved.")
+            success(lang["client.info.fileSaved"])
             return
 
 
@@ -104,24 +104,24 @@ async def client():
     print(env.TITLE)
 
     # Ввод ключа сервера
-    server_key = input("🔑 Enter server key: ")
+    server_key = input(lang["client.input.key"])
 
     # Разбор ключа сервера
     try:
         ip, port, filename, file_hash = server_key.split(":")
         port = int(port)  # Преобразуем порт в int
     except ValueError:
-        error("❌ Invalid server key format. Please use 'ip:port:filename:file_hash'")
+        error(lang["client.error.invalidKey"])
         return
 
     # Проверка на наличие файла
     file_path = f"./downloaded_files/{filename}"
     if os.path.exists(file_path) and get_file_hash(file_path) == file_hash:
-        warn("⚠️ File already exists.")
+        warn(lang["client.warning.fileAlreadyExists"])
         handle_file_deletion(file_path)
 
     elif os.path.exists(file_path):
-        warn("⚠️ File with this name already exists, but with a different hash.")
+        warn(lang["client.warning.fileWithSameNameExists"])
         handle_file_deletion(file_path)
 
     await download_file(ip, port, filename, file_hash)

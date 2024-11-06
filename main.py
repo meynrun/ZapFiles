@@ -4,7 +4,7 @@ import shared
 from server import server
 from client import client
 
-lang = shared.load_lang("en_us")
+from shared import lang
 
 if __name__ == '__main__':
     shared.clear_console()

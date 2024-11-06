@@ -54,12 +54,13 @@ try:
     else:
         lang = load_lang("en")
 except FileNotFoundError:
-    print("Файл локализации не найден. Используется язык по умолчанию.")
+    print("Localization file not found. Fallback to English.")
 
     try:
         lang = load_lang("en")
     except FileNotFoundError:
-        print("Файл локализации не найден. Выход из программы.")
+        print("Localization file not found.")
+        input("Press Enter to exit...")
         exit(1)
 
 

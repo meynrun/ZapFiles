@@ -35,6 +35,6 @@
 3. [ ] Server config.json
 
 ## Credits
-The application logo uses emoji icons from Windows 11, which are the property of Microsoft.
+The application logo uses emoji icons from Windows 11, which are the property of Microsoft. 
 ## Disclaimer
 The use of emoji icons from Windows 11 is subject to Microsoft's terms of use. The MIT License applies to the source code of the application, but does not grant rights to use Microsoft's intellectual property outside the scope of this application.

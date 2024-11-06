@@ -92,7 +92,7 @@ async def server():
     if not os.path.exists(server_files_dir):
         warn(lang["server.error.serverFilesDirNotFound"].format(server_files_dir))
         os.makedirs(server_files_dir)
-        print(lang["server.info.directoryCreated"])
+        success(lang["server.info.directoryCreated"])
 
     # Настройка сервера
     print(lang["server.guide.filesMustBeIn"].format(server_files_dir))
@@ -102,11 +102,15 @@ async def server():
 
     key_ip = get_public_ip() if host_to == "0.0.0.0" else input(lang["server.input.localIp"])
 
-    filename = input(lang["server.input.filename"])
-    filepath = f"{server_files_dir}/{filename}"
-    if not os.path.exists(filepath):
-        error(lang["server.error.fileNotFound"])
-        return
+    # Ввод имени файла
+    while True:
+        filename = input(lang["server.input.filename"]) or os.urandom(1).hex()
+        filepath = f"{server_files_dir}/{filename}"
+        if not os.path.exists(filepath):
+            error(lang["server.error.fileNotFound"])
+        else:
+            break
+
     port = int(input(lang["server.input.port"]) or 8888)
 
     # Запуск сервера

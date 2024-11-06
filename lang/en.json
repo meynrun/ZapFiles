@@ -8,7 +8,7 @@
   "server.input.networkType": "✉️ What network do you want to transfer files over?\n\n1. Public\n2. Local\n\n>> ",
   "server.input.localIp": "🔑 Enter local server IP (192.168.X.X or 127.0.0.1): ",
   "server.input.filename": "💽 Enter filename: ",
-  "server.error.fileNotFound": "❌ File not found. Quitting...",
+  "server.error.fileNotFound": "❌ File not found.",
   "server.input.port": "🚢 Enter port (default: 8888): ",
   "server.info.serverKey": "🔑 Server key: {}",
   "server.info.running": "🌐 Server is running...",

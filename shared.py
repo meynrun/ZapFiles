@@ -1,4 +1,6 @@
 import hashlib
+import json
+
 import colorama as clr
 import env
 
@@ -21,6 +23,11 @@ def get_file_hash(file_path, algorithm='sha256'):
 
     # Возвращаем хеш-сумму в виде строки
     return hash_func.hexdigest()
+
+
+def load_lang(lang):
+    with open(f"lang/{lang}.json", "r", encoding="utf-8") as f:
+        return json.load(f)
 
 
 def title():

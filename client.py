@@ -3,9 +3,11 @@ from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
+
+from main import lang
 from shared import info, warn, error, success, clear_console, get_file_hash
 import os
-from tqdm import tqdm  # Импортируем tqdm для прогресс-бара
+from tqdm import tqdm
 import env
 
 
@@ -127,5 +129,5 @@ async def client():
 
 if __name__ == '__main__':
     asyncio.run(client())
-    input('\nPress Enter to exit...')
+    input(lang["main.enterToExit"])
 

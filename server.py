@@ -11,6 +11,7 @@ from functools import partial
 from prettytable import PrettyTable
 from tqdm import tqdm
 
+from main import lang
 from shared import info, warn, error, success, clear_console, get_file_hash, title
 import os
 
@@ -28,7 +29,7 @@ def get_public_ip():
         ip_info = json.loads(data)
         return ip_info.get("ip")
     else:
-        print(f"Error: {response.status} {response.reason}")
+        print("Error: {} {}".format(response.status, response.reason))
     conn.close()
 
 
@@ -36,7 +37,7 @@ async def handle_client(reader, writer, filepath):
     try:
         # Получаем IP-адрес и порт клиента
         client_ip, client_port = writer.get_extra_info('peername')
-        info(f"🔗 Client connected from {client_ip}:{client_port}")
+        info("🔗 Client connected from {}:{}".format(client_ip, client_port))
 
         # Получение публичного ключа клиента
         public_pem = await reader.read(450)
@@ -79,7 +80,7 @@ async def handle_client(reader, writer, filepath):
         await writer.drain()
         success("✅ File sent to client.")
     except Exception as e:
-        error(f"❌ Error while handling client: {e}")
+        error("❌ Error while handling client: {}".format(e))
     finally:
         writer.close()
         await writer.wait_closed()
@@ -89,12 +90,12 @@ async def server():
     # Проверка наличия каталога с файлами
     server_files_dir = './server_files'
     if not os.path.exists(server_files_dir):
-        warn(f"⚠️ Directory '{server_files_dir}' does not exist. Creating...")
+        warn("⚠️ Directory '{}' does not exist. Creating...".format(server_files_dir))
         os.makedirs(server_files_dir)
         print("✅ Directory created.")
 
     # Настройка сервера
-    print("❗ Hosted files MUST be in './server_files'.",)
+    print("❗ Hosted files MUST be in '{}'.".format(server_files_dir))
     host_to = "0.0.0.0"\
         if input("✉️ What network do you want to transfer files over?\n\n1. Public\n2. Local\n\n>> ") == "1"\
         else "localhost"
@@ -121,7 +122,8 @@ async def server():
     print(server_config)
 
     # Генерация публичного ключа сервера
-    success(f"🔑 Server key: {key_ip}:{port}:{filename}:{get_file_hash(filepath)}")
+    server_key = "{}:{}:{}:{}".format(key_ip, port, filename, get_file_hash(filepath))
+    success("🔑 Server key: {}".format(server_key))
 
     async with host:
         info("🌐 Server is running...")
@@ -129,4 +131,4 @@ async def server():
 
 if __name__ == '__main__':
     asyncio.run(server())
-    input('\nPress Enter to exit...')
+    input(lang["main.enterToExit"])

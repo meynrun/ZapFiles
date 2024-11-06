@@ -16,7 +16,15 @@ def load_lang(lang):
     with open(f"lang/{lang}.json", "r", encoding="utf-8") as f:
         return json.load(f)
 
-lang = load_lang("en_us")
+try:
+    lang = load_lang(input("Choose language (ru: official/en: default): ") or "en")
+except FileNotFoundError:
+    print("Language not found. Using default language...")
+    try:
+        lang = load_lang("en")
+    except FileNotFoundError:
+        print("Language not found. Exiting...")
+        exit(1)
 
 
 def get_file_hash(file_path, algorithm='sha256'):

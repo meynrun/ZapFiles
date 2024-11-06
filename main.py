@@ -7,7 +7,6 @@ from client import client
 from shared import lang
 
 if __name__ == '__main__':
-    shared.clear_console()
     shared.title()
 
     mode = "1"\

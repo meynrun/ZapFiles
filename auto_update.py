@@ -23,6 +23,7 @@ def download_update():
     else:
         print(lang["main.info.updateDownloaded"])
         os.startfile("Setup-x64.exe")
+        exit(0)
 
 
 def check_for_updates():

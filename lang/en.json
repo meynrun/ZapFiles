@@ -26,5 +26,10 @@
   "client.error.invalidKey": "❌ Invalid server key format. Please use 'ip:port:filename:file_hash'",
   "client.warning.fileAlreadyExists": "⚠️ File already exists.",
   "client.warning.fileWithSameNameExists": "⚠️ File with this name already exists, but with a different hash.",
-  "server.error.publicIpNotFound": "❌ Could not determine public IP address."
+  "server.error.publicIpNotFound": "❌ Could not determine public IP address.",
+  "main.info.updateAvailable": "🆕 New version available: {}",
+  "main.info.updateUser": "👉 Do you want to update? (Y/n) ",
+  "main.info.updateDownloading": "⬇️ Downloading update...",
+  "main.info.updateDownloadFailed": "❌ Failed to download update.",
+  "main.info.updateDownloaded": "✅ Update downloaded."
 }

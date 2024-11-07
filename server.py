@@ -11,8 +11,8 @@ from functools import partial
 from prettytable import PrettyTable
 from tqdm import tqdm
 
-from shared.shared import lang
-from shared.shared import info, warn, error, success, clear_console, get_file_hash, title
+from shared import lang
+from shared import info, warn, error, success, clear_console, get_file_hash, title
 import os
 
 

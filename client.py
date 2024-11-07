@@ -4,8 +4,8 @@ from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 
-from shared.env import TITLE
-from shared.shared import info, warn, error, success, clear_console, get_file_hash, lang
+from env import TITLE
+from shared import info, warn, error, success, clear_console, get_file_hash, lang
 import os
 from tqdm import tqdm
 

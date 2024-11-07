@@ -1,13 +1,15 @@
 import asyncio
-import shared.shared as shared
+import shared as shared
 
 from server import server
 from client import client
 
-from shared.shared import lang
+from shared import lang
+from auto_update import check_for_updates
 
 if __name__ == '__main__':
     shared.title()
+    check_for_updates()
 
     mode = "1"\
         if input(lang["main.choose.mode"]) == "1"\

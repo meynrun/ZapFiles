@@ -11,6 +11,8 @@ if __name__ == '__main__':
     shared.title()
     check_for_updates()
 
+    shared.clear_console()
+
     mode = "1"\
         if input(lang["main.choose.mode"]) == "1"\
         else "2"

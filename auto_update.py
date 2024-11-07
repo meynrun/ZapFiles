@@ -7,7 +7,7 @@ from env import VERSION
 from shared import lang
 
 def download_update():
-    update_setup = requests.get("https://github.com/meynrun/ZapFiles/releases/latest/download/Setup-x6.exe", stream=True)
+    update_setup = requests.get("https://github.com/meynrun/ZapFiles/releases/latest/download/Setup-x64.exe", stream=True)
     total_size = int(update_setup.headers.get("content-length", 0))
     block_size = 1024
 

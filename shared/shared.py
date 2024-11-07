@@ -2,7 +2,7 @@ import hashlib
 import json
 
 import colorama as clr
-import env
+from env import TITLE
 
 from locale import getlocale
 
@@ -82,7 +82,7 @@ def get_file_hash(file_path, algorithm='sha256'):
 
 
 def title():
-    print(env.TITLE)
+    print(TITLE)
 
 
 def clear_console():

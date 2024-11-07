@@ -1,10 +1,10 @@
 import asyncio
-import shared
+import shared.shared as shared
 
 from server import server
 from client import client
 
-from shared import lang
+from shared.shared import lang
 
 if __name__ == '__main__':
     shared.title()

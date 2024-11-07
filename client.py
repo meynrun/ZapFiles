@@ -4,11 +4,10 @@ from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 
-from shared import lang
-from shared import info, warn, error, success, clear_console, get_file_hash
+from shared.env import TITLE
+from shared.shared import info, warn, error, success, clear_console, get_file_hash, lang
 import os
 from tqdm import tqdm
-import env
 
 
 async def send_public_key(writer, public_key):
@@ -101,7 +100,7 @@ def handle_file_deletion(file_path):
 
 async def client():
     clear_console()
-    print(env.TITLE)
+    print(TITLE)
 
     # Ввод ключа сервера
     server_key = input(lang["client.input.key"])

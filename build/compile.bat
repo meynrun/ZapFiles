@@ -12,7 +12,7 @@ if %errorlevel% neq 0 (
 )
 
 :: Запуск Nuitka
-nuitka .\main.py --no-pyi-file --follow-imports --output-dir=dist --jobs=4 --show-progress --windows-icon-from-ico="./assets/ZapFiles-icon.ico" --windows-product-name="ZapFiles" --windows-company-name="MeynDev" --windows-file-version="%version%" --windows-product-version="%version%"
+nuitka .\main.py --onefile --standalone --no-pyi-file --output-dir=dist --jobs=4 --show-progress --windows-icon-from-ico="./assets/ZapFiles-icon.ico" --windows-product-name="ZapFiles" --windows-company-name="MeynDev" --windows-file-version="%version%" --windows-product-version="%version%"
 
 :: Проверка успешности компиляции
 if %errorlevel% neq 0 (

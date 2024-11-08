@@ -1,5 +1,5 @@
 import asyncio
-import http.client
+import requests
 import json
 
 from cryptography.hazmat.primitives import hashes, serialization
@@ -20,17 +20,15 @@ server_config = PrettyTable(['🖥️ IP', '🔌 Port', '📄 Filename'])
 
 
 def get_public_ip():
-    conn = http.client.HTTPSConnection("api.ipify.org")
-    conn.request("GET", "/?format=json")
+    response = requests.get("https://api.ipify.org?format=json")
 
-    response = conn.getresponse()
-    if response.status == 200:
-        data = response.read().decode("utf-8")
+    if response.status_code == 200:
+        data = response.content.decode("utf-8")
         ip_info = json.loads(data)
         return ip_info.get("ip")
     else:
-        print("Error: {} {}".format(response.status, response.reason))
-    conn.close()
+        print("Error: {} {}".format(response.status_code, response.reason))
+        return None
 
 
 async def handle_client(reader, writer, filepath):
@@ -88,7 +86,7 @@ async def handle_client(reader, writer, filepath):
 
 async def server():
     # Проверка наличия каталога с файлами
-    server_files_dir = './server_files'
+    server_files_dir = 'server_files'
     if not os.path.exists(server_files_dir):
         warn(lang["server.error.serverFilesDirNotFound"].format(server_files_dir))
         os.makedirs(server_files_dir)
@@ -101,6 +99,10 @@ async def server():
         else "localhost"
 
     key_ip = get_public_ip() if host_to == "0.0.0.0" else input(lang["server.input.localIp"])
+
+    if not key_ip:
+        error(lang["server.error.publicIpNotFound"])
+        return
 
     # Ввод имени файла
     while True:

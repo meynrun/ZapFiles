@@ -94,11 +94,11 @@ async def server():
 
     # Настройка сервера
     print(lang["server.guide.filesMustBeIn"].format(server_files_dir))
-    host_to = "0.0.0.0"\
-        if input(lang["server.input.networkType"]) == "1"\
-        else "localhost"
+    host_to = "local"\
+        if input(lang["server.input.networkType"]) == "2"\
+        else "public"
 
-    key_ip = get_public_ip() if host_to == "0.0.0.0" else input(lang["server.input.localIp"])
+    key_ip = get_public_ip() if host_to == "local" else input(lang["server.input.localIp"])
 
     if not key_ip:
         error(lang["server.error.publicIpNotFound"])
@@ -117,13 +117,13 @@ async def server():
 
     # Запуск сервера
     server_args = partial(handle_client, filepath=filepath)
-    host = await asyncio.start_server(server_args, host_to, port)
+    host = await asyncio.start_server(server_args, "0.0.0.0", port)
 
     clear_console()
     title()
 
     # Добавление информации о сервере в таблицу
-    server_config.add_row([host_to, port, filename])
+    server_config.add_row([key_ip, port, filename])
 
     print(server_config)
 

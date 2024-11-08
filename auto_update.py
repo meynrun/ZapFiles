@@ -18,25 +18,32 @@ def download_update():
                 pbar.update(len(data))
 
     if total_size != 0 and pbar.n != total_size:
-        print(lang["main.info.updateDownloadFailed"])
+        print(lang["update.info.updateDownloadFailed"])
         os.remove("Setup-x64.exe")
     else:
-        print(lang["main.info.updateDownloaded"])
+        print(lang["update.info.updateDownloaded"])
         os.startfile("Setup-x64.exe")
         exit(0)
 
 
 def check_for_updates():
-    response = requests.get(f"https://api.github.com/repos/meynrun/ZapFiles/releases/latest")
+    print(lang["update.info.checkingForUpdates"])
+    try:
+        response = requests.get(f"https://api.github.com/repos/meynrun/ZapFiles/releases/latest", timeout=2)
 
-    if response.status_code == 200:
-        latest_version = response.json()["tag_name"]
-        if latest_version != VERSION:
-            print(lang["main.info.updateAvailable"].format(latest_version))
-            update = input(lang["main.info.updateUser"]) or "y"
-            if update.lower() == "y":
-                print(lang["main.info.updateDownloading"])
-                download_update()
+        if response.status_code == 200:
+            latest_version = response.json()["tag_name"]
+            if latest_version != VERSION:
+                print(lang["update.info.updateAvailable"].format(latest_version))
+                update = input(lang["main.info.updateUser"]) or "y"
+                if update.lower() == "y":
+                    print(lang["update.info.updateDownloading"])
+                    download_update()
+    except requests.exceptions.ConnectTimeout:
+        print(lang["update.error.connectionTimedOut"])
+    except requests.exceptions.ConnectionError:
+        print(lang["update.error.connectionError"])
+    print("\n")
 
 
 if __name__ == "__main__":

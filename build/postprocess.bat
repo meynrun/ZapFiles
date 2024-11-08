@@ -24,12 +24,16 @@ if exist "%build_dir%" (
 )
 
 :: Удаление временных файлов и папок
+if exist "%build_dir%\main.dist" (
+    rd /s /q "%build_dir%\main.dist"
+)
+
 if exist "%build_dir%\main.build" (
     rd /s /q "%build_dir%\main.build"
 )
 
-if exist "%build_dir%\main.cmd" (
-    del "%build_dir%\main.cmd"
+if exist "%build_dir%\main.onefile-build" (
+    rd /s /q "%build_dir%\main.onefile-build"
 )
 
 exit

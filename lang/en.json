@@ -12,8 +12,11 @@
   "server.input.port": "🚢 Enter port (default: 8888): ",
   "server.info.serverKey": "🔑 Server key: {}",
   "server.info.running": "🌐 Server is running...",
+  "server.error.publicIpNotFound": "❌ Could not determine public IP address.",
+
   "main.choose.mode": "🚀 Enter mode\n\n 1. Host files\n 2. Get files\n\n>> ",
   "main.enterToExit": "Press Enter to exit...",
+
   "client.info.fileReceived": "✅ File received and decrypted.",
   "client.hash.checking": "🔍 Checking file hash...",
   "client.hash.correct": "✅ File hash is correct.",
@@ -26,10 +29,13 @@
   "client.error.invalidKey": "❌ Invalid server key format. Please use 'ip:port:filename:file_hash'",
   "client.warning.fileAlreadyExists": "⚠️ File already exists.",
   "client.warning.fileWithSameNameExists": "⚠️ File with this name already exists, but with a different hash.",
-  "server.error.publicIpNotFound": "❌ Could not determine public IP address.",
-  "main.info.updateAvailable": "🆕 New version available: {}",
-  "main.info.updateUser": "👉 Do you want to update? (Y/n) ",
-  "main.info.updateDownloading": "⬇️ Downloading update...",
-  "main.info.updateDownloadFailed": "❌ Failed to download update.",
-  "main.info.updateDownloaded": "✅ Update downloaded."
+
+  "update.info.updateAvailable": "🆕 New version available: {}",
+  "update.info.updateUser": "👉 Do you want to update? (Y/n) ",
+  "update.info.updateDownloading": "⬇️ Downloading update...",
+  "update.info.updateDownloadFailed": "❌ Failed to download update.",
+  "update.info.updateDownloaded": "✅ Update downloaded.",
+  "update.info.checkingForUpdates": "🔍 Checking for updates...",
+  "update.error.connectionTimedOut": "❌ Timed out, please check your internet connection.",
+  "update.error.connectionError": "❌ Connection error, please check your internet connection."
 }

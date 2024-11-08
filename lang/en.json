@@ -2,7 +2,7 @@
   "server.info.peername": "🔗 Client connected from {}:{}",
   "server.info.fileSent": "✅ File sent to client.",
   "server.error.errorHandlingClient": "❌ Error while handling client: {}",
-  "server.error.serverFilesDirNotFound": "⚠️ Directory '{}' does not exist. Creating...",
+  "server.warn.serverFilesDirNotFound": "⚠️ Directory '{}' does not exist. Creating...",
   "server.info.directoryCreated": "✅ Directory created.",
   "server.guide.filesMustBeIn": "❗ Hosted files MUST be in '{}'.",
   "server.input.networkType": "✉️ What network do you want to transfer files over?\n\n1. Public\n2. Local\n\n>> ",
@@ -13,6 +13,10 @@
   "server.info.serverKey": "🔑 Server key: {}",
   "server.info.running": "🌐 Server is running...",
   "server.error.publicIpNotFound": "❌ Could not determine public IP address.",
+  "server.info.gettingIp": "🔍 Getting your public IP address...",
+  "server.config.filename": "📄 Filename",
+  "server.config.port": "🔌 Port",
+  "server.config.ip": "🖥️ IP",
 
   "main.choose.mode": "🚀 Enter mode\n\n 1. Host files\n 2. Get files\n\n>> ",
   "main.enterToExit": "Press Enter to exit...",
@@ -33,9 +37,11 @@
   "update.info.updateAvailable": "🆕 New version available: {}",
   "update.info.updateUser": "👉 Do you want to update? (Y/n) ",
   "update.info.updateDownloading": "⬇️ Downloading update...",
-  "update.info.updateDownloadFailed": "❌ Failed to download update.",
+  "update.error.updateDownloadFailed": "❌ Failed to download update.",
   "update.info.updateDownloaded": "✅ Update downloaded.",
   "update.info.checkingForUpdates": "🔍 Checking for updates...",
   "update.error.connectionTimedOut": "❌ Timed out, please check your internet connection.",
-  "update.error.connectionError": "❌ Connection error, please check your internet connection."
+  "update.error.connectionError": "❌ Connection error, please check your internet connection.",
+
+  "universal.error": "❌ Error: {}"
 }

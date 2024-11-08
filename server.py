@@ -16,50 +16,61 @@ from shared import info, warn, error, success, clear_console, get_file_hash, tit
 import os
 
 
-server_config = PrettyTable(['🖥️ IP', '🔌 Port', '📄 Filename'])
+server_config = PrettyTable([lang["server.config.ip"], lang["server.config.port"], lang["server.config.filename"]])
 
 
 def get_public_ip():
-    response = requests.get("https://api.ipify.org?format=json")
+    info(lang["server.info.gettingIp"])
 
-    if response.status_code == 200:
-        data = response.content.decode("utf-8")
-        ip_info = json.loads(data)
-        return ip_info.get("ip")
-    else:
-        print("Error: {} {}".format(response.status_code, response.reason))
+    try:
+        response = requests.get("https://api.ipify.org?format=json", timeout=3)
+
+        if response.status_code == 200:
+            data = response.content.decode("utf-8")
+            ip_info = json.loads(data)
+            return ip_info.get("ip")
+        else:
+            error(lang["universal.error"].format(str(response.status_code) + ", " + response.reason))
+            return None
+
+    except requests.exceptions.ConnectTimeout:
+        error(lang["update.error.connectionTimedOut"])
+        return None
+
+    except requests.exceptions.ConnectionError:
+        error(lang["update.error.connectionError"])
         return None
 
 
 async def handle_client(reader, writer, filepath):
     try:
-        # Получаем IP-адрес и порт клиента
+        # Getting IP and port of client
         client_ip, client_port = writer.get_extra_info('peername')
         info(lang["server.info.peername"].format(client_ip, client_port))
 
-        # Получение публичного ключа клиента
+        # Getting public key
         public_pem = await reader.read(450)
         public_key = serialization.load_pem_public_key(public_pem, backend=default_backend())
 
         # Генерация симметричного AES-ключа
         aes_key = os.urandom(32)
 
-        # Шифрование AES-ключа с помощью публичного ключа клиента
+        # Encrypting AES key by public RSA key
         encrypted_aes_key = public_key.encrypt(
             aes_key,
             padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=None)
         )
 
-        # Отправка зашифрованного AES-ключа клиенту
+        # Sending encrypted AES key to client
         writer.write(encrypted_aes_key)
         await writer.drain()
 
-        # Отправка размера файла клиенту
+        # Sending file size to client
         file_size = os.path.getsize(filepath)
         writer.write(file_size.to_bytes(8, "big"))
         await writer.drain()
 
-        # Шифрование и передача файла по частям
+        # Encryption and transferring file by chunks
         aes_cipher = Cipher(algorithms.AES(aes_key), modes.CTR(b'0' * 16), backend=default_backend())
         encryptor = aes_cipher.encryptor()
 
@@ -85,26 +96,26 @@ async def handle_client(reader, writer, filepath):
 
 
 async def server():
-    # Проверка наличия каталога с файлами
+    # Checking for server_files directory
     server_files_dir = 'server_files'
     if not os.path.exists(server_files_dir):
-        warn(lang["server.error.serverFilesDirNotFound"].format(server_files_dir))
+        warn(lang["server.warn.serverFilesDirNotFound"].format(server_files_dir))
         os.makedirs(server_files_dir)
         success(lang["server.info.directoryCreated"])
 
-    # Настройка сервера
-    print(lang["server.guide.filesMustBeIn"].format(server_files_dir))
+    # Setting up server
+    warn(lang["server.guide.filesMustBeIn"].format(server_files_dir))
     host_to = "local"\
         if input(lang["server.input.networkType"]) == "2"\
         else "public"
 
-    key_ip = get_public_ip() if host_to == "local" else input(lang["server.input.localIp"])
+    key_ip = get_public_ip() if host_to == "public" else input(lang["server.input.localIp"])
 
     if not key_ip:
         error(lang["server.error.publicIpNotFound"])
         return
 
-    # Ввод имени файла
+    # Input filename
     while True:
         filename = input(lang["server.input.filename"]) or os.urandom(1).hex()
         filepath = f"{server_files_dir}/{filename}"
@@ -113,21 +124,21 @@ async def server():
         else:
             break
 
+    # Input port
     port = int(input(lang["server.input.port"]) or 8888)
 
-    # Запуск сервера
+    # Starting server
     server_args = partial(handle_client, filepath=filepath)
     host = await asyncio.start_server(server_args, "0.0.0.0", port)
 
     clear_console()
     title()
 
-    # Добавление информации о сервере в таблицу
+    # Printing server information
     server_config.add_row([key_ip, port, filename])
-
     print(server_config)
 
-    # Генерация публичного ключа сервера
+    # Generating server key
     server_key = "{}:{}:{}:{}".format(key_ip, port, filename, get_file_hash(filepath))
     success(lang["server.info.serverKey"].format(server_key))
 

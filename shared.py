@@ -1,5 +1,6 @@
 import hashlib
 import json
+from logging import error
 
 import colorama as clr
 from env import TITLE
@@ -55,27 +56,25 @@ try:
     else:
         lang = load_lang("en")
 except FileNotFoundError:
-    print("Localization file not found. Fallback to English.")
+    error("❌ Localization file not found. Fallback to English.")
 
     try:
         lang = load_lang("en")
     except FileNotFoundError:
-        print("Localization file not found.")
+        error("❌ Localization file not found.")
         input("Press Enter to exit...")
         exit(1)
 
 
 
 def get_file_hash(file_path, algorithm='sha256'):
-    # Выбор алгоритма хеширования
     hash_func = hashlib.new(algorithm)
 
-    # Чтение файла по блокам, чтобы избежать загрузки больших файлов в память
+    # Reading file by chunks
     with open(file_path, "rb") as f:
         for block in iter(lambda: f.read(4096), b""):
             hash_func.update(block)
 
-    # Возвращаем хеш-сумму в виде строки
     return hash_func.hexdigest()
 
 

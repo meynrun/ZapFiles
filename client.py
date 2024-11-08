@@ -5,7 +5,7 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 
 from env import TITLE
-from shared import info, warn, error, success, clear_console, get_file_hash, lang
+from shared import info, warn, error, success, clear_console, get_file_hash, lang, title
 import os
 from tqdm import tqdm
 
@@ -100,7 +100,7 @@ def handle_file_deletion(file_path):
 
 async def client():
     clear_console()
-    print(TITLE)
+    title()
 
     # Ввод ключа сервера
     server_key = input(lang["client.input.key"])

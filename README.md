@@ -3,7 +3,7 @@
   <img src="assets/ZapFiles-logo.png" alt="ZapFiles Logo" height="100">
 </div>
 
-#### Latest ZapFiles Build: [*click*](https://github.com/ahakahacker/ZapFiles/releases/latest/download/main.exe)
+#### Latest ZapFiles Build: [*click*](https://github.com/ahakahacker/ZapFiles/releases/latest/download/Setup-x64.exe)
 
 **ZapFiles** is a secure file transfer tool that ensures the privacy of your data through reliable encryption.
 

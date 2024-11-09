@@ -36,7 +36,7 @@ def check_for_updates():
             latest_version = response.json()["tag_name"]
             if latest_version != VERSION:
                 info(lang["update.info.updateAvailable"].format(latest_version))
-                update = input(lang["main.info.updateUser"]) or "y"
+                update = input(lang["update.info.updateUser"]) or "y"
                 if update.lower() == "y":
                     info(lang["update.info.updateDownloading"])
                     download_update()

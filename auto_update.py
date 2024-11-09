@@ -4,7 +4,8 @@ import requests
 import tqdm
 
 from env import VERSION
-from shared import lang
+from shared import lang, info, error, success
+
 
 def download_update():
     update_setup = requests.get("https://github.com/meynrun/ZapFiles/releases/latest/download/Setup-x64.exe", stream=True)
@@ -18,25 +19,32 @@ def download_update():
                 pbar.update(len(data))
 
     if total_size != 0 and pbar.n != total_size:
-        print(lang["main.info.updateDownloadFailed"])
+        error(lang["update.error.updateDownloadFailed"])
         os.remove("Setup-x64.exe")
     else:
-        print(lang["main.info.updateDownloaded"])
+        success(lang["update.info.updateDownloaded"])
         os.startfile("Setup-x64.exe")
         exit(0)
 
 
 def check_for_updates():
-    response = requests.get(f"https://api.github.com/repos/meynrun/ZapFiles/releases/latest")
+    info(lang["update.info.checkingForUpdates"])
+    try:
+        response = requests.get(f"https://api.github.com/repos/meynrun/ZapFiles/releases/latest", timeout=3)
 
-    if response.status_code == 200:
-        latest_version = response.json()["tag_name"]
-        if latest_version != VERSION:
-            print(lang["main.info.updateAvailable"].format(latest_version))
-            update = input(lang["main.info.updateUser"]) or "y"
-            if update.lower() == "y":
-                print(lang["main.info.updateDownloading"])
-                download_update()
+        if response.status_code == 200:
+            latest_version = response.json()["tag_name"]
+            if latest_version != VERSION:
+                info(lang["update.info.updateAvailable"].format(latest_version))
+                update = input(lang["update.info.updateUser"]) or "y"
+                if update.lower() == "y":
+                    info(lang["update.info.updateDownloading"])
+                    download_update()
+    except requests.exceptions.ConnectTimeout:
+        error(lang["update.error.connectionTimedOut"])
+    except requests.exceptions.ConnectionError:
+        error(lang["update.error.connectionError"])
+    print("\n")
 
 
 if __name__ == "__main__":

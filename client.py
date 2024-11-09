@@ -5,7 +5,7 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 
 from env import TITLE
-from shared import info, warn, error, success, clear_console, get_file_hash, lang
+from shared import info, warn, error, success, clear_console, get_file_hash, lang, title
 import os
 from tqdm import tqdm
 
@@ -30,7 +30,7 @@ def create_aes_cipher(aes_key):
 async def save_decrypted_file(reader, file_path, decryptor, file_size):
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
-    # Создаем прогресс-бар на основе общего размера файла
+    # Creating progressbar with total size of file
     with tqdm(total=file_size, unit="B", unit_scale=True, desc=file_path) as progress_bar:
         with open(file_path, "wb") as f:
             while True:
@@ -44,32 +44,32 @@ async def save_decrypted_file(reader, file_path, decryptor, file_size):
 
 
 async def download_file(ip, port, filename, file_hash):
-    # Генерация ключей RSA для клиента
+    # Generating RSA keys
     private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
     public_key = private_key.public_key()
 
-    # Подключение к серверу
+    # Connecting to server
     reader, writer = await asyncio.open_connection(ip, port)
     await send_public_key(writer, public_key)
 
-    # Получение зашифрованного AES-ключа от сервера
+    # Getting encrypted AES key from server
     encrypted_aes_key = await receive_encrypted_key(reader)
 
-    # Расшифровка AES-ключа
+    # Decrypting AES key
     aes_key = private_key.decrypt(
         encrypted_aes_key,
         padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=None)
     )
 
-    # Чтение размера файла от сервера
+    # Getting total size of file from server
     file_size_data = await reader.read(8)
     file_size = int.from_bytes(file_size_data, "big")
 
-    # Создание объекта AES для расшифровки
+    # Creating decryptor
     decryptor = create_aes_cipher(aes_key).decryptor()
     file_path = f"./downloaded_files/{filename}"
 
-    # Сохранение расшифрованного файла с прогресс-баром
+    # Saving file
     await save_decrypted_file(reader, file_path, decryptor, file_size)
 
     success(lang["client.info.fileReceived"])
@@ -100,20 +100,19 @@ def handle_file_deletion(file_path):
 
 async def client():
     clear_console()
-    print(TITLE)
+    title()
 
-    # Ввод ключа сервера
     server_key = input(lang["client.input.key"])
 
-    # Разбор ключа сервера
+    # Parsing server key
     try:
         ip, port, filename, file_hash = server_key.split(":")
-        port = int(port)  # Преобразуем порт в int
+        port = int(port)  # converting port to int
     except ValueError:
         error(lang["client.error.invalidKey"])
         return
 
-    # Проверка на наличие файла
+    # Checking if client already have that file
     file_path = f"./downloaded_files/{filename}"
     if os.path.exists(file_path) and get_file_hash(file_path) == file_hash:
         warn(lang["client.warning.fileAlreadyExists"])

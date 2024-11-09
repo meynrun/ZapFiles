@@ -34,12 +34,15 @@ def check_for_updates():
 
         if response.status_code == 200:
             latest_version = response.json()["tag_name"]
+
             if latest_version != VERSION:
                 info(lang["update.info.updateAvailable"].format(latest_version))
                 update = input(lang["update.info.updateUser"]) or "y"
                 if update.lower() == "y":
                     info(lang["update.info.updateDownloading"])
                     download_update()
+            else:
+                success(lang["update.info.latestVersion"])
     except requests.exceptions.ConnectTimeout:
         error(lang["update.error.connectionTimedOut"])
     except requests.exceptions.ConnectionError:

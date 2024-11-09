@@ -42,6 +42,7 @@
   "update.info.checkingForUpdates": "🔍 Checking for updates...",
   "update.error.connectionTimedOut": "❌ Timed out, please check your internet connection.",
   "update.error.connectionError": "❌ Connection error, please check your internet connection.",
+  "update.info.latestVersion": "⚡ You're running the latest version.",
 
   "universal.error": "❌ Error: {}"
 }

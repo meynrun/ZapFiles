@@ -5,7 +5,7 @@
 
 #### Latest ZapFiles Build: [*click*](https://github.com/ahakahacker/ZapFiles/releases/latest/download/Setup-x64.exe)
 
-**ZapFiles** is a secure file transfer tool that ensures the privacy of your data through reliable encryption.
+**ZapFiles** is a secure file transfer tool that ensures the privacy of your data through end-to-end encryption.
 
 <h2 align="center">Share Files. Fast. Secure.</h2>
 
@@ -31,7 +31,7 @@
 
 # Possible Future Features
 1. [ ] Included port forwarding
-2. [ ] Multiple encryption methods
+2. [ ] Intermediate servers
 3. [ ] Server config.json
 
 ## Credits

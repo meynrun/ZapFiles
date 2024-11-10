@@ -4,6 +4,9 @@
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 
+[![English](https://img.shields.io/badge/English-0078D4?style=for-the-badge&logo=download&logoColor=white)](./README.md)
+[![Русский](https://img.shields.io/badge/Русский-D52B1E?style=for-the-badge&logo=download&logoColor=white)](./README-ru.md)
+
 [![Latest build](https://img.shields.io/badge/Download%20latest-66CC00?style=for-the-badge&logo=download&logoColor=white)](https://github.com/meynrun/ZapFiles/releases/latest/download/Setup-x64.exe)
 
 ### **ZapFiles** is a secure file transfer tool that ensures the privacy of your data through end-to-end encryption.
@@ -34,7 +37,7 @@ pip install -r requirements.txt
 ```
 3. Run build.bat
 
-# TODO
+# ToDo
 - [x] Port selection
 - [x] Progress bar
 - [ ] Support for hosting multiple files simultaneously
@@ -42,7 +45,7 @@ pip install -r requirements.txt
 # Possible Future Features
 1. [ ] Included port forwarding
 2. [ ] Intermediate servers
-3. [ ] Server config.json
+3. [ ] Configuration file
 
 ## Credits
 The application logo uses emoji icons from Windows 11, which are the property of Microsoft. 

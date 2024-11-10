@@ -24,8 +24,14 @@
 5. Copy and share the server key with the recipient to initiate the transfer.
 
 # Building
-1. Clone the repository: `git clone https://github.com/meynrun/ZapFiles.git`
-2. Install the dependencies: `pip install -r requirements.txt`
+1. Clone the repository: 
+```
+git clone https://github.com/meynrun/ZapFiles.git
+```
+2. Install the dependencies: 
+```
+pip install -r requirements.txt
+```
 3. Run build.bat
 
 # TODO

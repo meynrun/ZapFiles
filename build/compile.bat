@@ -21,5 +21,3 @@ if %errorlevel% neq 0 (
 ) else (
     echo Compilation successful!
 )
-
-exit

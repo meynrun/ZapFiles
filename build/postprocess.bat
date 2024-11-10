@@ -35,5 +35,3 @@ if exist "%build_dir%\main.build" (
 if exist "%build_dir%\main.onefile-build" (
     rd /s /q "%build_dir%\main.onefile-build"
 )
-
-exit

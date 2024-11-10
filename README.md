@@ -1,13 +1,15 @@
-<div align="center">
-  <h1>⚡ZapFiles⚡</h1>
-  <img src="assets/ZapFiles-logo.png" alt="ZapFiles Logo" height="100">
-</div>
+![ZapFiles](./assets/ZapFiles-banner.png)
 
-#### Latest ZapFiles Build: [*click*](https://github.com/ahakahacker/ZapFiles/releases/latest/download/Setup-x64.exe)
+[![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE)
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 
-**ZapFiles** is a secure file transfer tool that ensures the privacy of your data through end-to-end encryption.
+[![English](https://img.shields.io/badge/English-0078D4?style=for-the-badge&logo=download&logoColor=white)](./README.md)
+[![Русский](https://img.shields.io/badge/Русский-D52B1E?style=for-the-badge&logo=download&logoColor=white)](./README-ru.md)
 
-<h2 align="center">Share Files. Fast. Secure.</h2>
+[![Latest build](https://img.shields.io/badge/Download%20latest-66CC00?style=for-the-badge&logo=download&logoColor=white)](https://github.com/meynrun/ZapFiles/releases/latest/download/Setup-x64.exe)
+
+### **ZapFiles** is a secure file transfer tool that ensures the privacy of your data through end-to-end encryption.
 
 # How to Use
 ### Downloading a File
@@ -17,14 +19,25 @@
 
 ### Sharing Files
 1. Select the "Host files" mode.
-2. Choose the network type for file transfer:
+2. Choose the IP type for file transfer:
    - Public — to send files over the internet;
-   - Local — to send files only over a local network (e.g., within the same Wi-Fi).
+   - Local — to send files over a local network (e.g., within the same Wi-Fi).
 3. Enter the name of the file to send.
 4. Specify the desired port or leave it blank (default is 8888).
 5. Copy and share the server key with the recipient to initiate the transfer.
 
-# TODO
+# Building
+1. Clone the repository: 
+```
+git clone https://github.com/meynrun/ZapFiles.git
+```
+2. Install the dependencies: 
+```
+pip install -r requirements.txt
+```
+3. Run build.bat
+
+# ToDo
 - [x] Port selection
 - [x] Progress bar
 - [ ] Support for hosting multiple files simultaneously
@@ -32,7 +45,7 @@
 # Possible Future Features
 1. [ ] Included port forwarding
 2. [ ] Intermediate servers
-3. [ ] Server config.json
+3. [ ] Configuration file
 
 ## Credits
 The application logo uses emoji icons from Windows 11, which are the property of Microsoft. 

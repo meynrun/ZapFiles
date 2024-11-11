@@ -35,7 +35,8 @@ git clone https://github.com/meynrun/ZapFiles.git
 ```
 pip install -r requirements.txt
 ```
-3. Запустите build.bat
+3. Установите [Inno Setup](https://jrsoftware.org/download.php/is.exe)
+4. Запустите build.bat
 
 # ToDo
 - [x] Выбор порта

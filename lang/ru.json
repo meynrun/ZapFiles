@@ -18,8 +18,9 @@
   "server.config.port": "🔌 Порт",
   "server.config.ip": "🖥️ IP",
 
-  "main.choose.mode": "🚀 Выберите режим\n\n 1. Отправка фалов\n 2. Скачивание файлов\n\n>> ",
+  "main.choose.mode": "🚀 Выберите режим\n\n 1. Отправка файлов\n 2. Скачивание файлов\n\n>> ",
   "main.enterToExit": "Нажмите Enter для выхода...",
+  "main.error.unknownArgument": "❌ Неизвестный аргумент: {}",
 
   "client.info.fileReceived": "✅ Файл получен и расшифрован.",
   "client.hash.checking": "🔍 Проверка хэша...",

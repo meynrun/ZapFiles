@@ -1,0 +1,94 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: url("./assets/back3.jpg") no-repeat center center fixed;
+    user-select: none;
+}
+
+.app {
+    min-width: 256px;
+    min-height: 256px;
+
+    width: 80vw;
+    height: 80vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(0, 0, 0, 0.2);
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    gap: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 1.5s ease;
+
+    backdrop-filter: blur(5px);
+}
+
+button {
+    padding: 10px 15px;
+    margin-left: 15px;
+
+    font-size: clamp(24px, 2vw, 48px);
+    font-weight: 700;
+    color: #000;
+
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+    cursor: pointer;
+
+    background: #ffffff;
+
+    transition: all .3s ease;
+}
+
+button:hover {
+    transform: translateY(-5px);
+}
+
+button:active {
+    transform: translateY(10px);
+}
+
+.hidden {
+    opacity: 0;
+    filter: blur(5px);
+    transform: scale(1.5);
+}
+
+.show {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+}
+
+.modeSelector {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 60%;
+}
+
+.logo {
+    height: 30vh;
+}

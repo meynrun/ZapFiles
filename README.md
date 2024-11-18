@@ -47,6 +47,7 @@ pip install -r requirements.txt
 1. [ ] Included port forwarding
 2. [ ] Intermediate servers
 3. [ ] Configuration file
+4. [ ] GUI
 
 ## Credits
 The application logo uses emoji icons from Windows 11, which are the property of Microsoft. 

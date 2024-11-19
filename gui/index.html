@@ -13,44 +13,52 @@
 
 <div class="pages">
     <div id="main" class="page hidden">
-
         <div class="title">
             <img class="logo" src="./assets/logo.png" height="128"/>
             <h1>ZapFiles</h1>
         </div>
-
         <h3 class="pageInfo">Select mode</h3>
         <div class="modeSelector">
             <button id="hostMode" onclick="change_page('host')">Host Files</button>
             <button id="getMode" onclick="change_page('get')">Get Files</button>
         </div>
-
     </div>
-
     <div id="host" class="page hidden">
-
         <div class="title">
             <img class="logo" src="./assets/logo.png" height="128"/>
             <h1>ZapFiles</h1>
         </div>
-
         <h3 class="pageInfo">Host Files</h3>
-        <div class="hostMode">
+
+        <div class="form">
+            <input type="text" placeholder="Filename" id="filename">
+            <input type="number" min="0" max="65536" placeholder="Port" id="port">
+
+            <select id="networkType">
+                <option value="public">Public</option>
+                <option value="local">Local</option>
+            </select>
+        </div>
+
+        <div class="modeSelector">
+            <button>Host</button>
             <button onclick="change_page('main')">Back</button>
         </div>
     </div>
-
     <div id="get" class="page hidden">
         <div class="title">
             <img class="logo" src="./assets/logo.png" height="128"/>
             <h1>ZapFiles</h1>
         </div>
         <h3 class="pageInfo">Get Files</h3>
-        <div class="getMode">
+
+        <input placeholder="Server key" id="serverKey">
+
+        <div class="modeSelector">
+            <button>Download</button>
             <button onclick="change_page('main')">Back</button>
         </div>
     </div>
-
 </div>
 
 

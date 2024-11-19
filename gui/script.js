@@ -2,10 +2,20 @@ window.addEventListener("beforeunload", () => {
     eel.handle_exit()
 });
 
+window.addEventListener("resize", () => {
+    if (window.outerWidth < 400){
+        window.resizeTo(400, window.outerHeight);
+    }
+    else if (window.outerHeight < 500){
+        window.resizeTo(window.outerWidth, 500);
+    }
+})
+
 document.addEventListener("DOMContentLoaded", () => {
     const pages = document.querySelector(".pages").children;
 
     pages[0].classList.add("show");
+    document.querySelector("#port").value = "8888";
 });
 
 

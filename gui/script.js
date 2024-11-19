@@ -1,18 +1,34 @@
-window.addEventListener("beforeunload", function (e) {
+window.addEventListener("beforeunload", () => {
     eel.handle_exit()
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("show");
-            } else {
-                entry.target.classList.remove("show");
-            }
-        });
-    });
+    const pages = document.querySelector(".pages").children;
 
-    const hiddenElements = document.getElementsByClassName("hidden");
-    Array.from(hiddenElements).forEach((el) => observer.observe(el));
+    pages[0].classList.add("show");
 });
+
+
+function change_page(targetPage) {
+    const pages = document.querySelector(".pages").children;
+
+    // Найти текущую страницу
+    const currentPage = Array.from(pages).find(page =>
+        page.classList.contains("show")
+    );
+
+    if (currentPage) {
+        currentPage.classList.remove("show");
+        currentPage.classList.add("hidden");
+    }
+
+    // Показать новую страницу
+    const target = Array.from(pages).find(page =>
+        page.id === targetPage
+    );
+
+    if (target) {
+        target.classList.remove("hidden");
+        target.classList.add("show");
+    }
+}

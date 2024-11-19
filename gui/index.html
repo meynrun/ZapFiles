@@ -9,17 +9,50 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="./assets/favicon.ico">
 </head>
-<body class="">
+<body>
 
-<div class="app hidden">
-    <img class="logo" src="./assets/logo.png" height="128"/>
+<div class="pages">
+    <div id="main" class="page hidden">
 
-    <div class="modeSelector">
-        <button id="hostMode">Host Files</button>
-        <button id="getMode">Get Files</button>
+        <div class="title">
+            <img class="logo" src="./assets/logo.png" height="128"/>
+            <h1>ZapFiles</h1>
+        </div>
+
+        <h3 class="pageInfo">Select mode</h3>
+        <div class="modeSelector">
+            <button id="hostMode" onclick="change_page('host')">Host Files</button>
+            <button id="getMode" onclick="change_page('get')">Get Files</button>
+        </div>
+
+    </div>
+
+    <div id="host" class="page hidden">
+
+        <div class="title">
+            <img class="logo" src="./assets/logo.png" height="128"/>
+            <h1>ZapFiles</h1>
+        </div>
+
+        <h3 class="pageInfo">Host Files</h3>
+        <div class="hostMode">
+            <button onclick="change_page('main')">Back</button>
+        </div>
+    </div>
+
+    <div id="get" class="page hidden">
+        <div class="title">
+            <img class="logo" src="./assets/logo.png" height="128"/>
+            <h1>ZapFiles</h1>
+        </div>
+        <h3 class="pageInfo">Get Files</h3>
+        <div class="getMode">
+            <button onclick="change_page('main')">Back</button>
+        </div>
     </div>
 
 </div>
+
 
 <script src="eel.js"></script>
 <script src="script.js"></script>

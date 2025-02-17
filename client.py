@@ -9,6 +9,7 @@ from cryptography.hazmat.backends import default_backend
 from shared import info, warn, error, success, clear_console, get_file_hash, lang, title
 import os
 from tqdm import tqdm
+from getpass import getuser
 
 
 async def send_public_key(writer: StreamWriter, public_key: rsa.RSAPublicKey) -> None:
@@ -121,7 +122,10 @@ async def download_file(ip: str, port: int, filename: str, file_hash: str) -> No
 
     # Creating decryptor
     decryptor = create_aes_cipher(aes_key).decryptor()
-    file_path = f"./downloaded_files/{filename}"
+    if os.name == "nt":
+        file_path = f"C:/Users/{getuser()}/Downloads/ZapFiles Downloads/{filename}"
+    else:
+        file_path = f"./downloaded_files/{filename}"
 
     # Saving file
     await save_decrypted_file(reader, file_path, decryptor, file_size)

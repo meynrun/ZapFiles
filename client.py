@@ -87,7 +87,7 @@ async def save_decrypted_file(reader: StreamReader, file_path: str, decryptor: C
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
     # Creating progressbar with total size of file
-    with tqdm(total=file_size, unit="B", unit_scale=True, desc=file_path) as progress_bar:
+    with tqdm(total=file_size, unit="B", unit_scale=True, desc=os.path.basename(file_path)) as progress_bar:
         with open(file_path, "wb") as f:
             while True:
                 data = await reader.read(4096)

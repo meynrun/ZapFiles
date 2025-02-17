@@ -95,7 +95,7 @@ async def handle_client(reader: StreamReader, writer: StreamWriter, filepath: st
         aes_cipher = Cipher(algorithms.AES(aes_key), modes.CTR(b'0' * 16), backend=default_backend())
         encryptor = aes_cipher.encryptor()
 
-        with tqdm(total=file_size, unit="B", unit_scale=True, desc=filepath) as progress_bar:
+        with tqdm(total=file_size, unit="B", unit_scale=True, desc=os.path.basename(filepath)) as progress_bar:
             with open(filepath, "rb") as f:
                 while True:
                     file_data = f.read(4096)

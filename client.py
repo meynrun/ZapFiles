@@ -12,6 +12,19 @@ from tqdm import tqdm
 from getpass import getuser
 
 
+def get_downloads_dir() -> str:
+    """
+    Returns path to downloads directory.
+
+    Returns:
+        str: path to downloads directory
+    """
+    if os.name == "nt":
+        return f"C:/Users/{getuser()}/Downloads/ZapFiles Downloads"
+    else:
+        return "./downloaded_files"
+
+
 async def send_public_key(writer: StreamWriter, public_key: rsa.RSAPublicKey) -> None:
     """
     Sends public key to server.
@@ -81,7 +94,7 @@ async def save_decrypted_file(reader: StreamReader, file_path: str, decryptor: C
                 if not data:
                     break
                 f.write(decryptor.update(data))
-                progress_bar.update(len(data))  # Обновляем прогресс-бар
+                progress_bar.update(len(data))
 
             f.write(decryptor.finalize())
 
@@ -122,10 +135,7 @@ async def download_file(ip: str, port: int, filename: str, file_hash: str) -> No
 
     # Creating decryptor
     decryptor = create_aes_cipher(aes_key).decryptor()
-    if os.name == "nt":
-        file_path = f"C:/Users/{getuser()}/Downloads/ZapFiles Downloads/{filename}"
-    else:
-        file_path = f"./downloaded_files/{filename}"
+    file_path = f"{get_downloads_dir()}/{filename}"
 
     # Saving file
     await save_decrypted_file(reader, file_path, decryptor, file_size)
@@ -197,7 +207,7 @@ async def client() -> None:
         return
 
     # Checking if client already have that file
-    file_path = f"./downloaded_files/{filename}"
+    file_path = f"{get_downloads_dir()}/{filename}"
     if os.path.exists(file_path) and get_file_hash(file_path) == file_hash:
         warn(lang["client.warning.fileAlreadyExists"])
         handle_file_deletion(file_path)

@@ -140,9 +140,34 @@ async def server() -> None:
         error(lang["server.error.publicIpNotFound"])
         return
 
+
     # Input filename
     while True:
-        filename = input(lang["server.input.filename"]) or os.urandom(1).hex()
+        files = os.listdir(server_files_dir)
+
+        if len(files) == 0:
+            error(lang["server.error.noFiles"])
+
+        print(lang["server.info.filename"])
+        for i, file in enumerate(files):
+            print(f"    {i + 1}. {file}")
+
+        filename = input(lang["server.input.filename"]) or "1"  # Default to the first file if no input is provided
+
+        if filename == "refresh":
+            continue
+
+        try:
+            filename = int(filename)
+            if 1 <= filename <= len(files):
+                filename = files[filename - 1]
+            else:
+                error(lang["server.error.invalidFilename"])  # Invalid number input
+                continue
+        except ValueError:
+            error(lang["server.error.invalidFilename"])  # Not a number input
+            continue
+
         filepath = f"{server_files_dir}/{filename}"
         if not os.path.exists(filepath):
             error(lang["server.error.fileNotFound"])

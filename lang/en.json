@@ -7,7 +7,8 @@
   "server.guide.filesMustBeIn": "❗ Hosted files MUST be in '{}'.",
   "server.input.networkType": "✉️ What network do you want to transfer files over?\n\n1. Public\n2. Local\n\n>> ",
   "server.input.localIp": "🔑 Enter local server IP (192.168.X.X or 127.0.0.1): ",
-  "server.input.filename": "💽 Enter filename: ",
+  "server.input.filename": "> ",
+  "server.info.filename": "💽 Choose file to send or type 'refresh' to refresh the list: ",
   "server.error.fileNotFound": "❌ File not found.",
   "server.input.port": "🚢 Enter port (default: 8888): ",
   "server.info.serverKey": "🔑 Server key: {}",
@@ -17,6 +18,8 @@
   "server.config.filename": "📄 Filename",
   "server.config.port": "🔌 Port",
   "server.config.ip": "🖥️ IP",
+  "server.error.noFiles": "❌ No files found. Please upload a file first and try again.",
+  "server.error.invalidFilename": "❌ Invalid file name.",
 
   "main.choose.mode": "🚀 Enter mode\n\n 1. Host files\n 2. Get files\n\n>> ",
   "main.enterToExit": "Press Enter to exit...",

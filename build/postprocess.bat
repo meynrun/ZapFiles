@@ -22,16 +22,3 @@ if exist "%build_dir%" (
         echo Localization files copied successfully!
     )
 )
-
-:: Удаление временных файлов и папок
-if exist "%build_dir%\main.dist" (
-    rd /s /q "%build_dir%\main.dist"
-)
-
-if exist "%build_dir%\main.build" (
-    rd /s /q "%build_dir%\main.build"
-)
-
-if exist "%build_dir%\main.onefile-build" (
-    rd /s /q "%build_dir%\main.onefile-build"
-)

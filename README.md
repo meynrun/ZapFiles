@@ -36,7 +36,8 @@ git clone https://github.com/meynrun/ZapFiles.git
 pip install -r requirements.txt
 ```
 3. Install [Inno Setup](https://jrsoftware.org/download.php/is.exe)
-4. Run build.bat
+4. Change paths in setup_script.iss to match your environment
+5. Run build.bat
 
 # ToDo
 - [x] Port selection

@@ -1,4 +1,6 @@
 import asyncio
+from asyncio import StreamReader, StreamWriter
+
 import requests
 import json
 
@@ -15,11 +17,19 @@ from shared import lang
 from shared import info, warn, error, success, clear_console, get_file_hash, title
 import os
 
+from typing import Optional
+
 
 server_config = PrettyTable([lang["server.config.ip"], lang["server.config.port"], lang["server.config.filename"]])
 
 
-def get_public_ip():
+def get_public_ip() -> Optional[str]:
+    """
+    Gets public IP address.
+
+    Returns:
+        str: public IP address
+    """
     info(lang["server.info.gettingIp"])
 
     try:
@@ -42,7 +52,18 @@ def get_public_ip():
         return None
 
 
-async def handle_client(reader, writer, filepath):
+async def handle_client(reader: StreamReader, writer: StreamWriter, filepath: str) -> None:
+    """
+    Handles client connection.
+
+    Args:
+        reader (StreamReader): asyncio StreamReader
+        writer (StreamWriter): asyncio StreamWriter
+        filepath (str): path to file to send
+
+    Returns:
+        None
+    """
     try:
         # Getting IP and port of client
         client_ip, client_port = writer.get_extra_info('peername')
@@ -74,7 +95,7 @@ async def handle_client(reader, writer, filepath):
         aes_cipher = Cipher(algorithms.AES(aes_key), modes.CTR(b'0' * 16), backend=default_backend())
         encryptor = aes_cipher.encryptor()
 
-        with tqdm(total=file_size, unit="B", unit_scale=True, desc=filepath) as progress_bar:
+        with tqdm(total=file_size, unit="B", unit_scale=True, desc=os.path.basename(filepath)) as progress_bar:
             with open(filepath, "rb") as f:
                 while True:
                     file_data = f.read(4096)
@@ -95,7 +116,13 @@ async def handle_client(reader, writer, filepath):
         await writer.wait_closed()
 
 
-async def server():
+async def server() -> None:
+    """
+    Sets up and starts the server
+
+    Returns:
+        None
+    """
     # Checking for server_files directory
     server_files_dir = 'server_files'
     if not os.path.exists(server_files_dir):
@@ -105,9 +132,7 @@ async def server():
 
     # Setting up server
     warn(lang["server.guide.filesMustBeIn"].format(server_files_dir))
-    host_to = "local"\
-        if input(lang["server.input.networkType"]) == "2"\
-        else "public"
+    host_to = "local" if input(lang["server.input.networkType"]) == "2" else "public"
 
     key_ip = get_public_ip() if host_to == "public" else input(lang["server.input.localIp"])
 
@@ -115,12 +140,38 @@ async def server():
         error(lang["server.error.publicIpNotFound"])
         return
 
+
     # Input filename
     while True:
-        filename = input(lang["server.input.filename"]) or os.urandom(1).hex()
+        files = os.listdir(server_files_dir)
+
+        if len(files) == 0:
+            error(lang["server.error.noFiles"])
+
+        print(lang["server.info.filename"])
+        for i, file in enumerate(files):
+            print(f"    {i + 1}. {file}")
+
+        filename = input(lang["server.input.filename"]) or "1"  # Default to the first file if no input is provided
+
+        if filename == "refresh":
+            continue
+
+        try:
+            filename = int(filename)
+            if 1 <= filename <= len(files):
+                filename = files[filename - 1]
+            else:
+                error(lang["server.error.invalidFilename"])  # Invalid number input
+                continue
+        except ValueError:
+            error(lang["server.error.invalidFilename"])  # Not a number input
+            continue
+
         filepath = f"{server_files_dir}/{filename}"
         if not os.path.exists(filepath):
             error(lang["server.error.fileNotFound"])
+            continue
         else:
             break
 

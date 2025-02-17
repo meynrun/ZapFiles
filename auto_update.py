@@ -7,7 +7,13 @@ from env import VERSION
 from shared import lang, info, error, success
 
 
-def download_update():
+def download_update() -> None:
+    """
+    Downloads Setup-x64.exe from latest release on GitHub.
+
+    Returns:
+        None
+    """
     update_setup = requests.get("https://github.com/meynrun/ZapFiles/releases/latest/download/Setup-x64.exe", stream=True)
     total_size = int(update_setup.headers.get("content-length", 0))
     block_size = 1024
@@ -27,7 +33,13 @@ def download_update():
         exit(0)
 
 
-def check_for_updates():
+def check_for_updates() -> None:
+    """
+    Checks for updates and calls download_update() if new version is available and user wants to update.
+
+    Returns:
+        None
+    """
     info(lang["update.info.checkingForUpdates"])
     try:
         response = requests.get(f"https://api.github.com/repos/meynrun/ZapFiles/releases/latest", timeout=3)

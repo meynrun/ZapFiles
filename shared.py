@@ -9,6 +9,7 @@ from locale import getlocale
 
 clr.init()
 
+# bad method to get locale, but it works, I guess
 locale = getlocale()[0]
 ru_locales = [
     # Windows 
@@ -37,7 +38,7 @@ ru_locales = [
     "ru_AM.UTF-8"
 ]
 
-
+# colors
 info_color = clr.Fore.LIGHTBLUE_EX
 warn_color = clr.Fore.LIGHTYELLOW_EX
 error_color = clr.Fore.LIGHTRED_EX
@@ -45,8 +46,17 @@ success_color = clr.Fore.LIGHTGREEN_EX
 reset = clr.Style.RESET_ALL
 
 
-def load_lang(lang):
-    with open(f"lang/{lang}.json", "r", encoding="utf-8") as f:
+def load_lang(lang_code: str) -> dict:
+    """
+    Loads language dictionary.
+
+    Args:
+        lang_code (str): language code ("en" or "ru")
+
+    Returns:
+        Dict: language dictionary
+    """
+    with open(f"lang/{lang_code}.json", "r", encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -66,8 +76,18 @@ except FileNotFoundError:
         exit(1)
 
 
+def get_file_hash(file_path: str, algorithm: str = 'sha256') -> str:
+    """
+    Returns file hash.
+    By default, uses sha256.
 
-def get_file_hash(file_path, algorithm='sha256'):
+    Args:
+        file_path (str): path to file to hash
+        algorithm (str): hash algorithm (default: sha256)
+
+    Returns:
+        Str: file hash
+    """
     hash_func = hashlib.new(algorithm)
 
     # Reading file by chunks
@@ -78,25 +98,73 @@ def get_file_hash(file_path, algorithm='sha256'):
     return hash_func.hexdigest()
 
 
-def title():
+def title() -> None:
+    """
+    Prints title.
+
+    Returns:
+        None
+    """
     print(TITLE)
 
 
-def clear_console():
+def clear_console() -> None:
+    """
+    Clears terminal screen.
+    
+    Returns:
+        None
+    """
     print('\x1b[2J\x1b[0;0H')
 
 
-def info(msg):
+def info(msg) -> None:
+    """
+    Prints message with info color.
+
+    Args:
+        msg (str): message to print
+    
+    Returns:
+        None
+    """
     print(f"{info_color}{msg}{reset}")
 
 
-def warn(msg):
+def warn(msg) -> None:
+    """
+    Prints message with warn color.
+
+    Args:
+        msg (str): message to print
+    
+    Returns:
+        None
+    """
     print(f"{warn_color}{msg}{reset}")
 
 
-def error(msg):
+def error(msg) -> None:
+    """
+    Prints message with error color.
+
+    Args:
+        msg (str): message to print
+    
+    Returns:
+        None
+    """
     print(f"{error_color}{msg}{reset}")
 
 
-def success(msg):
+def success(msg) -> None:
+    """
+    Prints message with success color.
+
+    Args:
+        msg (str): message to print
+    
+    Returns:
+        None
+    """
     print(f"{success_color}{msg}{reset}")

@@ -1,16 +1,27 @@
 import asyncio
+from asyncio import StreamReader, StreamWriter
+
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes, serialization
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes, CipherContext
 from cryptography.hazmat.backends import default_backend
 
-from env import TITLE
 from shared import info, warn, error, success, clear_console, get_file_hash, lang, title
 import os
 from tqdm import tqdm
 
 
-async def send_public_key(writer, public_key):
+async def send_public_key(writer: StreamWriter, public_key: rsa.RSAPublicKey) -> None:
+    """
+    Sends public key to server.
+
+    Args:
+        writer (StreamWriter): asyncio StreamWriter
+        public_key (rsa.RSAPublicKey): public RSA key
+
+    Returns:
+        None
+    """
     public_pem = public_key.public_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PublicFormat.SubjectPublicKeyInfo
@@ -19,15 +30,46 @@ async def send_public_key(writer, public_key):
     await writer.drain()
 
 
-async def receive_encrypted_key(reader):
+async def receive_encrypted_key(reader: StreamReader) -> bytes:
+    """
+    Receives encrypted AES key from server.
+
+    Args:
+        reader (StreamReader): asyncio StreamReader
+
+    Returns:
+        bytes: encrypted AES key
+    """
     return await reader.read(256)
 
 
-def create_aes_cipher(aes_key):
+def create_aes_cipher(aes_key: bytes) -> Cipher:
+    """
+    Creates AES cipher.
+
+    Args:
+        aes_key (bytes): AES key
+
+    Returns:
+        Cipher: AES cipher
+    """
     return Cipher(algorithms.AES(aes_key), modes.CTR(b'0' * 16), backend=default_backend())
 
 
-async def save_decrypted_file(reader, file_path, decryptor, file_size):
+async def save_decrypted_file(reader: StreamReader, file_path: str, decryptor: CipherContext, file_size: int) -> None:
+    """
+    Saves decrypted file.
+
+    Args:
+        reader (StreamReader): asyncio StreamReader
+        file_path (str): path to save file
+        decryptor (CipherContext): decryptor
+        file_size (int): size of file
+
+    Returns:
+        None
+    """
+    # Creating directory
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
     # Creating progressbar with total size of file
@@ -43,7 +85,19 @@ async def save_decrypted_file(reader, file_path, decryptor, file_size):
             f.write(decryptor.finalize())
 
 
-async def download_file(ip, port, filename, file_hash):
+async def download_file(ip: str, port: int, filename: str, file_hash: str) -> None:
+    """
+    Downloads file from server.
+
+    Args:
+        ip (str): IP address of server
+        port (int): port of server
+        filename (str): name of file to download
+        file_hash (str): hash of file to download
+
+    Returns:
+        None
+    """
     # Generating RSA keys
     private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
     public_key = private_key.public_key()
@@ -79,7 +133,18 @@ async def download_file(ip, port, filename, file_hash):
     await writer.wait_closed()
 
 
-def validate_file(file_path, file_hash):
+def validate_file(file_path: str, file_hash: str) -> None:
+    """
+    Validates file hash.
+
+    Args:
+        file_path (str): path to file to validate
+        file_hash (str): file hash
+
+    Returns:
+        None
+    """
+    # Checking file hash
     info(lang["client.hash.checking"])
     if get_file_hash(file_path) == file_hash:
         success(lang["client.hash.correct"])
@@ -88,7 +153,16 @@ def validate_file(file_path, file_hash):
         handle_file_deletion(file_path)
 
 
-def handle_file_deletion(file_path):
+def handle_file_deletion(file_path: str) -> None:
+    """
+    Handles file deletion.
+
+    Args:
+        file_path (str): path to file to delete
+
+    Returns:
+        None
+    """
     if os.path.exists(file_path):
         if input(lang["client.choose.delete"]).strip().lower() == "y":
             os.remove(file_path)
@@ -98,7 +172,13 @@ def handle_file_deletion(file_path):
             return
 
 
-async def client():
+async def client() -> None:
+    """
+    Main client function.
+
+    Returns:
+        None
+    """
     clear_console()
     title()
 

@@ -9,9 +9,12 @@ from auto_update import check_for_updates
 
 if __name__ == '__main__':
     shared.title()
-    check_for_updates()
 
-    mode = "1" if input(lang["main.choose.mode"]) == "1" else "2"
+    try:
+        check_for_updates()
+        mode = "1" if input(lang["main.choose.mode"]) == "1" else "2"
+    except KeyboardInterrupt:
+        exit()
 
     shared.clear_console()
     shared.title()

@@ -1,9 +1,8 @@
-from colorama import Fore, Style
+from colorama import Fore
 
 
-VERSION = "v1.6.0"
+VERSION = "v1.6.1"
 TITLE = f"""
-{Fore.LIGHTCYAN_EX}############ {Fore.LIGHTYELLOW_EX}ZapFiles {Fore.LIGHTWHITE_EX}{VERSION} {Fore.LIGHTCYAN_EX}############
-#       {Fore.LIGHTYELLOW_EX}Made with 💖 by: {Fore.LIGHTBLUE_EX}Meynrun{Fore.LIGHTCYAN_EX}        #
-#########################################{Style.RESET_ALL}
+{Fore.LIGHTYELLOW_EX}ZapFiles {Fore.LIGHTWHITE_EX}{VERSION}
+{Fore.LIGHTYELLOW_EX}Made with 💖 by {Fore.LIGHTBLUE_EX}Meynrun
 """

@@ -7,7 +7,7 @@
   "server.guide.filesMustBeIn": "❗ Hosted files MUST be in '{}'.",
   "server.input.networkType": "✉️ What network do you want to transfer files over?\n\n1. Public\n2. Local\n\n>> ",
   "server.input.localIp": "🔑 Enter local server IP (192.168.X.X or 127.0.0.1): ",
-  "server.input.filename": "> ",
+  "server.input.filename": ">> ",
   "server.info.filename": "💽 Choose file to send or type 'refresh' to refresh the list: ",
   "server.error.fileNotFound": "❌ File not found.",
   "server.input.port": "🚢 Enter port (default: 8888): ",
@@ -50,7 +50,7 @@
   "update.info.checkingForUpdates": "🔍 Checking for updates...",
   "update.error.connectionTimedOut": "❌ Timed out, please check your internet connection.",
   "update.error.connectionError": "❌ Connection error, please check your internet connection.",
-  "update.info.latestVersion": "⚡ You're running the latest version.",
+  "update.info.latestVersion": "🫠 You're running the latest version.",
 
   "universal.error": "❌ Error: {}"
 }

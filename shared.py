@@ -1,42 +1,23 @@
+import ctypes
 import hashlib
 import json
+import os
 from logging import error
 
 import colorama as clr
 from env import TITLE
 
-from locale import getlocale
+from locale import getlocale, windows_locale
 
 clr.init()
 
-# bad method to get locale, but it works, I guess
-locale = getlocale()[0]
-ru_locales = [
-    # Windows 
-    "Russian_Russia",
-    "Russian_Belarus",
-    "Russian_Kazakhstan",
-    "Russian_Ukraine",
-    "Russian_Kyrgyzstan",
-    "Russian_Tajikistan",
-    "Russian_Armenia",
+if os.name == "nt":
+    windll = ctypes.windll.kernel32
+    locale = windows_locale[ windll.GetUserDefaultUILanguage() ]
+    windll.SetConsoleTitleW("⚡ZapFiles")
 
-    # macOS и Linux 
-    "ru_RU",
-    "ru_BY",
-    "ru_KZ",
-    "ru_UA",
-    "ru_KG",
-    "ru_TJ",
-    "ru_AM",
-    "ru_RU.UTF-8",
-    "ru_BY.UTF-8",
-    "ru_KZ.UTF-8",
-    "ru_UA.UTF-8",
-    "ru_KG.UTF-8",
-    "ru_TJ.UTF-8",
-    "ru_AM.UTF-8"
-]
+else:
+    locale = getlocale()[0]
 
 # colors
 info_color = clr.Fore.LIGHTBLUE_EX
@@ -61,7 +42,7 @@ def load_lang(lang_code: str) -> dict:
 
 
 try:
-    if locale in ru_locales:
+    if locale == "ru_RU":
         lang = load_lang("ru")
     else:
         lang = load_lang("en")

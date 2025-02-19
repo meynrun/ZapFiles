@@ -20,6 +20,9 @@
   "server.config.ip": "🖥️ IP",
   "server.error.noFiles": "❌ No files found. Please upload a file first and try again.",
   "server.error.invalidFilename": "❌ Invalid file name.",
+  "server.error.connectionReset": "❌ Connection reset by peer.",
+  "server.error.connectionAborted": "❌ Connection aborted.",
+  "server.error.connectionRefused": "❌ Connection refused.",
 
   "main.choose.mode": "🚀 Enter mode\n\n 1. Host files\n 2. Get files\n\n>> ",
   "main.enterToExit": "Press Enter to exit...",
@@ -36,6 +39,8 @@
   "client.error.invalidKey": "❌ Invalid server key format. Please use 'ip:port:filename:file_hash'",
   "client.warning.fileAlreadyExists": "⚠️ File already exists.",
   "client.warning.fileWithSameNameExists": "⚠️ File with this name already exists, but with a different hash.",
+  "client.error.filePermissionError": "❌ Permission denied.",
+  "client.error.invalidEncryptionKey": "❌ Invalid encryption key. This is usually due to a VPN enabled on the server.",
 
   "update.info.updateAvailable": "🆕 New version available: {}",
   "update.info.updateUser": "👉 Do you want to update? (Y/n) ",

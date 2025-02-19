@@ -1,4 +1,4 @@
-from colorama import Fore, Style
+from colorama import Fore
 
 
 VERSION = "v1.6.1"

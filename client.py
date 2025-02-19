@@ -1,5 +1,6 @@
 import asyncio
 from asyncio import StreamReader, StreamWriter
+from csv import excel
 
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes, serialization
@@ -123,11 +124,15 @@ async def download_file(ip: str, port: int, filename: str, file_hash: str) -> No
     # Getting encrypted AES key from server
     encrypted_aes_key = await receive_encrypted_key(reader)
 
-    # Decrypting AES key
-    aes_key = private_key.decrypt(
-        encrypted_aes_key,
-        padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=None)
-    )
+    try:
+        # Decrypting AES key
+        aes_key = private_key.decrypt(
+            encrypted_aes_key,
+            padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=None)
+        )
+    except ValueError:
+        error(lang["client.error.invalidEncryptionKey"])
+        return
 
     # Getting total size of file from server
     file_size_data = await reader.read(8)
@@ -177,13 +182,24 @@ def handle_file_deletion(file_path: str) -> None:
     Returns:
         None
     """
-    if os.path.exists(file_path):
-        if input(lang["client.choose.delete"]).strip().lower() == "y":
-            os.remove(file_path)
-            success(lang["client.info.fileDeleted"])
-        else:
-            success(lang["client.info.fileSaved"])
-            return
+    try:
+        if os.path.exists(file_path):
+            if input(lang["client.choose.delete"]).strip().lower() == "y":
+                os.remove(file_path)
+                success(lang["client.info.fileDeleted"])
+            else:
+                success(lang["client.info.fileSaved"])
+                return
+    except PermissionError:
+        error(lang["client.error.filePermissionError"])
+        return
+    except FileNotFoundError:
+        return
+    except EOFError:
+        return
+    except Exception as e:
+        error(str(e))
+        return
 
 
 async def client() -> None:
@@ -196,7 +212,10 @@ async def client() -> None:
     clear_console()
     title()
 
-    server_key = input(lang["client.input.key"])
+    try:
+        server_key = input(lang["client.input.key"])
+    except EOFError:
+        return
 
     # Parsing server key
     try:

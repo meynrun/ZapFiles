@@ -109,11 +109,21 @@ async def handle_client(reader: StreamReader, writer: StreamWriter, filepath: st
         writer.write(encryptor.finalize())
         await writer.drain()
         success(lang["server.info.fileSent"])
+    except ConnectionResetError:
+        error(lang["server.error.connectionReset"])
+    except ConnectionAbortedError:
+        error(lang["server.error.connectionAborted"])
+    except ConnectionRefusedError:
+        error(lang["server.error.connectionRefused"])
     except Exception as e:
         error(lang["server.error.errorHandlingClient"].format(e))
     finally:
-        writer.close()
-        await writer.wait_closed()
+        # Closing streams
+        try:
+            writer.close()
+            await writer.wait_closed()
+        except Exception:
+            pass
 
 
 async def server() -> None:

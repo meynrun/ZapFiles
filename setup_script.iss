@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ZapFiles"
-#define MyAppVersion "1.5.0"
+#define MyAppVersion "1.6.0"
 #define MyAppPublisher "MeynDev"
 #define MyAppURL "https://github.com/meynrun/ZapFiles"
 #define MyAppExeName "main.exe"
@@ -32,7 +32,7 @@ DefaultGroupName={#MyAppName}
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 OutputBaseFilename=Setup-x64
-SetupIconFile=C:\Users\ahaka\PycharmProjects\ZapFiles\assets\ZapFiles-icon.ico
+SetupIconFile=.\assets\ZapFiles-icon.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -45,8 +45,8 @@ Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\ahaka\PycharmProjects\ZapFiles\dist\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\ahaka\PycharmProjects\ZapFiles\dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: ".\dist\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

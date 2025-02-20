@@ -1,6 +1,7 @@
 import asyncio
 from asyncio import StreamReader, StreamWriter
-from csv import excel
+
+from experiments.experiments_config import enabled_experiments
 
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes, serialization
@@ -13,17 +14,26 @@ from tqdm import tqdm
 from getpass import getuser
 
 
-def get_downloads_dir() -> str:
+def get_download_path(filename: str) -> str:
     """
     Returns path to downloads directory.
+
+    Args:
+        filename (str): name of file
 
     Returns:
         str: path to downloads directory
     """
-    if os.name == "nt":
-        return f"C:/Users/{getuser()}/Downloads/ZapFiles Downloads"
+    if "file_classification" in enabled_experiments:
+        if os.name == "nt":
+            return f"C:/Users/{getuser()}/Downloads/ZapFiles Downloads/{os.path.splitext(filename)[1]}/{filename}"
+        else:
+            return f"./downloaded_files/{os.path.splitext(filename)[1]}/{filename}"
     else:
-        return "./downloaded_files"
+        if os.name == "nt":
+            return f"C:/Users/{getuser()}/Downloads/ZapFiles Downloads/{filename}"
+        else:
+            return f"./downloaded_files{filename}"
 
 
 async def send_public_key(writer: StreamWriter, public_key: rsa.RSAPublicKey) -> None:
@@ -140,7 +150,9 @@ async def download_file(ip: str, port: int, filename: str, file_hash: str) -> No
 
     # Creating decryptor
     decryptor = create_aes_cipher(aes_key).decryptor()
-    file_path = f"{get_downloads_dir()}/{filename}"
+
+    # Creating file path
+    file_path = get_download_path(filename)
 
     # Saving file
     await save_decrypted_file(reader, file_path, decryptor, file_size)
@@ -226,7 +238,7 @@ async def client() -> None:
         return
 
     # Checking if client already have that file
-    file_path = f"{get_downloads_dir()}/{filename}"
+    file_path = get_download_path(filename)
     if os.path.exists(file_path) and get_file_hash(file_path) == file_hash:
         warn(lang["client.warning.fileAlreadyExists"])
         handle_file_deletion(file_path)

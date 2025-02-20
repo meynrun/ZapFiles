@@ -45,9 +45,9 @@ pip install -r requirements.txt
 - [ ] Configuration file for experiments
 
 # Experiments
-- [ ] Classify files by type (e.g., documents, presentations, or videos)
+- [x] Classify files by type (e.g., documents, presentations, or videos)
 - [ ] Password to access the file on the server
-- [ ] Configuration file
+- [x] Configuration file
 
 # Possible Future Features
 - [ ] Included port forwarding

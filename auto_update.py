@@ -3,6 +3,8 @@ import os
 import requests
 import tqdm
 
+import sys
+
 from env import VERSION
 from shared import lang, info, error, success
 
@@ -30,7 +32,7 @@ def download_update() -> None:
     else:
         success(lang["update.info.updateDownloaded"])
         os.startfile("Setup-x64.exe")
-        exit(0)
+        sys.exit(0)
 
 
 def check_for_updates() -> None:

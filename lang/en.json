@@ -42,9 +42,9 @@
   "client.error.filePermissionError": "❌ Permission denied.",
   "client.error.invalidEncryptionKey": "❌ Invalid encryption key. This is usually due to a VPN enabled on the server.",
 
-  "update.info.updateAvailable": "🆕 New version available: {}",
+  "update.info.updateAvailable": "🤩 New version available: {}",
   "update.info.updateUser": "👉 Do you want to update? (Y/n) ",
-  "update.info.updateDownloading": "⬇️ Downloading update...",
+  "update.info.updateDownloading": "⏳ Downloading update...",
   "update.error.updateDownloadFailed": "❌ Failed to download update.",
   "update.info.updateDownloaded": "✅ Update downloaded.",
   "update.info.checkingForUpdates": "🔍 Checking for updates...",
@@ -55,5 +55,5 @@
   "universal.error.generic": "❌ Error: {}",
   "universal.error.fileNotFound": "❌ File not found.",
 
-  "experiments.error.experimentsConfigNotFound": "❌ Experiments configuration file not found. Loading default configuration...",
+  "experiments.warn.experimentsConfigNotFound": "⚠️ Experiments configuration file not found. Loading default configuration...",
 }

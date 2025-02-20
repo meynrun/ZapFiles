@@ -1,7 +1,6 @@
 import json
-from email.policy import default
 
-from shared import error, lang
+from shared import error, lang, warn
 
 default_experiments = {
     "file_classification": {
@@ -43,7 +42,7 @@ def load_experiments_configuration_file() -> dict:
         with open("experiments.json", "r") as f:
             return json.load(f)
     except FileNotFoundError:
-        error(lang["experiments.error.experimentsConfigNotFound"])
+        warn(lang["experiments.warn.experimentsConfigNotFound"])
         try:
             create_default_experiments_configuration_file()
         except Exception as e:

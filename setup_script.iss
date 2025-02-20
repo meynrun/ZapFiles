@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ZapFiles"
-#define MyAppVersion "1.7.0"
+#define MyAppVersion "1.7.1"
 #define MyAppPublisher "MeynDev"
 #define MyAppURL "https://github.com/meynrun/ZapFiles"
 #define MyAppExeName "main.exe"

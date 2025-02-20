@@ -28,11 +28,11 @@
 
 # Building
 1. Clone the repository: 
-```
+```shell
 git clone https://github.com/meynrun/ZapFiles.git
 ```
 2. Install the dependencies: 
-```
+```shell
 pip install -r requirements.txt
 ```
 3. Install [Inno Setup](https://jrsoftware.org/download.php/is.exe)
@@ -42,11 +42,16 @@ pip install -r requirements.txt
 - [x] Port selection
 - [x] Progress bar
 - [ ] Support for hosting multiple files simultaneously
+- [ ] Configuration file for experiments
+
+# Experiments
+- [ ] Classify files by type (e.g., documents, presentations, or videos)
+- [ ] Password to access the file on the server
+- [ ] Configuration file
 
 # Possible Future Features
-1. [ ] Included port forwarding
-2. [ ] Intermediate servers
-3. [ ] Configuration file
+- [ ] Included port forwarding
+- [ ] Intermediate servers
 
 ## Credits
 The application logo uses emoji icons from Windows 11, which are the property of Microsoft. 

@@ -55,5 +55,5 @@
   "universal.error.generic": "❌ Error: {}",
   "universal.error.fileNotFound": "❌ File not found.",
 
-  "experiments.warn.experimentsConfigNotFound": "⚠️ Experiments configuration file not found. Loading default configuration...",
+  "experiments.warn.experimentsConfigNotFound": "⚠️ Experiments configuration file not found. Loading default configuration..."
 }

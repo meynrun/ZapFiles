@@ -89,6 +89,16 @@ def title() -> None:
     print(TITLE)
 
 
+def update() -> None:
+    """
+    Prints update message.
+
+    Returns:
+        None
+    """
+    print(clr.Fore.LIGHTGREEN_EX + lang["main.info.updateDescription"] + clr.Fore.RESET)
+
+
 def clear_console() -> None:
     """
     Clears terminal screen.

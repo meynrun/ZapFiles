@@ -9,7 +9,6 @@
   "server.input.localIp": "🔑 Enter local server IP (192.168.X.X or 127.0.0.1): ",
   "server.input.filename": ">> ",
   "server.info.filename": "💽 Choose file to send or type 'refresh' to refresh the list: ",
-  "server.error.fileNotFound": "❌ File not found.",
   "server.input.port": "🚢 Enter port (default: 8888): ",
   "server.info.serverKey": "🔑 Server key: {}",
   "server.info.running": "🌐 Server is running...",
@@ -26,6 +25,7 @@
 
   "main.choose.mode": "🚀 Enter mode\n\n 1. Host files\n 2. Get files\n\n>> ",
   "main.enterToExit": "Press Enter to exit...",
+  "main.info.updateDescription": "✨ Experiments Update!\nYou can enable/disable experiments in experiments.json\n",
 
   "client.info.fileReceived": "✅ File received and decrypted.",
   "client.hash.checking": "🔍 Checking file hash...",
@@ -52,5 +52,8 @@
   "update.error.connectionError": "❌ Connection error, please check your internet connection.",
   "update.info.latestVersion": "🫠 You're running the latest version.",
 
-  "universal.error": "❌ Error: {}"
+  "universal.error.generic": "❌ Error: {}",
+  "universal.error.fileNotFound": "❌ File not found.",
+
+  "experiments.error.experimentsConfigNotFound": "❌ Experiments configuration file not found. Loading default configuration...",
 }

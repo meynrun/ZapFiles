@@ -180,7 +180,7 @@ async def server() -> None:
 
         filepath = f"{server_files_dir}/{filename}"
         if not os.path.exists(filepath):
-            error(lang["server.error.fileNotFound"])
+            error(lang["universal.error.fileNotFound"])
             continue
         else:
             break

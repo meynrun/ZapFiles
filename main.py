@@ -1,17 +1,27 @@
 import asyncio
-import shared as shared
+import shared
+
+from experiments import experiments_config
+from auto_update import check_for_updates
 
 from server import server
 from client import client
 
-from shared import lang
-from auto_update import check_for_updates
-
 if __name__ == '__main__':
     try:
         shared.title()
-        check_for_updates()
-        mode = "1" if input(lang["main.choose.mode"]) == "1" else "2"
+        shared.update()
+
+        if "config_file" in experiments_config.enabled_experiments:
+            from experiments import config_file
+            if config_file.config["check_for_updates"]:
+                check_for_updates()
+            else:
+                pass
+        else:
+            check_for_updates()
+
+        mode = "1" if input(shared.lang["main.choose.mode"]) == "1" else "2"
 
         shared.clear_console()
         shared.title()
@@ -21,7 +31,7 @@ if __name__ == '__main__':
         elif mode == "2":
             asyncio.run(client())
 
-        input(lang["main.enterToExit"])
+        input(shared.lang["main.enterToExit"])
 
     except KeyboardInterrupt:
         exit()

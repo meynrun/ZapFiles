@@ -25,7 +25,7 @@
 
   "main.choose.mode": "🚀 Enter mode\n\n 1. Host files\n 2. Get files\n\n>> ",
   "main.enterToExit": "Press Enter to exit...",
-  "main.info.updateDescription": "✨ Experiments Update!\nYou can enable/disable experiments in experiments.json\n",
+  "main.info.updateDescription": "✨ Configuration Update!\nNow the configuration is not an experiment\n",
 
   "client.info.fileReceived": "✅ File received and decrypted.",
   "client.hash.checking": "🔍 Checking file hash...",

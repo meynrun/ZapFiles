@@ -12,11 +12,6 @@ default_experiments = {
         "name": "Password Protection (WIP, coming soon)",
         "description": "Protect files on server with a password.",
         "enabled": False
-    },
-    "config_file": {
-        "name": "Configuration File",
-        "description": "Use a configuration file to configure ZapFiles.",
-        "enabled": True
     }
 }
 

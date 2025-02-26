@@ -42,12 +42,12 @@ pip install -r requirements.txt
 - [x] Port selection
 - [x] Progress bar
 - [ ] Support for hosting multiple files simultaneously
-- [ ] Configuration file for experiments
+- [x] Configuration file
+- [x] Configuration file for experiments
 
 # Experiments
 - [x] Classify files by type (e.g., documents, presentations, or videos)
 - [ ] Password to access the file on the server
-- [x] Configuration file
 
 # Possible Future Features
 - [ ] Included port forwarding

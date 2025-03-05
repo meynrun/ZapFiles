@@ -41,9 +41,9 @@ pip install -r requirements.txt
 # ToDo
 - [x] Port selection
 - [x] Progress bar
-- [ ] Support for hosting multiple files simultaneously
 - [x] Configuration file
 - [x] Configuration file for experiments
+- [x] Distributing a file to multiple clients simultaneously
 
 # Experiments
 - [x] Classify files by type (e.g., documents, presentations, or videos)
@@ -52,6 +52,9 @@ pip install -r requirements.txt
 # Possible Future Features
 - [ ] Included port forwarding
 - [ ] Intermediate servers
+
+# Config
+- check_for_updates (bool): toggles 
 
 ## Credits
 The application logo uses emoji icons from Windows 11, which are the property of Microsoft. 

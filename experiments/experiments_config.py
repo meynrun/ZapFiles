@@ -4,13 +4,8 @@ from shared import error, lang, warn
 
 default_experiments = {
     "file_classification": {
-        "name": "File Classification",
-        "description": "Classify files based on their file extension.",
-        "enabled": False
-    },
-    "password_protection": {
-        "name": "Password Protection (WIP, coming soon)",
-        "description": "Protect files on server with a password.",
+        "name": lang["experiments.file_classification.name"],
+        "description": lang["experiments.file_classification.description"],
         "enabled": False
     }
 }
@@ -22,8 +17,8 @@ def create_default_experiments_configuration_file() -> None:
     Returns:
         None
     """
-    with open("experiments.json", "w") as f:
-        json.dump(default_experiments, f, indent=4)
+    with open("experiments.json", "w", encoding="utf-8") as f:
+        json.dump(default_experiments, f, indent=4, ensure_ascii=False)
 
 
 def load_experiments_configuration_file() -> dict:
@@ -34,7 +29,7 @@ def load_experiments_configuration_file() -> dict:
         Dict: experiments configuration file
     """
     try:
-        with open("experiments.json", "r") as f:
+        with open("experiments.json", "r", encoding="utf-8") as f:
             return json.load(f)
     except FileNotFoundError:
         warn(lang["experiments.warn.experimentsConfigNotFound"])

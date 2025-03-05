@@ -50,7 +50,9 @@ def load_lang() -> tuple[str | None, dict]:
         windll = ctypes.windll.kernel32
         windll.SetConsoleTitleW("⚡ZapFiles")
 
-    if config["language"] != "auto":
+    lang_code = config["language"]
+
+    if lang_code != "auto":
         try:
             lang_code = config["language"]
             lang_dict = load_lang_dict(lang_code)
@@ -143,7 +145,12 @@ def clear_console() -> None:
     Returns:
         None
     """
-    print('\x1b[2J\x1b[0;0H')
+    if config["clear_mode"] == "ASCII":
+        print('\033[H\033[J', end='', flush=True)
+    elif config["clear_mode"] == "command":
+        os.system("cls" if os.name == "nt" else "clear")
+    elif config["clear_mode"] == "ASCII2":
+        print('\x1b[2J\x1b[0;0H', end='', flush=True)
 
 
 def info(msg) -> None:

@@ -9,6 +9,7 @@ from client import client
 
 if __name__ == '__main__':
     try:
+        shared.clear_console()
         shared.title()
         shared.update()
 

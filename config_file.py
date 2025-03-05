@@ -3,7 +3,8 @@ import json
 default_config = {
     "check_for_updates": True,
     "language": "auto",
-    "enable_emojis": True
+    "enable_emojis": True,
+    "clear_mode": "ASCII"
 }
 
 
@@ -14,8 +15,8 @@ def save_config(config_to_load: dict) -> None:
     Args:
         config_to_load (dict): config
     """
-    with open("config.json", "w") as f:
-        json.dump(config_to_load, f, indent=4)
+    with open("config.json", "w", encoding="utf-8") as f:
+        f.write(json.dumps(config_to_load, indent=4, ensure_ascii=False))
 
 
 def check_for_errors(lang_dict: dict[str]) -> None:
@@ -38,7 +39,7 @@ def load_config() -> dict:
         Dict: config
     """
     try:
-        with open("config.json", "r") as f:
+        with open("config.json", "r", encoding="utf-8") as f:
             lang_dict = json.load(f)
             check_for_errors(lang_dict)
             return lang_dict

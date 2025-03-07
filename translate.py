@@ -8,17 +8,36 @@ from config_file import config
 import cli
 
 
-def remove_emojis(text):
+def remove_emojis(text: str) -> str:
+    """
+    Removes emojis from given string.
+
+    Args:
+        text (str): Text to remove emojis from.
+
+    Returns:
+        str: Text with emojis removed.
+    """
     return re.sub(r"[\U0001F000-\U0001FAFF]\s*", "", text)
 
 
 class Translatable:
     def __init__(self, enable_emojis: bool = True):
+        """
+        Args:
+            enable_emojis (bool, optional): Enables emojis. Defaults to True.
+        """
         self.locale = self.get_locale()
         self.enable_emojis = enable_emojis
         self.translated_dict = self._load_translations()
 
-    def get_locale(self):
+    def get_locale(self) -> str:
+        """
+        Defines the user language.
+
+        Returns:
+            str: The user language code.
+        """
         # If self.locale already defined returning it
         if hasattr(self, "locale") and self.locale:
             return self.locale
@@ -36,8 +55,23 @@ class Translatable:
 
         return self.locale
 
-    def _load_translations(self):
-        def load_file(path):
+    def _load_translations(self) -> dict[str, str]:
+        """
+        Loads the translation dictionary.
+
+        Returns:
+            dict[str, str]: Translation dictionary.
+        """
+        def load_file(path: str) -> dict[str, str] | None:
+            """
+            Loads the translation dictionary from a file.
+
+            Args:
+                path (str): File path.
+
+            Returns:
+                dict[str, str] | None: Translation dictionary or None.
+            """
             try:
                 with open(path, "r", encoding="utf-8") as f:
                     return json.load(f)
@@ -65,7 +99,17 @@ class Translatable:
 
         return translations
 
-    def get_string(self, translation_key: str):
+    def get_string(self, translation_key: str) -> str:
+        """
+        Retrieves the translated string for a given key.
+
+        Args:
+            translation_key (str): The key associated with the desired translation.
+
+        Returns:
+            str: The translated string if found, otherwise an error message.
+        """
+
         if translation_key in self.translated_dict:
             return self.translated_dict[translation_key]
         else:

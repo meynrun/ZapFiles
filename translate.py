@@ -42,7 +42,7 @@ class Translatable:
         if hasattr(self, "locale") and self.locale:
             return self.locale
 
-        if config["language"] == "auto":
+        if config.get_value("language") == "auto":
             if os.name == "nt":
                 windll = ctypes.windll.kernel32
                 locale = windows_locale.get(windll.GetUserDefaultUILanguage(), "en_US")
@@ -51,7 +51,7 @@ class Translatable:
 
             self.locale = "ru" if locale.startswith("ru") else "en"
         else:
-            self.locale = config["language"] if config["language"] in ["en", "ru"] else "en"
+            self.locale = config.get_value("language") if config.get_value("language") in ["en", "ru"] else "en"
 
         return self.locale
 
@@ -118,6 +118,6 @@ class Translatable:
 
 lang = Translatable(
     enable_emojis=
-        True if config["enable_emojis"]
+        True if config.get_value("enable_emojis")
         else False
 )

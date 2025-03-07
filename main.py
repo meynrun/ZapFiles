@@ -20,7 +20,7 @@ if __name__ == '__main__':
         clear_console()
         title()
 
-        if config["check_for_updates"]:
+        if config.get_value("check_for_updates"):
             check_for_updates()
         else:
             pass

@@ -6,7 +6,8 @@ import tqdm
 import sys
 
 from env import VERSION
-from shared import lang, info, error, success
+from translate import lang
+from cli import info, err, success
 
 
 def download_update() -> None:
@@ -27,10 +28,10 @@ def download_update() -> None:
                 pbar.update(len(data))
 
     if total_size != 0 and pbar.n != total_size:
-        error(lang["update.error.updateDownloadFailed"])
+        err(lang.get_string("update.error.updateDownloadFailed"))
         os.remove("Setup-x64.exe")
     else:
-        success(lang["update.info.updateDownloaded"])
+        success(lang.get_string("update.info.updateDownloaded"))
         os.startfile("Setup-x64.exe")
         sys.exit(0)
 
@@ -42,7 +43,7 @@ def check_for_updates() -> None:
     Returns:
         None
     """
-    info(lang["update.info.checkingForUpdates"])
+    info(lang.get_string("update.info.checkingForUpdates"))
     try:
         response = requests.get(f"https://api.github.com/repos/meynrun/ZapFiles/releases/latest", timeout=3)
 
@@ -50,17 +51,17 @@ def check_for_updates() -> None:
             latest_version = response.json()["tag_name"]
 
             if latest_version != VERSION:
-                info(lang["update.info.updateAvailable"].format(latest_version))
-                update = input(lang["update.info.updateUser"]) or "y"
+                info(lang.get_string("update.info.updateAvailable").format(latest_version))
+                update = input(lang.get_string("update.info.updateUser")) or "y"
                 if update.lower() == "y":
-                    info(lang["update.info.updateDownloading"])
+                    info(lang.get_string("update.info.updateDownloading"))
                     download_update()
             else:
-                success(lang["update.info.latestVersion"])
+                success(lang.get_string("update.info.latestVersion"))
     except requests.exceptions.ConnectTimeout:
-        error(lang["update.error.connectionTimedOut"])
+        err(lang.get_string("update.error.connectionTimedOut"))
     except requests.exceptions.ConnectionError:
-        error(lang["update.error.connectionError"])
+        err(lang.get_string("update.error.connectionError"))
     print("\n")
 
 

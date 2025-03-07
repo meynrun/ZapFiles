@@ -1,11 +1,12 @@
 import json
 
-from shared import error, lang, warn
+from cli import err, warn
+from translate import lang
 
 default_experiments = {
     "file_classification": {
-        "name": lang["experiments.file_classification.name"],
-        "description": lang["experiments.file_classification.description"],
+        "name": lang.get_string("experiments.file_classification.name"),
+        "description": lang.get_string("experiments.file_classification.description"),
         "enabled": False
     }
 }
@@ -32,11 +33,11 @@ def load_experiments_configuration_file() -> dict:
         with open("experiments.json", "r", encoding="utf-8") as f:
             return json.load(f)
     except FileNotFoundError:
-        warn(lang["experiments.warn.experimentsConfigNotFound"])
+        warn(lang.get_string("experiments.warn.experimentsConfigNotFound"))
         try:
             create_default_experiments_configuration_file()
         except Exception as e:
-            error(lang["universal.error.generic"].format(str(e)))
+            err(lang.get_string("universal.err.generic").format(str(e)))
         return default_experiments
 
 

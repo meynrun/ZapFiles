@@ -1,6 +1,8 @@
 import asyncio
 from asyncio import StreamReader, StreamWriter
 
+from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey, RSAPublicKey
+
 from experiments.experiments_config import enabled_experiments
 
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
@@ -8,10 +10,13 @@ from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes, CipherContext
 from cryptography.hazmat.backends import default_backend
 
-from shared import info, warn, error, success, clear_console, get_file_hash, lang, title
+from file_hash import get_file_hash
+from translate import lang
+from cli import info, warn, err, success, clear_console, title
 import os
 from tqdm import tqdm
 from getpass import getuser
+from colorama import Fore
 
 
 def get_download_path(filename: str) -> str:
@@ -36,7 +41,7 @@ def get_download_path(filename: str) -> str:
             return f"./downloaded_files{filename}"
 
 
-async def send_public_key(writer: StreamWriter, public_key: rsa.RSAPublicKey) -> None:
+async def send_public_key(writer: StreamWriter, public_key: RSAPublicKey) -> None:
     """
     Sends public key to server.
 
@@ -81,9 +86,9 @@ def create_aes_cipher(aes_key: bytes) -> Cipher:
     return Cipher(algorithms.AES(aes_key), modes.CTR(b'0' * 16), backend=default_backend())
 
 
-async def save_decrypted_file(reader: StreamReader, file_path: str, decryptor: CipherContext, file_size: int) -> None:
+async def download_and_decrypt_file(reader: StreamReader, file_path: str, decryptor: CipherContext, file_size: int) -> None:
     """
-    Saves decrypted file.
+    Downloads file from server.
 
     Args:
         reader (StreamReader): asyncio StreamReader
@@ -96,6 +101,8 @@ async def save_decrypted_file(reader: StreamReader, file_path: str, decryptor: C
     """
     # Creating directory
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
+    print(Fore.LIGHTGREEN_EX, end="", flush=True)
 
     # Creating progressbar with total size of file
     with tqdm(total=file_size, unit="B", unit_scale=True, desc=os.path.basename(file_path)) as progress_bar:
@@ -110,9 +117,20 @@ async def save_decrypted_file(reader: StreamReader, file_path: str, decryptor: C
             f.write(decryptor.finalize())
 
 
-async def download_file(ip: str, port: int, filename: str, file_hash: str) -> None:
+def generate_rsa() -> tuple[RSAPrivateKey, RSAPublicKey]:
     """
-    Downloads file from server.
+    Generates RSA key pair.
+
+    Returns:
+        tuple[RSAPrivateKey, RSAPublicKey]: RSA key pair
+    """
+    private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+    return private_key, private_key.public_key()
+
+
+async def connect(ip: str, port: int, filename: str, file_hash: str) -> None:
+    """
+    Establishes connection to server.
 
     Args:
         ip (str): IP address of server
@@ -124,8 +142,7 @@ async def download_file(ip: str, port: int, filename: str, file_hash: str) -> No
         None
     """
     # Generating RSA keys
-    private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
-    public_key = private_key.public_key()
+    private_key, public_key = generate_rsa()
 
     # Connecting to server
     reader, writer = await asyncio.open_connection(ip, port)
@@ -141,7 +158,7 @@ async def download_file(ip: str, port: int, filename: str, file_hash: str) -> No
             padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=None)
         )
     except ValueError:
-        error(lang["client.error.invalidEncryptionKey"])
+        err(lang.get_string("client.error.invalidEncryptionKey"))
         return
 
     # Getting total size of file from server
@@ -155,9 +172,9 @@ async def download_file(ip: str, port: int, filename: str, file_hash: str) -> No
     file_path = get_download_path(filename)
 
     # Saving file
-    await save_decrypted_file(reader, file_path, decryptor, file_size)
+    await download_and_decrypt_file(reader, file_path, decryptor, file_size)
 
-    success(lang["client.info.fileReceived"])
+    success(lang.get_string("client.info.fileReceived"))
     validate_file(file_path, file_hash)
 
     writer.close()
@@ -176,11 +193,11 @@ def validate_file(file_path: str, file_hash: str) -> None:
         None
     """
     # Checking file hash
-    info(lang["client.hash.checking"])
+    info(lang.get_string("client.hash.checking"))
     if get_file_hash(file_path) == file_hash:
-        success(lang["client.hash.correct"])
+        success(lang.get_string("client.hash.correct"))
     else:
-        error(lang["client.hash.incorrect"])
+        err(lang.get_string("client.hash.incorrect"))
         handle_file_deletion(file_path)
 
 
@@ -196,21 +213,21 @@ def handle_file_deletion(file_path: str) -> None:
     """
     try:
         if os.path.exists(file_path):
-            if input(lang["client.choose.delete"]).strip().lower() == "y":
+            if input(lang.get_string("client.choose.delete")).strip().lower() == "y":
                 os.remove(file_path)
-                success(lang["client.info.fileDeleted"])
+                success(lang.get_string("client.info.fileDeleted"))
             else:
-                success(lang["client.info.fileSaved"])
+                success(lang.get_string("client.info.fileSaved"))
                 return
     except PermissionError:
-        error(lang["client.error.filePermissionError"])
+        err(lang.get_string("client.error.filePermissionError"))
         return
     except FileNotFoundError:
         return
     except EOFError:
         return
     except Exception as e:
-        error(str(e))
+        err(str(e))
         return
 
 
@@ -225,7 +242,7 @@ async def client() -> None:
     title()
 
     try:
-        server_key = input(lang["client.input.key"])
+        server_key = input(f'{lang.get_string("client.input.key")}{Fore.LIGHTYELLOW_EX}')
     except EOFError:
         return
 
@@ -234,23 +251,23 @@ async def client() -> None:
         ip, port, filename, file_hash = server_key.split(":")
         port = int(port)  # converting port to int
     except ValueError:
-        error(lang["client.error.invalidKey"])
+        err(lang.get_string("client.error.invalidKey"))
         return
 
     # Checking if client already have that file
     file_path = get_download_path(filename)
     if os.path.exists(file_path) and get_file_hash(file_path) == file_hash:
-        warn(lang["client.warning.fileAlreadyExists"])
+        warn(lang.get_string("client.warning.fileAlreadyExists"))
         handle_file_deletion(file_path)
 
     elif os.path.exists(file_path):
-        warn(lang["client.warning.fileWithSameNameExists"])
+        warn(lang.get_string("client.warning.fileWithSameNameExists"))
         handle_file_deletion(file_path)
 
-    await download_file(ip, port, filename, file_hash)
+    await connect(ip, port, filename, file_hash)
 
 
 if __name__ == '__main__':
     asyncio.run(client())
-    input(lang["main.enterToExit"])
+    input(lang.get_string("main.enterToExit"))
 

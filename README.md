@@ -6,7 +6,6 @@
 
 [![English](https://img.shields.io/badge/English-0078D4?style=for-the-badge&logo=download&logoColor=white)](./README.md)
 [![Русский](https://img.shields.io/badge/Русский-D52B1E?style=for-the-badge&logo=download&logoColor=white)](./README-ru.md)
-
 [![Latest build](https://img.shields.io/badge/Download%20latest-66CC00?style=for-the-badge&logo=download&logoColor=white)](https://github.com/meynrun/ZapFiles/releases/latest/download/Setup-x64.exe)
 
 ### **ZapFiles** is a secure file transfer tool that ensures the privacy of your data through end-to-end encryption.
@@ -31,12 +30,23 @@
 ```shell
 git clone https://github.com/meynrun/ZapFiles.git
 ```
-2. Install the dependencies: 
+2. Create virtual environment:
+### Linux
 ```shell
-pip install -r requirements.txt
+python3 -m venv .venv
+source .venv/Scripts/activate
 ```
-3. Install [Inno Setup](https://jrsoftware.org/download.php/is.exe)
-4. Run build.bat
+### Windows
+```shell
+python -m venv .venv
+.venv\Scripts\activate
+```
+3. Install the dependencies: 
+```shell
+pip3 install -r requirements.txt
+```
+4. Install [Inno Setup](https://jrsoftware.org/download.php/is.exe)
+5. Run build.bat
 
 # ToDo
 - [x] Port selection
@@ -54,7 +64,10 @@ pip install -r requirements.txt
 - [ ] Intermediate servers
 
 # Config
-- check_for_updates (bool): toggles 
+- **check_for_updates** (bool): toggles update checking _(default: **true**)_  
+- **language** (str): sets the language, e.g., **"auto", "en", "ru"** _(default: **"auto"**)_  
+- **enable_emojis** (bool): toggles (almost) all emojis _(default: **true**)_  
+- **clear_mode** (str): screen clearing mode, e.g., **"ASCII", "ASCII2", "command"** _(default: **"ASCII"**)_
 
 ## Credits
 The application logo uses emoji icons from Windows 11, which are the property of Microsoft. 

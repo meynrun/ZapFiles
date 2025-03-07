@@ -4,7 +4,7 @@ import os
 import re
 from locale import windows_locale, getlocale
 
-from config_file import config
+from configuration import config
 import cli
 
 

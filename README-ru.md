@@ -31,12 +31,22 @@
 ```shell
 git clone https://github.com/meynrun/ZapFiles.git
 ```
-2. Установите зависимости: 
+2. Создайте виртуальное окружение (Linux):
 ```shell
-pip install -r requirements.txt
+python3 -m venv .venv
+source .venv/Scripts/activate
 ```
-3. Установите [Inno Setup](https://jrsoftware.org/download.php/is.exe)
-4. Запустите build.bat
+или (Windows)
+```shell
+python -m venv .venv
+.venv\Scripts\activate
+```
+3. Установите зависимости: 
+```shell
+pip3 install -r requirements.txt
+```
+4. Установите [Inno Setup](https://jrsoftware.org/download.php/is.exe)
+5. Запустите build.bat
 
 # ToDo
 - [x] Выбор порта
@@ -54,10 +64,10 @@ pip install -r requirements.txt
 - [ ] Промежуточные сервера
 
 # Конфигурация
-- check_for_updates (bool): переключает проверку обновлений (по умолчанию: true)
-- language (str): устанавливает язык, например, "auto", "en", "ru" (по умолчанию: "auto")
-- enable_emojis (bool): переключает (почти) все эмодзи (по умолчанию: true)
-- clear_mode (str): режим очистки экрана, например, "ASCII", "ASCII2", "command" (по умолчанию: "ASCII")
+- **check_for_updates** (bool): переключает проверку обновлений _(по умолчанию: **true**)_
+- **language** (str): устанавливает язык, например, **"auto", "en", "ru"** _(по умолчанию: **"auto"**)_
+- **enable_emojis** (bool): переключает (почти) все эмодзи _(по умолчанию: **true**)_
+- **clear_mode** (str): режим очистки экрана, например, **"ASCII", "ASCII2", "command"** _(по умолчанию: **"ASCII"**)_
 
 ## Credits
 В логотипе приложения используются значки эмодзи из Windows 11, которые являются собственностью Microsoft.

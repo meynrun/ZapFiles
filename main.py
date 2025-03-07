@@ -5,7 +5,7 @@ import os
 from cli import clear_console, title
 from translate import lang
 
-from config_file import config
+from configuration import config
 from auto_update import check_for_updates
 
 from server import server

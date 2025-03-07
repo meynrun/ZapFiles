@@ -2,6 +2,7 @@ import ctypes
 import json
 import os
 import re
+
 from locale import windows_locale, getlocale
 
 from configuration import config
@@ -10,7 +11,7 @@ import cli
 
 def remove_emojis(text: str) -> str:
     """
-    Removes emojis from given string.
+    Removes emojis and a single space after them from the given string.
 
     Args:
         text (str): Text to remove emojis from.
@@ -18,7 +19,20 @@ def remove_emojis(text: str) -> str:
     Returns:
         str: Text with emojis removed.
     """
-    return re.sub(r"[\U0001F000-\U0001FAFF]\s*", "", text)
+    emoji_pattern = re.compile(
+        "["  
+        "\U0001F600-\U0001F64F"  # Emoticons
+        "\U0001F300-\U0001F5FF"  # Symbols & pictographs
+        "\U0001F680-\U0001F6FF"  # Transport & map symbols
+        "\U0001F1E0-\U0001F1FF"  # Flags (iOS)
+        "\U00002600-\U00002B55"  # Various symbols
+        "\U0001FA70-\U0001FAFF"  # Symbols from newer Unicode versions
+        "\U0001F900-\U0001F9FF"  # Gestures and body parts
+        "\U0001F700-\U0001F77F"  # Alchemical symbols
+        "]+", re.UNICODE
+    )
+
+    return re.sub(emoji_pattern.pattern + r' ?', '', text)
 
 
 class Translatable:

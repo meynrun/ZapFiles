@@ -55,8 +55,6 @@
   "universal.error.generic": "❌ Error: {}",
   "universal.error.fileNotFound": "❌ File not found.",
 
-  "experiments.warn.experimentsConfigNotFound": "⚠️ Experiments configuration file not found. Loading default configuration...",
-
   "experiments.file_classification.name": "File Classification",
   "experiments.file_classification.description": "Classify files based on their file extension."
 }

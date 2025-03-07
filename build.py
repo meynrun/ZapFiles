@@ -40,7 +40,6 @@ def main():
     command = [
         "nuitka",
         "./main.py",
-        "--onefile",
         "--standalone",
         "--no-pyi-file",
         "--output-dir=dist",
@@ -63,7 +62,7 @@ def main():
         print("Compilation successful!")
 
     localization_dir = "./lang"
-    target_lang_dir = os.path.join(build_dir, "lang")
+    target_lang_dir = os.path.join(build_dir, "main.dist/lang")
 
     # Создаем новую папку lang
     os.makedirs(target_lang_dir, exist_ok=True)
@@ -75,6 +74,17 @@ def main():
     except Exception as e:
         print(f"Failed to copy localization files: {e}")
         sys.exit(1)
+
+    rmdir(os.path.join(build_dir, "main.build"))
+
+    try:
+        shutil.copytree(f"{os.path.join(build_dir, 'main.dist')}", build_dir, dirs_exist_ok=True)
+        print("Localization files copied successfully!")
+    except Exception as e:
+        print(f"Failed to copy localization files: {e}")
+        sys.exit(1)
+
+    rmdir(os.path.join(build_dir, "main.dist"))
 
     result = subprocess.run([INNO_SETUP_PATH, ISS_FILE], shell=True)
     if result.returncode != 0:

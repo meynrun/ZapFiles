@@ -1,4 +1,5 @@
 import json
+import os
 from typing import Any
 
 DEFAULT_CONFIG = {
@@ -28,7 +29,8 @@ def fix_possible_errors(config_dict: dict[str, str]) -> dict[str, str]:
 
 class Config:
     def __init__(self):
-        self.config_file = "config.json"
+        self.config_file = "./config/config.json"
+        os.makedirs(os.path.dirname(self.config_file), exist_ok=True)
         self.config = self._load_config()
 
     def _load_config(self) -> dict:
@@ -43,10 +45,10 @@ class Config:
                 config_dict = json.load(f)
                 return fix_possible_errors(config_dict)
         except FileNotFoundError:
-            save_config(DEFAULT_CONFIG)
+            save_config(DEFAULT_CONFIG, self.config_file)
             return DEFAULT_CONFIG
         except json.JSONDecodeError:
-            save_config(DEFAULT_CONFIG)
+            save_config(DEFAULT_CONFIG, self.config_file)
             return DEFAULT_CONFIG
         except Exception as e:
             raise e
@@ -69,14 +71,18 @@ class Config:
         return self.config[key]
 
 
-def save_config(config_to_load: dict) -> None:
+def save_config(config_to_load: dict, config_path: str) -> None:
     """
     Saves config file.
 
     Args:
         config_to_load (dict): config
+        config_path (str): Path to the configuration file.
+
+    Returns:
+        None
     """
-    with open("config.json", "w", encoding="utf-8") as f:
+    with open(config_path, "w", encoding="utf-8") as f:
         f.write(json.dumps(config_to_load, indent=4, ensure_ascii=False))
 
 

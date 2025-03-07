@@ -1,9 +1,12 @@
 import asyncio
 import ctypes
 import os
+import sys
 
 from cli import clear_console, title
 from translate import lang
+
+from colorama import Fore
 
 from configuration import config
 from auto_update import check_for_updates
@@ -25,7 +28,7 @@ if __name__ == '__main__':
         else:
             pass
 
-        mode = "1" if input(lang.get_string("main.choose.mode")) == "1" else "2"
+        mode = "1" if input(f'{Fore.LIGHTYELLOW_EX}{lang.get_string("main.choose.mode")}{Fore.LIGHTGREEN_EX}') == "1" else "2"
 
         clear_console()
         title()
@@ -38,4 +41,4 @@ if __name__ == '__main__':
         input(lang.get_string("main.enterToExit"))
 
     except KeyboardInterrupt:
-        exit()
+        sys.exit(0)

@@ -3,7 +3,7 @@ from asyncio import StreamReader, StreamWriter
 
 from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey, RSAPublicKey
 
-from experiments.experiments_config import enabled_experiments
+from experiments.experiments_config import experiments_config
 
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes, serialization
@@ -29,7 +29,7 @@ def get_download_path(filename: str) -> str:
     Returns:
         str: path to downloads directory
     """
-    if "file_classification" in enabled_experiments:
+    if "file_classification" in experiments_config.get_enabled_experiments():
         if os.name == "nt":
             return f"C:/Users/{getuser()}/Downloads/ZapFiles Downloads/{os.path.splitext(filename)[1]}/{filename}"
         else:
@@ -242,7 +242,7 @@ async def client() -> None:
     title()
 
     try:
-        server_key = input(f'{lang.get_string("client.input.key")}{Fore.LIGHTYELLOW_EX}')
+        server_key = input(f'{Fore.LIGHTYELLOW_EX}{lang.get_string("client.input.key")}{Fore.LIGHTGREEN_EX}')
     except EOFError:
         return
 

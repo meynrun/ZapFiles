@@ -54,8 +54,6 @@
   "universal.error.generic": "❌ Ошибка: {}",
   "universal.error.fileNotFound": "❌ Файл не найден.",
 
-  "experiments.warn.experimentsConfigNotFound": "⚠️ Файл конфигурации экспериментов не был найден. Загрузка конфигурации по умолчанию...",
-
   "experiments.file_classification.name": "Классификация файлов",
   "experiments.file_classification.description": "Объединяет файлы основываясь на их расширении."
 }

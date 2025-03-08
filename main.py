@@ -8,7 +8,7 @@ from translate import lang
 
 from colorama import Fore
 
-from configuration import config
+from app_configuration import config
 from auto_update import check_for_updates
 
 from server import server

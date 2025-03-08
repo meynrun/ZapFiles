@@ -5,7 +5,7 @@ import re
 
 from locale import windows_locale, getlocale
 
-from configuration import config
+from app_configuration import config
 import cli
 
 

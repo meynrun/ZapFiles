@@ -3,7 +3,7 @@ from asyncio import StreamReader, StreamWriter
 
 from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey, RSAPublicKey
 
-from experiments.experiments_config import experiments_config
+from experiments_configuration import experiments_config
 
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes, serialization

@@ -1,7 +1,7 @@
 from colorama import Fore
-from configuration import config
+from app_configuration import config
 
-VERSION = "v1.9.0-rc2"
+VERSION = "v1.9.0"
 
 if config.get_value("enable_emojis"):
     TITLE = f"""{Fore.LIGHTYELLOW_EX}ZapFiles {Fore.LIGHTWHITE_EX}{VERSION}

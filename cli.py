@@ -1,9 +1,10 @@
 import os
 
 import colorama as clr
+from colorama import Fore
 
 from config.app_configuration import config
-from env import TITLE
+from env import VERSION
 
 clr.init()
 
@@ -22,7 +23,15 @@ def title() -> None:
     Returns:
         None
     """
-    print(TITLE)
+    if config.get_value("enable_emojis"):
+        title_text = f"""{Fore.LIGHTYELLOW_EX}ZapFiles {Fore.LIGHTWHITE_EX}{VERSION}
+{Fore.LIGHTYELLOW_EX}Made with 💖 by {Fore.LIGHTBLUE_EX}Meynrun
+    """
+    else:
+        title_text = f"""{Fore.LIGHTYELLOW_EX}ZapFiles {Fore.LIGHTWHITE_EX}{VERSION}
+{Fore.LIGHTYELLOW_EX}Made with love by {Fore.LIGHTBLUE_EX}Meynrun
+    """
+    print(title_text)
 
 
 def clear_console() -> None:

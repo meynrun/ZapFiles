@@ -7,6 +7,7 @@ from locale import windows_locale, getlocale
 
 from config.app_configuration import config
 import cli
+from env import ROOT_DIR
 
 
 def remove_emojis(text: str) -> str:
@@ -96,12 +97,12 @@ class Translatable:
             return None  # Returning None if localization file corrupted or doesn't exist
 
         # Trying to load language json
-        translations = load_file(f"lang/{self.locale}.json")
+        translations = load_file(f"{ROOT_DIR}/lang/{self.locale}.json")
 
         # If the localization file is corrupted or does not exist, fall back to the English language
         if translations is None and self.locale != "en":
             cli.err("⚠️ Falling back to English.")
-            translations = load_file("../lang/en.json")
+            translations = load_file(f"{ROOT_DIR}/lang/en.json")
 
         # If there's not even English, closing app
         if translations is None:

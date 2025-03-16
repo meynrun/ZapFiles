@@ -1,6 +1,7 @@
 import os.path
 
 from config.base_configuration import BaseConfig
+from env import ROOT_DIR
 from shared.localization import lang
 
 DEFAULT_EXPERIMENTS = {
@@ -30,4 +31,4 @@ class ExperimentsConfig(BaseConfig):
             return {key: value for key, value in self.config.items() if value["enabled"]}
 
 
-experiments_config = ExperimentsConfig(os.path.join(os.path.dirname(__file__), "experiments.json"))
+experiments_config = ExperimentsConfig(os.path.join(ROOT_DIR, "config", "experiments.json"))

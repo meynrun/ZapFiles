@@ -2,7 +2,7 @@ import os
 
 import colorama as clr
 
-from app_configuration import config
+from config.app_configuration import config
 from env import TITLE
 
 clr.init()

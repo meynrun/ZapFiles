@@ -3,15 +3,15 @@ from asyncio import StreamReader, StreamWriter
 
 from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey, RSAPublicKey
 
-from experiments_configuration import experiments_config
+from config.experiments_configuration import experiments_config
 
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes, CipherContext
 from cryptography.hazmat.backends import default_backend
 
-from file_hash import get_file_hash
-from translate import lang
+from shared.file_hash import get_file_hash
+from shared.localization import lang
 from cli import info, warn, err, success, clear_console, title
 import os
 from tqdm import tqdm

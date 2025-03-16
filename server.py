@@ -13,8 +13,8 @@ from functools import partial
 from prettytable import PrettyTable
 from tqdm import tqdm
 
-from file_hash import get_file_hash
-from translate import lang
+from shared.file_hash import get_file_hash
+from shared.localization import lang
 from cli import title, info, warn, err, success, clear_console
 import os
 

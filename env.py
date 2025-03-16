@@ -1,5 +1,5 @@
 from colorama import Fore
-from app_configuration import config
+from config.app_configuration import config
 
 VERSION = "v1.9.0"
 

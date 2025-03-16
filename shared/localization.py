@@ -5,7 +5,7 @@ import re
 
 from locale import windows_locale, getlocale
 
-from app_configuration import config
+from config.app_configuration import config
 import cli
 
 
@@ -101,7 +101,7 @@ class Translatable:
         # If the localization file is corrupted or does not exist, fall back to the English language
         if translations is None and self.locale != "en":
             cli.err("⚠️ Falling back to English.")
-            translations = load_file("lang/en.json")
+            translations = load_file("../lang/en.json")
 
         # If there's not even English, closing app
         if translations is None:

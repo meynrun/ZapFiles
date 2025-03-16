@@ -6,7 +6,7 @@ import tqdm
 import sys
 
 from env import VERSION
-from translate import lang
+from shared.localization import lang
 from cli import info, err, success
 
 

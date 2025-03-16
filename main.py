@@ -4,12 +4,12 @@ import os
 import sys
 
 from cli import clear_console, title
-from translate import lang
+from shared.localization import lang
 
 from colorama import Fore
 
-from app_configuration import config
-from auto_update import check_for_updates
+from config.app_configuration import config
+from shared.auto_update import check_for_updates
 
 from server import server
 from client import client

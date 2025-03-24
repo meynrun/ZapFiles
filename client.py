@@ -4,6 +4,7 @@ from asyncio import StreamReader, StreamWriter
 from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey, RSAPublicKey
 
 from config.experiments_configuration import experiments_config
+from config.app_configuration import config
 
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes, serialization
@@ -30,15 +31,9 @@ def get_download_path(filename: str) -> str:
         str: path to downloads directory
     """
     if "file_classification" in experiments_config.get_enabled_experiments():
-        if os.name == "nt":
-            return f"C:/Users/{getuser()}/Downloads/ZapFiles Downloads/{os.path.splitext(filename)[1]}/{filename}"
-        else:
-            return f"./downloaded_files/{os.path.splitext(filename)[1]}/{filename}"
+        return config.get_value("download_path") + f"{os.path.splitext(filename)[1]}/{filename}"
     else:
-        if os.name == "nt":
-            return f"C:/Users/{getuser()}/Downloads/ZapFiles Downloads/{filename}"
-        else:
-            return f"./downloaded_files{filename}"
+        return config.get_value("download_path")
 
 
 async def send_public_key(writer: StreamWriter, public_key: RSAPublicKey) -> None:

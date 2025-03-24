@@ -62,6 +62,7 @@ pip3 install -r requirements.txt
 # Possible Future Features
 - [ ] Included port forwarding
 - [ ] Intermediate servers
+- [ ] Plugin system
 
 # Config
 - **check_for_updates** (bool): toggles update checking _(default: **true**)_  

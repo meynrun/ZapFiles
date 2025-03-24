@@ -13,14 +13,15 @@ from functools import partial
 from prettytable import PrettyTable
 from tqdm import tqdm
 
-from shared import lang
-from shared import info, warn, error, success, clear_console, get_file_hash, title
+from shared.file_hash import get_file_hash
+from shared.localization import lang
+from cli import title, info, warn, err, success, clear_console, color, ColorEnum
 import os
 
 from typing import Optional
 
 
-server_config = PrettyTable([lang["server.config.ip"], lang["server.config.port"], lang["server.config.filename"]])
+server_config = PrettyTable([lang.get_string("server.config.ip"), lang.get_string("server.config.port"), lang.get_string("server.config.filename")])
 
 
 def get_public_ip() -> Optional[str]:
@@ -30,7 +31,7 @@ def get_public_ip() -> Optional[str]:
     Returns:
         str: public IP address
     """
-    info(lang["server.info.gettingIp"])
+    info(lang.get_string("server.info.gettingIp"))
 
     try:
         response = requests.get("https://api.ipify.org?format=json", timeout=3)
@@ -40,15 +41,15 @@ def get_public_ip() -> Optional[str]:
             ip_info = json.loads(data)
             return ip_info.get("ip")
         else:
-            error(lang["universal.error"].format(str(response.status_code) + ", " + response.reason))
+            err(lang.get_string("universal.err").format(str(response.status_code) + ", " + response.reason))
             return None
 
     except requests.exceptions.ConnectTimeout:
-        error(lang["update.error.connectionTimedOut"])
+        err(lang.get_string("update.error.connectionTimedOut"))
         return None
 
     except requests.exceptions.ConnectionError:
-        error(lang["update.error.connectionError"])
+        err(lang.get_string("update.error.connectionError"))
         return None
 
 
@@ -67,11 +68,10 @@ async def handle_client(reader: StreamReader, writer: StreamWriter, filepath: st
     try:
         # Getting IP and port of client
         client_ip, client_port = writer.get_extra_info('peername')
-        info(lang["server.info.peername"].format(client_ip, client_port))
+        info(lang.get_string("server.info.peername").format(client_ip, client_port))
 
         # Getting public key
-        public_pem = await reader.read(450)
-        public_key = serialization.load_pem_public_key(public_pem, backend=default_backend())
+        public_key = serialization.load_pem_public_key(await reader.read(450), backend=default_backend())
 
         # Генерация симметричного AES-ключа
         aes_key = os.urandom(32)
@@ -108,22 +108,22 @@ async def handle_client(reader: StreamReader, writer: StreamWriter, filepath: st
 
         writer.write(encryptor.finalize())
         await writer.drain()
-        success(lang["server.info.fileSent"])
+        success(lang.get_string("server.info.fileSent"))
     except ConnectionResetError:
-        error(lang["server.error.connectionReset"])
+        err(lang.get_string("server.error.connectionReset"))
     except ConnectionAbortedError:
-        error(lang["server.error.connectionAborted"])
+        err(lang.get_string("server.error.connectionAborted"))
     except ConnectionRefusedError:
-        error(lang["server.error.connectionRefused"])
+        err(lang.get_string("server.error.connectionRefused"))
     except Exception as e:
-        error(lang["server.error.errorHandlingClient"].format(e))
+        err(lang.get_string("server.error.errorHandlingClient").format(e))
     finally:
         # Closing streams
         try:
             writer.close()
             await writer.wait_closed()
-        except Exception:
-            pass
+        finally:
+            return
 
 
 async def server() -> None:
@@ -133,80 +133,84 @@ async def server() -> None:
     Returns:
         None
     """
-    # Checking for server_files directory
-    server_files_dir = 'server_files'
-    if not os.path.exists(server_files_dir):
-        warn(lang["server.warn.serverFilesDirNotFound"].format(server_files_dir))
-        os.makedirs(server_files_dir)
-        success(lang["server.info.directoryCreated"])
+    try:
+        # Checking for server_files directory
+        server_files_dir = 'server_files'
+        if not os.path.exists(server_files_dir):
+            warn(lang.get_string("server.warn.serverFilesDirNotFound").format(server_files_dir))
+            os.makedirs(server_files_dir)
+            success(lang.get_string("server.info.directoryCreated"))
 
-    # Setting up server
-    warn(lang["server.guide.filesMustBeIn"].format(server_files_dir))
-    host_to = "local" if input(lang["server.input.networkType"]) == "2" else "public"
+        # Setting up server
+        warn(lang.get_string("server.guide.filesMustBeIn").format(server_files_dir))
 
-    key_ip = get_public_ip() if host_to == "public" else input(lang["server.input.localIp"])
+        host_to = "local" if input(color(lang.get_string("server.input.networkType"), ColorEnum.WARN, ColorEnum.SUCCESS)) == "2" else "public"
 
-    if not key_ip:
-        error(lang["server.error.publicIpNotFound"])
-        return
+        key_ip = get_public_ip() if host_to == "public" else input(color(lang.get_string("server.input.localIp"), ColorEnum.WARN, ColorEnum.SUCCESS))
 
+        if not key_ip:
+            err(lang.get_string("server.error.publicIpNotFound"))
+            return
 
-    # Input filename
-    while True:
-        files = os.listdir(server_files_dir)
+        filepath: str = ""
+        # Input filename
+        while True:
+            files = os.listdir(server_files_dir)
 
-        if len(files) == 0:
-            error(lang["server.error.noFiles"])
+            if len(files) == 0:
+                err(lang.get_string("server.error.noFiles"))
 
-        print(lang["server.info.filename"])
-        for i, file in enumerate(files):
-            print(f"    {i + 1}. {file}")
+            print(lang.get_string("server.info.filename"))
+            for i, file in enumerate(files):
+                print(f"    {i + 1}. {file}")
 
-        filename = input(lang["server.input.filename"]) or "1"  # Default to the first file if no input is provided
+            filename = input(color(lang.get_string("server.input.filename"), ColorEnum.WARN, ColorEnum.SUCCESS)) or "1"  # Default to the first file if no input is provided
 
-        if filename == "refresh":
-            continue
-
-        try:
-            filename = int(filename)
-            if 1 <= filename <= len(files):
-                filename = files[filename - 1]
-            else:
-                error(lang["server.error.invalidFilename"])  # Invalid number input
+            if filename == "refresh":
                 continue
-        except ValueError:
-            error(lang["server.error.invalidFilename"])  # Not a number input
-            continue
 
-        filepath = f"{server_files_dir}/{filename}"
-        if not os.path.exists(filepath):
-            error(lang["universal.error.fileNotFound"])
-            continue
-        else:
-            break
+            try:
+                filename = int(filename)
+                if 1 <= filename <= len(files):
+                    filename = files[filename - 1]
+                else:
+                    err(lang.get_string("server.error.invalidFilename"))  # Invalid number input
+                    continue
+            except ValueError:
+                err(lang.get_string("server.error.invalidFilename"))  # Not a number input
+                continue
 
-    # Input port
-    port = int(input(lang["server.input.port"]) or 8888)
+            filepath = f"{server_files_dir}/{filename}"
+            if not os.path.exists(filepath):
+                err(lang.get_string("universal.error.fileNotFound"))
+                continue
+            else:
+                break
 
-    # Starting server
-    server_args = partial(handle_client, filepath=filepath)
-    host = await asyncio.start_server(server_args, "0.0.0.0", port)
+        # Input port
+        port = int(input(color(lang.get_string("server.input.port"), ColorEnum.WARN, ColorEnum.SUCCESS)) or 8888)
 
-    clear_console()
-    title()
+        # Starting server
+        server_args = partial(handle_client, filepath=filepath)
+        host = await asyncio.start_server(server_args, "0.0.0.0", port)
 
-    # Printing server information
-    server_config.add_row([key_ip, port, filename])
-    print(server_config)
+        clear_console()
+        title()
 
-    # Generating server key
-    server_key = "{}:{}:{}:{}".format(key_ip, port, filename, get_file_hash(filepath))
-    success(lang["server.info.serverKey"].format(server_key))
+        # Printing server information
+        server_config.add_row([key_ip, port, filename])
+        print(server_config)
 
-    async with host:
-        info(lang["server.info.running"])
-        await host.serve_forever()
+        # Generating server key
+        server_key = "{}:{}:{}:{}".format(key_ip, port, filename, get_file_hash(filepath))
+        success(lang.get_string("server.info.serverKey").format(server_key))
+
+        async with host:
+            info(lang.get_string("server.info.running"))
+            await host.serve_forever()
+    except EOFError:
+        return
 
 if __name__ == '__main__':
     asyncio.run(server())
-    input(lang["main.enterToExit"])
+    input(lang.get_string("main.enterToExit"))

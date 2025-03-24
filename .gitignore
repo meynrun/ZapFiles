@@ -1,5 +1,5 @@
 /server_files/
 /dist/
 /Output/
-/config.json
-/experiments.json
+/config/config.json
+/config/experiments.json

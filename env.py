@@ -1,7 +1,4 @@
-from colorama import Fore
+import os
 
-VERSION = "v1.8.0"
-TITLE = f"""
-{Fore.LIGHTYELLOW_EX}ZapFiles {Fore.LIGHTWHITE_EX}{VERSION}
-{Fore.LIGHTYELLOW_EX}Made with 💖 by {Fore.LIGHTBLUE_EX}Meynrun
-"""
+VERSION = "v1.9.0"
+ROOT_DIR = os.path.dirname(__file__)

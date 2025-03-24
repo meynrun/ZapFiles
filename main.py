@@ -1,33 +1,42 @@
 import asyncio
-import shared
+import ctypes
+import os
+import sys
 
-from config_file import config
-from auto_update import check_for_updates
+from cli import clear_console, title, color, ColorEnum
+from shared.localization import lang
+
+from config.app_configuration import config
+from shared.auto_update import check_for_updates
 
 from server import server
 from client import client
 
 if __name__ == '__main__':
-    try:
-        shared.title()
-        shared.update()
+    if os.name == "nt":
+        windll = ctypes.windll.kernel32
+        windll.SetConsoleTitleW("⚡ZapFiles")
 
-        if config["check_for_updates"]:
+    try:
+        clear_console()
+        title()
+
+        if config.get_value("check_for_updates"):
             check_for_updates()
         else:
             pass
 
-        mode = "1" if input(shared.lang["main.choose.mode"]) == "1" else "2"
+        mode = "1" if input(color(lang.get_string("main.choose.mode"), ColorEnum.WARN, ColorEnum.SUCCESS)) == "1" else "2"
 
-        shared.clear_console()
-        shared.title()
+        clear_console()
+        title()
 
         if mode == "1":
             asyncio.run(server())
         elif mode == "2":
             asyncio.run(client())
 
-        input(shared.lang["main.enterToExit"])
+        input(lang.get_string("main.enterToExit"))
 
     except KeyboardInterrupt:
-        exit()
+        sys.exit(0)

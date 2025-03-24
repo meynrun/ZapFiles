@@ -6,12 +6,19 @@ from env import ROOT_DIR
 from getpass import getuser
 
 
+def get_default_download_directory():
+    if os.name == "nt":
+        return f"C:/Users/{getuser()}/Downloads/ZapFiles Downloads/"
+    else:
+        return ROOT_DIR + "/downloads/"
+
+
 DEFAULT_CONFIG = {
     "check_for_updates": True,
     "language": "auto",
     "enable_emojis": True,
     "clear_mode": "ASCII",
-    "downloads_path": f"C:/Users/{getuser()}/Downloads/ZapFiles Downloads/"
+    "downloads_path": get_default_download_directory()
 }
 
 

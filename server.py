@@ -146,7 +146,7 @@ async def server() -> None:
 
         host_to = "local" if input(color(lang.get_string("server.input.networkType"), ColorEnum.WARN, ColorEnum.SUCCESS)) == "2" else "public"
 
-        key_ip = get_public_ip() if host_to == "public" else input(lang.get_string("server.input.localIp"))
+        key_ip = get_public_ip() if host_to == "public" else input(color(lang.get_string("server.input.localIp"), ColorEnum.WARN, ColorEnum.SUCCESS))
 
         if not key_ip:
             err(lang.get_string("server.error.publicIpNotFound"))

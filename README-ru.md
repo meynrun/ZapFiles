@@ -69,6 +69,7 @@ pip3 install -r requirements.txt
 - **language** (str): устанавливает язык, например, **"auto", "en", "ru"** _(по умолчанию: **"auto"**)_
 - **enable_emojis** (bool): переключает (почти) все эмодзи _(по умолчанию: **true**)_
 - **clear_mode** (str): режим очистки экрана, например, **"ASCII", "ASCII2", "command"** _(по умолчанию: **"ASCII"**)_
+- **downloads_path** (str): путь к папке загрузок, например, **"C:/Users/USER/Downloads/ZapFiles Downloads/"**
 
 ## Credits
 В логотипе приложения используются значки эмодзи из Windows 11, которые являются собственностью Microsoft.

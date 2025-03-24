@@ -69,6 +69,7 @@ pip3 install -r requirements.txt
 - **language** (str): sets the language, e.g., **"auto", "en", "ru"** _(default: **"auto"**)_  
 - **enable_emojis** (bool): toggles (almost) all emojis _(default: **true**)_  
 - **clear_mode** (str): screen clearing mode, e.g., **"ASCII", "ASCII2", "command"** _(default: **"ASCII"**)_
+- **downloads_path** (str): path to downloads dir, e.g., **"C:/Users/USER/Downloads/ZapFiles Downloads/"**
 
 ## Credits
 The application logo uses emoji icons from Windows 11, which are the property of Microsoft. 

@@ -1,5 +1,7 @@
 import os
 
+from enum import Enum
+
 import colorama as clr
 from colorama import Fore
 
@@ -8,12 +10,15 @@ from env import VERSION
 
 clr.init()
 
-# colors
-info_color = clr.Fore.LIGHTBLUE_EX
-warn_color = clr.Fore.LIGHTYELLOW_EX
-error_color = clr.Fore.LIGHTRED_EX
-success_color = clr.Fore.LIGHTGREEN_EX
-reset = clr.Style.RESET_ALL
+class ColorEnum(str, Enum):
+    INFO = clr.Fore.LIGHTBLUE_EX
+    WARN = clr.Fore.LIGHTYELLOW_EX
+    ERROR = clr.Fore.LIGHTRED_EX
+    SUCCESS = clr.Fore.LIGHTGREEN_EX
+    RESET = clr.Style.RESET_ALL
+
+    def __str__(self):
+        return self.value
 
 
 def title() -> None:
@@ -49,7 +54,7 @@ def clear_console() -> None:
         print('\x1b[2J\x1b[0;0H', end='', flush=True)
 
 
-def info(msg) -> None:
+def info(msg: str) -> None:
     """
     Prints message with info color.
 
@@ -59,10 +64,10 @@ def info(msg) -> None:
     Returns:
         None
     """
-    print(f"{info_color}{msg}{reset}")
+    print(f"{ColorEnum.INFO}{msg}{ColorEnum.RESET}")
 
 
-def warn(msg) -> None:
+def warn(msg: str) -> None:
     """
     Prints message with warn color.
 
@@ -72,10 +77,10 @@ def warn(msg) -> None:
     Returns:
         None
     """
-    print(f"{warn_color}{msg}{reset}")
+    print(f"{ColorEnum.WARN}{msg}{ColorEnum.RESET}")
 
 
-def err(msg) -> None:
+def err(msg: str) -> None:
     """
     Prints message with err color.
 
@@ -85,10 +90,10 @@ def err(msg) -> None:
     Returns:
         None
     """
-    print(f"{error_color}{msg}{reset}")
+    print(f"{ColorEnum.ERROR}{msg}{ColorEnum.RESET}")
 
 
-def success(msg) -> None:
+def success(msg: str) -> None:
     """
     Prints message with success color.
 
@@ -98,4 +103,17 @@ def success(msg) -> None:
     Returns:
         None
     """
-    print(f"{success_color}{msg}{reset}")
+    print(f"{ColorEnum.SUCCESS}{msg}{ColorEnum.RESET}")
+
+
+def color(msg: str, color_start: ColorEnum, color_end: ColorEnum = ColorEnum.RESET) -> str:
+    """
+    Args:
+        msg (str): message
+        color_start (ColorEnum): color at the start
+        color_end (ColorEnum): color at the end
+
+    Returns:
+        str: colorized message string
+    """
+    return color_start + msg + color_end

@@ -3,10 +3,8 @@ import ctypes
 import os
 import sys
 
-from cli import clear_console, title
+from cli import clear_console, title, color, ColorEnum
 from shared.localization import lang
-
-from colorama import Fore
 
 from config.app_configuration import config
 from shared.auto_update import check_for_updates
@@ -28,7 +26,7 @@ if __name__ == '__main__':
         else:
             pass
 
-        mode = "1" if input(f'{Fore.LIGHTYELLOW_EX}{lang.get_string("main.choose.mode")}{Fore.LIGHTGREEN_EX}') == "1" else "2"
+        mode = "1" if input(color(lang.get_string("main.choose.mode"), ColorEnum.WARN, ColorEnum.SUCCESS)) == "1" else "2"
 
         clear_console()
         title()

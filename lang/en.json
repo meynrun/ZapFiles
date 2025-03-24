@@ -5,7 +5,7 @@
   "server.warn.serverFilesDirNotFound": "⚠️ Directory '{}' does not exist. Creating...",
   "server.info.directoryCreated": "✅ Directory created.",
   "server.guide.filesMustBeIn": "❗ Hosted files MUST be in '{}'.",
-  "server.input.networkType": "✉️ What network do you want to transfer files over?\n\n1. Public\n2. Local\n\n>> ",
+  "server.input.networkType": "📨 What network do you want to transfer files over?\n\n1. Public\n2. Local\n\n>> ",
   "server.input.localIp": "🔑 Enter local server IP (192.168.X.X or 127.0.0.1): ",
   "server.input.filename": ">> ",
   "server.info.filename": "💽 Choose file to send or type 'refresh' to refresh the list: ",

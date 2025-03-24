@@ -13,11 +13,9 @@ from cryptography.hazmat.backends import default_backend
 
 from shared.file_hash import get_file_hash
 from shared.localization import lang
-from cli import info, warn, err, success, clear_console, title
+from cli import info, warn, err, success, clear_console, title, ColorEnum, color
 import os
 from tqdm import tqdm
-from getpass import getuser
-from colorama import Fore
 
 
 def get_download_path(filename: str) -> str:
@@ -97,7 +95,7 @@ async def download_and_decrypt_file(reader: StreamReader, file_path: str, decryp
     # Creating directory
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
-    print(Fore.LIGHTGREEN_EX, end="", flush=True)
+    print(ColorEnum.SUCCESS, end="", flush=True)
 
     # Creating progressbar with total size of file
     with tqdm(total=file_size, unit="B", unit_scale=True, desc=os.path.basename(file_path)) as progress_bar:
@@ -237,7 +235,7 @@ async def client() -> None:
     title()
 
     try:
-        server_key = input(f'{Fore.LIGHTYELLOW_EX}{lang.get_string("client.input.key")}{Fore.LIGHTGREEN_EX}')
+        server_key = input(color(lang.get_string("client.input.key"), ColorEnum.WARN, ColorEnum.SUCCESS))
     except EOFError:
         return
 

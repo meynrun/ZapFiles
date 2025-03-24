@@ -15,7 +15,7 @@ from tqdm import tqdm
 
 from shared.file_hash import get_file_hash
 from shared.localization import lang
-from cli import title, info, warn, err, success, clear_console
+from cli import title, info, warn, err, success, clear_console, color, ColorEnum
 import os
 
 from typing import Optional
@@ -144,7 +144,7 @@ async def server() -> None:
         # Setting up server
         warn(lang.get_string("server.guide.filesMustBeIn").format(server_files_dir))
 
-        host_to = "local" if input(lang.get_string("server.input.networkType")) == "2" else "public"
+        host_to = "local" if input(color(lang.get_string("server.input.networkType"), ColorEnum.WARN, ColorEnum.SUCCESS)) == "2" else "public"
 
         key_ip = get_public_ip() if host_to == "public" else input(lang.get_string("server.input.localIp"))
 
@@ -164,7 +164,7 @@ async def server() -> None:
             for i, file in enumerate(files):
                 print(f"    {i + 1}. {file}")
 
-            filename = input(lang.get_string("server.input.filename")) or "1"  # Default to the first file if no input is provided
+            filename = input(color(lang.get_string("server.input.filename"), ColorEnum.WARN, ColorEnum.SUCCESS)) or "1"  # Default to the first file if no input is provided
 
             if filename == "refresh":
                 continue
@@ -188,7 +188,7 @@ async def server() -> None:
                 break
 
         # Input port
-        port = int(input(lang.get_string("server.input.port")) or 8888)
+        port = int(input(color(lang.get_string("server.input.port"), ColorEnum.WARN, ColorEnum.SUCCESS)) or 8888)
 
         # Starting server
         server_args = partial(handle_client, filepath=filepath)

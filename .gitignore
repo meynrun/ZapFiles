@@ -3,4 +3,7 @@
 /Output/
 /config/config.json
 /config/experiments.json
-/__pycache__/
+.__pycache__/
+*.pyc
+*.pyo
+*.pyd

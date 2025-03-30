@@ -29,11 +29,11 @@ def title() -> None:
         None
     """
     if config.get_value("enable_emojis"):
-        title_text = f"""{Fore.LIGHTYELLOW_EX}ZapFiles {Fore.LIGHTWHITE_EX}{VERSION}
+        title_text = f"""{Fore.LIGHTYELLOW_EX}ZapFiles {Fore.LIGHTWHITE_EX}v{VERSION}
 {Fore.LIGHTYELLOW_EX}Made with 💖 by {Fore.LIGHTBLUE_EX}Meynrun
     """
     else:
-        title_text = f"""{Fore.LIGHTYELLOW_EX}ZapFiles {Fore.LIGHTWHITE_EX}{VERSION}
+        title_text = f"""{Fore.LIGHTYELLOW_EX}ZapFiles {Fore.LIGHTWHITE_EX}v{VERSION}
 {Fore.LIGHTYELLOW_EX}Made with love by {Fore.LIGHTBLUE_EX}Meynrun
     """
     print(title_text)

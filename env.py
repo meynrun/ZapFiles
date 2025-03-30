@@ -1,4 +1,4 @@
 import os
 
-VERSION = "v1.9.1"
+VERSION = "1.9.2"
 ROOT_DIR = os.path.dirname(__file__)

@@ -29,9 +29,9 @@ def get_download_path(filename: str) -> str:
         str: path to downloads directory
     """
     if "file_classification" in experiments_config.get_enabled_experiments():
-        return config.get_value("download_path") + f"{os.path.splitext(filename)[1]}/{filename}"
+        return config.get_value("downloads_path") + f"{os.path.splitext(filename)[1]}/{filename}"
     else:
-        return config.get_value("download_path")
+        return config.get_value("downloads_path") + "/" + filename
 
 
 async def send_public_key(writer: StreamWriter, public_key: RSAPublicKey) -> None:

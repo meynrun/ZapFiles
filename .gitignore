@@ -3,3 +3,4 @@
 /Output/
 /config/config.json
 /config/experiments.json
+/__pycache__/

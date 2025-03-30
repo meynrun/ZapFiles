@@ -1,0 +1,14 @@
+[project]
+name = "zapfiles"
+version = "0.1.0"
+description = "A secure file transfer tool that ensures the privacy of your data through end-to-end encryption."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "colorama>=0.4.6",
+    "cryptography>=44.0.2",
+    "nuitka>=2.6.9",
+    "prettytable>=3.16.0",
+    "requests>=2.32.3",
+    "tqdm>=4.67.1",
+]

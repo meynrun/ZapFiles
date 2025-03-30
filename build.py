@@ -4,7 +4,8 @@ import stat
 import subprocess
 import sys
 
-VERSION = "1.9.1"
+from env import VERSION
+
 INNO_SETUP_PATH = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
 ISS_FILE = ".\setup_script.iss"
 

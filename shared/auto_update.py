@@ -50,7 +50,7 @@ def check_for_updates() -> None:
         if response.status_code == 200:
             latest_version = response.json()["tag_name"]
 
-            if latest_version != VERSION:
+            if latest_version != f"v{VERSION}":
                 info(lang.get_string("update.info.updateAvailable").format(latest_version))
                 update = input(lang.get_string("update.info.updateUser")) or "y"
                 if update.lower() == "y":

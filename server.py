@@ -160,7 +160,7 @@ async def server() -> None:
             if len(files) == 0:
                 err(lang.get_string("server.error.noFiles"))
 
-            print(lang.get_string("server.info.filename"))
+            print(color(lang.get_string("server.info.filename"), ColorEnum.WARN, ColorEnum.SUCCESS))
             for i, file in enumerate(files):
                 print(f"    {i + 1}. {file}")
 
@@ -169,10 +169,15 @@ async def server() -> None:
             if filename == "refresh":
                 continue
 
+            if os.path.exists(filename):
+                filepath = filename
+                break
+
             try:
                 filename = int(filename)
                 if 1 <= filename <= len(files):
                     filename = files[filename - 1]
+                    filepath = f"{server_files_dir}/{filename}"
                 else:
                     err(lang.get_string("server.error.invalidFilename"))  # Invalid number input
                     continue
@@ -180,7 +185,6 @@ async def server() -> None:
                 err(lang.get_string("server.error.invalidFilename"))  # Not a number input
                 continue
 
-            filepath = f"{server_files_dir}/{filename}"
             if not os.path.exists(filepath):
                 err(lang.get_string("universal.error.fileNotFound"))
                 continue
@@ -196,6 +200,8 @@ async def server() -> None:
 
         clear_console()
         title()
+
+        filename: str = os.path.basename(filepath)
 
         # Printing server information
         server_config.add_row([key_ip, port, filename])

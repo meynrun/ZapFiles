@@ -10,6 +10,7 @@ from env import VERSION
 
 clr.init()
 
+
 class ColorEnum(str, Enum):
     INFO = clr.Fore.LIGHTBLUE_EX
     WARN = clr.Fore.LIGHTYELLOW_EX
@@ -47,11 +48,11 @@ def clear_console() -> None:
         None
     """
     if config.get_value("clear_mode") == "ASCII":
-        print('\033[H\033[J', end='', flush=True)
+        print("\033[H\033[J", end="", flush=True)
     elif config.get_value("clear_mode") == "command":
         os.system("cls" if os.name == "nt" else "clear")
     elif config.get_value("clear_mode") == "ASCII2":
-        print('\x1b[2J\x1b[0;0H', end='', flush=True)
+        print("\x1b[2J\x1b[0;0H", end="", flush=True)
 
 
 def info(msg: str) -> None:
@@ -64,7 +65,7 @@ def info(msg: str) -> None:
     Returns:
         None
     """
-    print(f"{ColorEnum.INFO}{msg}{ColorEnum.RESET}")
+    print(color(msg, ColorEnum.INFO))
 
 
 def warn(msg: str) -> None:
@@ -77,7 +78,7 @@ def warn(msg: str) -> None:
     Returns:
         None
     """
-    print(f"{ColorEnum.WARN}{msg}{ColorEnum.RESET}")
+    print(color(msg, ColorEnum.WARN))
 
 
 def err(msg: str) -> None:
@@ -90,7 +91,7 @@ def err(msg: str) -> None:
     Returns:
         None
     """
-    print(f"{ColorEnum.ERROR}{msg}{ColorEnum.RESET}")
+    print(color(msg, ColorEnum.ERROR))
 
 
 def success(msg: str) -> None:
@@ -103,10 +104,12 @@ def success(msg: str) -> None:
     Returns:
         None
     """
-    print(f"{ColorEnum.SUCCESS}{msg}{ColorEnum.RESET}")
+    print(color(msg, ColorEnum.SUCCESS))
 
 
-def color(msg: str, color_start: ColorEnum, color_end: ColorEnum = ColorEnum.RESET) -> str:
+def color(
+    msg: str, color_start: ColorEnum, color_end: ColorEnum = ColorEnum.RESET
+) -> str:
     """
     Args:
         msg (str): message

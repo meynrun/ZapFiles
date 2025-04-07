@@ -12,7 +12,7 @@ from shared.auto_update import check_for_updates
 from server import server
 from client import client
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     if os.name == "nt":
         windll = ctypes.windll.kernel32
         windll.SetConsoleTitleW("⚡ZapFiles")
@@ -26,7 +26,18 @@ if __name__ == '__main__':
         else:
             pass
 
-        mode = "1" if input(color(lang.get_string("main.choose.mode"), ColorEnum.WARN, ColorEnum.SUCCESS)) == "1" else "2"
+        mode = (
+            "1"
+            if input(
+                color(
+                    lang.get_string("main.choose.mode"),
+                    ColorEnum.WARN,
+                    ColorEnum.SUCCESS,
+                )
+            )
+            == "1"
+            else "2"
+        )
 
         clear_console()
         title()

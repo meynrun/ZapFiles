@@ -15,6 +15,7 @@ def remove_readonly(func, path, _):
     os.chmod(path, stat.S_IWRITE)
     func(path)
 
+
 def rmdir(path: str) -> None:
     if os.path.exists(path):
         shutil.rmtree(path, onerror=remove_readonly)
@@ -32,7 +33,13 @@ def main():
 
     # Проверяем, установлен ли Nuitka
     try:
-        subprocess.run(["nuitka", "--version"], shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        subprocess.run(
+            ["nuitka", "--version"],
+            shell=True,
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
     except FileNotFoundError:
         print("Nuitka is not installed. Please install it first.")
         sys.exit(1)
@@ -50,7 +57,7 @@ def main():
         "--windows-product-name=ZapFiles",
         "--windows-company-name=MeynDev",
         f"--windows-file-version={VERSION}",
-        f"--windows-product-version={VERSION}"
+        f"--windows-product-version={VERSION}",
     ]
 
     # Запускаем компиляцию
@@ -79,7 +86,9 @@ def main():
     rmdir(os.path.join(build_dir, "main.build"))
 
     try:
-        shutil.copytree(f"{os.path.join(build_dir, 'main.dist')}", build_dir, dirs_exist_ok=True)
+        shutil.copytree(
+            f"{os.path.join(build_dir, 'main.dist')}", build_dir, dirs_exist_ok=True
+        )
         print("Localization files copied successfully!")
     except Exception as e:
         print(f"Failed to copy localization files: {e}")

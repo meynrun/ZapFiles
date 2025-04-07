@@ -21,19 +21,20 @@ def remove_emojis(text: str) -> str:
         str: Text with emojis removed.
     """
     emoji_pattern = re.compile(
-        "["  
-        "\U0001F600-\U0001F64F"  # Emoticons
-        "\U0001F300-\U0001F5FF"  # Symbols & pictographs
-        "\U0001F680-\U0001F6FF"  # Transport & map symbols
-        "\U0001F1E0-\U0001F1FF"  # Flags (iOS)
-        "\U00002600-\U00002B55"  # Various symbols
-        "\U0001FA70-\U0001FAFF"  # Symbols from newer Unicode versions
-        "\U0001F900-\U0001F9FF"  # Gestures and body parts
-        "\U0001F700-\U0001F77F"  # Alchemical symbols
-        "]+", re.UNICODE
+        "["
+        "\U0001f600-\U0001f64f"  # Emoticons
+        "\U0001f300-\U0001f5ff"  # Symbols & pictographs
+        "\U0001f680-\U0001f6ff"  # Transport & map symbols
+        "\U0001f1e0-\U0001f1ff"  # Flags (iOS)
+        "\U00002600-\U00002b55"  # Various symbols
+        "\U0001fa70-\U0001faff"  # Symbols from newer Unicode versions
+        "\U0001f900-\U0001f9ff"  # Gestures and body parts
+        "\U0001f700-\U0001f77f"  # Alchemical symbols
+        "]+",
+        re.UNICODE,
     )
 
-    return re.sub(emoji_pattern.pattern + r' ?', '', text)
+    return re.sub(emoji_pattern.pattern + r" ?", "", text)
 
 
 class Translatable:
@@ -66,7 +67,11 @@ class Translatable:
 
             self.locale = "ru" if locale.startswith("ru") else "en"
         else:
-            self.locale = config.get_value("language") if config.get_value("language") in ["en", "ru"] else "en"
+            self.locale = (
+                config.get_value("language")
+                if config.get_value("language") in ["en", "ru"]
+                else "en"
+            )
 
         return self.locale
 
@@ -77,6 +82,7 @@ class Translatable:
         Returns:
             dict[str, str]: Translation dictionary.
         """
+
         def load_file(path: str) -> dict[str, str] | None:
             """
             Loads the translation dictionary from a file.
@@ -94,7 +100,9 @@ class Translatable:
                 cli.err(f"❌ Localization file '{path}' not found.")
             except json.decoder.JSONDecodeError:
                 cli.err(f"❌ Localization file '{path}' is corrupted.")
-            return None  # Returning None if localization file corrupted or doesn't exist
+            return (
+                None  # Returning None if localization file corrupted or doesn't exist
+            )
 
         # Trying to load language json
         translations = load_file(f"{ROOT_DIR}/lang/{self.locale}.json")
@@ -110,7 +118,9 @@ class Translatable:
             exit(1)
 
         if not self.enable_emojis:
-            translations = {key: remove_emojis(value) for key, value in translations.items()}
+            translations = {
+                key: remove_emojis(value) for key, value in translations.items()
+            }
 
         return translations
 
@@ -131,8 +141,4 @@ class Translatable:
             return f"❌ Translation for '{translation_key}' not found."
 
 
-lang = Translatable(
-    enable_emojis=
-        True if config.get_value("enable_emojis")
-        else False
-)
+lang = Translatable(enable_emojis=True if config.get_value("enable_emojis") else False)

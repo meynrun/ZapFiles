@@ -8,7 +8,12 @@ from config.app_configuration import config
 
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes, serialization
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes, CipherContext
+from cryptography.hazmat.primitives.ciphers import (
+    Cipher,
+    algorithms,
+    modes,
+    CipherContext,
+)
 from cryptography.hazmat.backends import default_backend
 
 from shared.file_hash import get_file_hash
@@ -29,7 +34,10 @@ def get_download_path(filename: str) -> str:
         str: path to downloads directory
     """
     if "file_classification" in experiments_config.get_enabled_experiments():
-        return config.get_value("downloads_path") + f"{os.path.splitext(filename)[1]}/{filename}"
+        return (
+            config.get_value("downloads_path")
+            + f"{os.path.splitext(filename)[1]}/{filename}"
+        )
     else:
         return config.get_value("downloads_path") + "/" + filename
 
@@ -47,7 +55,7 @@ async def send_public_key(writer: StreamWriter, public_key: RSAPublicKey) -> Non
     """
     public_pem = public_key.public_bytes(
         encoding=serialization.Encoding.PEM,
-        format=serialization.PublicFormat.SubjectPublicKeyInfo
+        format=serialization.PublicFormat.SubjectPublicKeyInfo,
     )
     writer.write(public_pem)
     await writer.drain()
@@ -76,10 +84,14 @@ def create_aes_cipher(aes_key: bytes) -> Cipher:
     Returns:
         Cipher: AES cipher
     """
-    return Cipher(algorithms.AES(aes_key), modes.CTR(b'0' * 16), backend=default_backend())
+    return Cipher(
+        algorithms.AES(aes_key), modes.CTR(b"0" * 16), backend=default_backend()
+    )
 
 
-async def download_and_decrypt_file(reader: StreamReader, file_path: str, decryptor: CipherContext, file_size: int) -> None:
+async def download_and_decrypt_file(
+    reader: StreamReader, file_path: str, decryptor: CipherContext, file_size: int
+) -> None:
     """
     Downloads file from server.
 
@@ -98,7 +110,9 @@ async def download_and_decrypt_file(reader: StreamReader, file_path: str, decryp
     print(ColorEnum.SUCCESS, end="", flush=True)
 
     # Creating progressbar with total size of file
-    with tqdm(total=file_size, unit="B", unit_scale=True, desc=os.path.basename(file_path)) as progress_bar:
+    with tqdm(
+        total=file_size, unit="B", unit_scale=True, desc=os.path.basename(file_path)
+    ) as progress_bar:
         with open(file_path, "wb") as f:
             while True:
                 data = await reader.read(4096)
@@ -148,7 +162,11 @@ async def connect(ip: str, port: int, filename: str, file_hash: str) -> None:
         # Decrypting AES key
         aes_key = private_key.decrypt(
             encrypted_aes_key,
-            padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=None)
+            padding.OAEP(
+                mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                algorithm=hashes.SHA256(),
+                label=None,
+            ),
         )
     except ValueError:
         err(lang.get_string("client.error.invalidEncryptionKey"))
@@ -235,7 +253,11 @@ async def client() -> None:
     title()
 
     try:
-        server_key = input(color(lang.get_string("client.input.key"), ColorEnum.WARN, ColorEnum.SUCCESS))
+        server_key = input(
+            color(
+                lang.get_string("client.input.key"), ColorEnum.WARN, ColorEnum.SUCCESS
+            )
+        )
     except EOFError:
         return
 
@@ -260,7 +282,6 @@ async def client() -> None:
     await connect(ip, port, filename, file_hash)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     asyncio.run(client())
     input(lang.get_string("main.enterToExit"))
-

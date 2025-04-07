@@ -8,7 +8,7 @@ DEFAULT_EXPERIMENTS = {
     "file_classification": {
         "name": lang.get_string("experiments.file_classification.name"),
         "description": lang.get_string("experiments.file_classification.description"),
-        "enabled": False
+        "enabled": False,
     }
 }
 
@@ -28,7 +28,11 @@ class ExperimentsConfig(BaseConfig):
         if hasattr(self, "enabled_experiments") and self.enabled_experiments:
             return self.enabled_experiments
         else:
-            return {key: value for key, value in self.config.items() if value["enabled"]}
+            return {
+                key: value for key, value in self.config.items() if value["enabled"]
+            }
 
 
-experiments_config = ExperimentsConfig(os.path.join(ROOT_DIR, "config", "experiments.json"))
+experiments_config = ExperimentsConfig(
+    os.path.join(ROOT_DIR, "config", "experiments.json")
+)

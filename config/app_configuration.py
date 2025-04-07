@@ -18,7 +18,7 @@ DEFAULT_CONFIG = {
     "language": "auto",
     "enable_emojis": True,
     "clear_mode": "ASCII",
-    "downloads_path": get_default_download_directory()
+    "downloads_path": get_default_download_directory(),
 }
 
 
@@ -28,8 +28,12 @@ class Configuration(BaseConfig):
         self._check_downloads_path()
 
     def _check_downloads_path(self):
-        if not os.path.isdir(self.get_value("downloads_path")) or not os.path.exists(self.get_value("downloads_path")):
-            print("Config path does not exist or is not a directory, using default path")
+        if not os.path.isdir(self.get_value("downloads_path")) or not os.path.exists(
+            self.get_value("downloads_path")
+        ):
+            print(
+                "Config path does not exist or is not a directory, using default path"
+            )
             self.config["downloads_path"] = self.default_config["downloads_path"]
 
 

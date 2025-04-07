@@ -2,6 +2,7 @@ import json
 import os
 from typing import Any
 
+
 class BaseConfig:
     def __init__(self, config_path: str, default_config: dict[str, Any]):
         self.config_path = config_path

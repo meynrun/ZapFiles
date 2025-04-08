@@ -6,8 +6,8 @@ import sys
 
 from env import VERSION
 
-INNO_SETUP_PATH = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
-ISS_FILE = ".\setup_script.iss"
+INNO_SETUP_PATH = "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe"
+ISS_FILE = ".\\setup_script.iss"
 
 
 def remove_readonly(func, path, _):
@@ -75,7 +75,7 @@ def main():
     # Создаем новую папку lang
     os.makedirs(target_lang_dir, exist_ok=True)
 
-    # Копируем локализационные файлы
+    # Копируем глобализационные файлы
     try:
         shutil.copytree(localization_dir, target_lang_dir, dirs_exist_ok=True)
         print("Localization files copied successfully!")

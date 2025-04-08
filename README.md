@@ -26,7 +26,7 @@
 5. Copy and share the server key with the recipient to initiate the transfer.
 
 # Building
-1. Clone the repository: 
+1. Clone the repository:
 ```shell
 git clone https://github.com/meynrun/ZapFiles.git
 ```
@@ -41,7 +41,7 @@ source .venv/Scripts/activate
 python -m venv .venv
 .venv\Scripts\activate
 ```
-3. Install the dependencies: 
+3. Install the dependencies:
 ```shell
 pip3 install -r requirements.txt
 ```
@@ -65,13 +65,13 @@ pip3 install -r requirements.txt
 - [ ] Plugin system
 
 # Config
-- **check_for_updates** (bool): toggles update checking _(default: **true**)_  
-- **language** (str): sets the language, e.g., **"auto", "en", "ru"** _(default: **"auto"**)_  
-- **enable_emojis** (bool): toggles (almost) all emojis _(default: **true**)_  
+- **check_for_updates** (bool): toggles update checking _(default: **true**)_
+- **language** (str): sets the language, e.g., **"auto", "en", "ru"** _(default: **"auto"**)_
+- **enable_emojis** (bool): toggles (almost) all emojis _(default: **true**)_
 - **clear_mode** (str): screen clearing mode, e.g., **"ASCII", "ASCII2", "command"** _(default: **"ASCII"**)_
 - **downloads_path** (str): path to downloads dir, e.g., **"C:/Users/USER/Downloads/ZapFiles Downloads/"**
 
 ## Credits
-The application logo uses emoji icons from Windows 11, which are the property of Microsoft. 
+The application logo uses emoji icons from Windows 11, which are the property of Microsoft.
 ## Disclaimer
 The use of emoji icons from Windows 11 is subject to Microsoft's terms of use. The MIT License applies to the source code of the application, but does not grant rights to use Microsoft's intellectual property outside the scope of this application.

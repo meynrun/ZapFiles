@@ -6,6 +6,7 @@ import json
 
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives.asymmetric.rsa import RSAPublicKey
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 
@@ -28,6 +29,12 @@ server_config = PrettyTable(
         lang.get_string("server.config.filename"),
     ]
 )
+
+
+def assert_rsa_key(key) -> RSAPublicKey:
+    if not isinstance(key, RSAPublicKey):
+        raise TypeError("Ключ не является RSA-ключом")
+    return key
 
 
 def get_public_ip() -> Optional[str]:
@@ -83,8 +90,10 @@ async def handle_client(
         info(lang.get_string("server.info.peername").format(client_ip, client_port))
 
         # Getting public key
-        public_key = serialization.load_pem_public_key(
-            await reader.read(450), backend=default_backend()
+        public_key = assert_rsa_key(
+            serialization.load_pem_public_key(
+                await reader.read(450), backend=default_backend()
+            )
         )
 
         # Генерация симметричного AES-ключа
@@ -217,7 +226,7 @@ async def server() -> None:
             for i, file in enumerate(files):
                 print(f"    {i + 1}. {file}")
 
-            filename = (
+            selected_filename = (
                 input(
                     color(
                         lang.get_string("server.input.filename"),
@@ -228,17 +237,17 @@ async def server() -> None:
                 or "1"
             )  # Default to the first file if no input is provided
 
-            if filename == "refresh":
+            if selected_filename == "refresh":
                 continue
 
-            if os.path.exists(filename):
-                filepath = filename
+            if os.path.exists(selected_filename):
+                filepath = selected_filename
                 break
 
             try:
-                filename = int(filename)
-                if 1 <= filename <= len(files):
-                    filename = files[filename - 1]
+                selected_filename = int(selected_filename)
+                if 1 <= selected_filename <= len(files):
+                    filename = files[selected_filename - 1]
                     filepath = f"{server_files_dir}/{filename}"
                 else:
                     err(

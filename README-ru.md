@@ -27,7 +27,7 @@
 5. Скопируйте ключ сервера и отправьте его получателю для начала передачи.
 
 # Сборка
-1. Клонируйте репозиторий: 
+1. Клонируйте репозиторий:
 ```shell
 git clone https://github.com/meynrun/ZapFiles.git
 ```
@@ -41,7 +41,7 @@ source .venv/Scripts/activate
 python -m venv .venv
 .venv\Scripts\activate
 ```
-3. Установите зависимости: 
+3. Установите зависимости:
 ```shell
 pip3 install -r requirements.txt
 ```

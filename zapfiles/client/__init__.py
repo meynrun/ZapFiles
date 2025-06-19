@@ -3,8 +3,8 @@ from asyncio import StreamReader, StreamWriter
 
 from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey, RSAPublicKey
 
-from config.experiments_configuration import experiments_config
-from config.app_configuration import config
+from zapfiles.core.config.experiments_configuration import experiments_config
+from zapfiles.core.config.app_configuration import config
 
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes, serialization
@@ -16,9 +16,18 @@ from cryptography.hazmat.primitives.ciphers import (
 )
 from cryptography.hazmat.backends import default_backend
 
-from shared.file_hash import get_file_hash
-from shared.localization import lang
-from cli import info, warn, err, success, clear_console, title, ColorEnum, color
+from zapfiles.core.hash import get_file_hash
+from zapfiles.core.localization import lang
+from zapfiles.cli import (
+    info,
+    warn,
+    err,
+    success,
+    clear_console,
+    title,
+    ColorEnum,
+    color,
+)
 import os
 from tqdm import tqdm
 

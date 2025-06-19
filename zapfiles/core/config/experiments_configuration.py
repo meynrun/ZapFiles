@@ -1,8 +1,8 @@
 import os.path
 
-from config.base_configuration import BaseConfig
-from env import ROOT_DIR
-from shared.localization import lang
+from zapfiles.core.config.base_configuration import BaseConfig
+from zapfiles.constants import ROOT_DIR
+from zapfiles.core.localization import lang
 
 DEFAULT_EXPERIMENTS = {
     "file_classification": {

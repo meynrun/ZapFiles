@@ -1,8 +1,7 @@
 /server_files/
 /dist/
 /Output/
-/config/config.json
-/config/experiments.json
+/config/
 __pycache__/
 *.pyc
 *.pyo

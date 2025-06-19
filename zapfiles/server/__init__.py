@@ -14,9 +14,18 @@ from functools import partial
 from prettytable import PrettyTable
 from tqdm import tqdm
 
-from shared.file_hash import get_file_hash
-from shared.localization import lang
-from cli import title, info, warn, err, success, clear_console, color, ColorEnum
+from zapfiles.core.hash import get_file_hash
+from zapfiles.core.localization import lang
+from zapfiles.cli import (
+    title,
+    info,
+    warn,
+    err,
+    success,
+    clear_console,
+    color,
+    ColorEnum,
+)
 import os
 
 from typing import Optional
@@ -179,8 +188,8 @@ async def server() -> None:
         # Setting up server
         warn(lang.get_string("server.guide.filesMustBeIn").format(server_files_dir))
 
-        host_to = (
-            "local"
+        host_ip = (
+            "custom"
             if input(
                 color(
                     lang.get_string("server.input.networkType"),
@@ -189,15 +198,15 @@ async def server() -> None:
                 )
             )
             == "2"
-            else "public"
+            else "default"
         )
 
         key_ip = (
             get_public_ip()
-            if host_to == "public"
+            if host_ip == "default"
             else input(
                 color(
-                    lang.get_string("server.input.localIp"),
+                    lang.get_string("server.input.customIp"),
                     ColorEnum.WARN,
                     ColorEnum.SUCCESS,
                 )

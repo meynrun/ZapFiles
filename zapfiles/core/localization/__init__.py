@@ -5,9 +5,9 @@ import re
 
 from locale import windows_locale, getlocale
 
-from config.app_configuration import config
-import cli
-from env import ROOT_DIR
+from zapfiles import cli
+from zapfiles.core.config.app_configuration import config
+from zapfiles.constants import ROOT_DIR
 
 
 def remove_emojis(text: str) -> str:

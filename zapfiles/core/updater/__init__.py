@@ -1,13 +1,12 @@
 import os
+import sys
 
 import requests
 import tqdm
 
-import sys
-
+from zapfiles.cli import info, err, success
 from zapfiles.constants import VERSION
 from zapfiles.core.localization import lang
-from zapfiles.cli import info, err, success
 
 
 def download_update() -> None:

@@ -1,7 +1,8 @@
-import os.path
+from os import PathLike
+from pathlib import Path
 
-from zapfiles.core.config.base_configuration import BaseConfig
 from zapfiles.constants import ROOT_DIR
+from zapfiles.core.config.base_configuration import BaseConfig
 from zapfiles.core.localization import lang
 
 DEFAULT_EXPERIMENTS = {
@@ -14,7 +15,7 @@ DEFAULT_EXPERIMENTS = {
 
 
 class ExperimentsConfig(BaseConfig):
-    def __init__(self, config_path: str):
+    def __init__(self, config_path: PathLike[str]):
         super().__init__(config_path, DEFAULT_EXPERIMENTS)
         self.enabled_experiments = self.get_enabled_experiments()
 
@@ -33,6 +34,4 @@ class ExperimentsConfig(BaseConfig):
             }
 
 
-experiments_config = ExperimentsConfig(
-    os.path.join(ROOT_DIR, "config", "experiments.json")
-)
+experiments_config = ExperimentsConfig(Path(ROOT_DIR) / "config" / "experiments.json")

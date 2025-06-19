@@ -2,12 +2,13 @@ import ctypes
 import json
 import os
 import re
-
 from locale import windows_locale, getlocale
+from os import PathLike
+from pathlib import Path
 
 from zapfiles import cli
-from zapfiles.core.config.app_configuration import config
 from zapfiles.constants import ROOT_DIR
+from zapfiles.core.config.app_configuration import config
 
 
 def remove_emojis(text: str) -> str:
@@ -83,7 +84,7 @@ class Translatable:
             dict[str, str]: Translation dictionary.
         """
 
-        def load_file(path: str) -> dict[str, str] | None:
+        def load_file(path: PathLike[str]) -> dict[str, str] | None:
             """
             Loads the translation dictionary from a file.
 
@@ -105,12 +106,12 @@ class Translatable:
             )
 
         # Trying to load language json
-        translations = load_file(f"{ROOT_DIR}/lang/{self.locale}.json")
+        translations = load_file(Path(ROOT_DIR) / "lang" / f"{self.locale}.json")
 
         # If the localization file is corrupted or does not exist, fall back to the English language
         if translations is None and self.locale != "en":
             cli.err("⚠️ Falling back to English.")
-            translations = load_file(f"{ROOT_DIR}/lang/en.json")
+            translations = load_file(Path(ROOT_DIR) / "lang" / "en.json")
 
         # If there's not even English, closing app
         if translations is None:

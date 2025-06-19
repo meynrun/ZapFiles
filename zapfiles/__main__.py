@@ -4,14 +4,11 @@ import os
 import sys
 
 from zapfiles.cli import clear_console, title, color, ColorEnum
-from zapfiles.core.localization import lang
-
-from zapfiles.core.config.app_configuration import config
-from zapfiles.core.updater import check_for_updates
-
-from zapfiles.server import server
 from zapfiles.client import client
-
+from zapfiles.core.config.app_configuration import config
+from zapfiles.core.localization import lang
+from zapfiles.core.updater import check_for_updates
+from zapfiles.server import server
 
 if __name__ == "__main__":
     if os.name == "nt":

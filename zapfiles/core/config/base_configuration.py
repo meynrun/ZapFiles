@@ -1,10 +1,11 @@
 import json
 import os
+from os import PathLike
 from typing import Any
 
 
 class BaseConfig:
-    def __init__(self, config_path: str, default_config: dict[str, Any]):
+    def __init__(self, config_path: PathLike[str], default_config: dict[str, Any]):
         self.config_path = config_path
         os.makedirs(os.path.dirname(self.config_path), exist_ok=True)
         self.default_config = default_config

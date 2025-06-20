@@ -1,12 +1,11 @@
 import os
-
 from enum import Enum
 
 import colorama as clr
 from colorama import Fore
 
-from config.app_configuration import config
-from env import VERSION
+from zapfiles.constants import VERSION
+from zapfiles.core.config.app_configuration import config
 
 clr.init()
 

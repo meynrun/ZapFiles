@@ -1,16 +1,17 @@
-import os.path
-
-from config.base_configuration import BaseConfig
-from env import ROOT_DIR
-
+import os
 from getpass import getuser
+from os import PathLike
+from pathlib import Path
+
+from zapfiles.constants import ROOT_DIR
+from zapfiles.core.config.base_configuration import BaseConfig
 
 
 def get_default_download_directory():
     if os.name == "nt":
-        return f"C:/Users/{getuser()}/Downloads/ZapFiles Downloads/"
+        return f"C:\\Users\\{getuser()}\\Downloads\\ZapFiles Downloads\\"
     else:
-        return ROOT_DIR + "/downloads/"
+        return Path(ROOT_DIR) / "ZapFiles Downloads"
 
 
 DEFAULT_CONFIG = {
@@ -23,7 +24,7 @@ DEFAULT_CONFIG = {
 
 
 class Configuration(BaseConfig):
-    def __init__(self, config_path: str):
+    def __init__(self, config_path: PathLike[str]):
         super().__init__(config_path, DEFAULT_CONFIG)
         self._check_downloads_path()
 
@@ -37,4 +38,4 @@ class Configuration(BaseConfig):
             self.config["downloads_path"] = self.default_config["downloads_path"]
 
 
-config = Configuration(os.path.join(ROOT_DIR, "config", "config.json"))
+config = Configuration(Path(ROOT_DIR) / "config" / "config.json")

@@ -1,26 +1,34 @@
 import asyncio
+import json
+import os
 from asyncio import StreamReader, StreamWriter
+from functools import partial
+from os import PathLike
+from pathlib import Path
+from typing import Optional
 
 import requests
-import json
-
+from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.asymmetric.rsa import RSAPublicKey
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.backends import default_backend
-
-from functools import partial
 from prettytable import PrettyTable
 from tqdm import tqdm
 
-from shared.file_hash import get_file_hash
-from shared.localization import lang
-from cli import title, info, warn, err, success, clear_console, color, ColorEnum
-import os
-
-from typing import Optional
-
+from zapfiles.cli import (
+    title,
+    info,
+    warn,
+    err,
+    success,
+    clear_console,
+    color,
+    ColorEnum,
+)
+from zapfiles.constants import ROOT_DIR
+from zapfiles.core.hash import get_file_hash
+from zapfiles.core.localization import lang
 
 server_config = PrettyTable(
     [
@@ -71,7 +79,7 @@ def get_public_ip() -> Optional[str]:
 
 
 async def handle_client(
-    reader: StreamReader, writer: StreamWriter, filepath: str
+    reader: StreamReader, writer: StreamWriter, filepath: PathLike[str]
 ) -> None:
     """
     Handles client connection.
@@ -166,7 +174,7 @@ async def server() -> None:
     """
     try:
         # Checking for server_files directory
-        server_files_dir = "server_files"
+        server_files_dir = Path(ROOT_DIR) / "server_files"
         if not os.path.exists(server_files_dir):
             warn(
                 lang.get_string("server.warn.serverFilesDirNotFound").format(
@@ -179,8 +187,8 @@ async def server() -> None:
         # Setting up server
         warn(lang.get_string("server.guide.filesMustBeIn").format(server_files_dir))
 
-        host_to = (
-            "local"
+        host_ip = (
+            "custom"
             if input(
                 color(
                     lang.get_string("server.input.networkType"),
@@ -189,15 +197,15 @@ async def server() -> None:
                 )
             )
             == "2"
-            else "public"
+            else "default"
         )
 
         key_ip = (
             get_public_ip()
-            if host_to == "public"
+            if host_ip == "default"
             else input(
                 color(
-                    lang.get_string("server.input.localIp"),
+                    lang.get_string("server.input.customIp"),
                     ColorEnum.WARN,
                     ColorEnum.SUCCESS,
                 )
@@ -208,7 +216,7 @@ async def server() -> None:
             err(lang.get_string("server.error.publicIpNotFound"))
             return
 
-        filepath: str = ""
+        filepath: Path = Path()
         # Input filename
         while True:
             files = os.listdir(server_files_dir)
@@ -241,14 +249,14 @@ async def server() -> None:
                 continue
 
             if os.path.exists(selected_filename):
-                filepath = selected_filename
+                filepath = Path(selected_filename)
                 break
 
             try:
                 selected_filename = int(selected_filename)
                 if 1 <= selected_filename <= len(files):
                     filename = files[selected_filename - 1]
-                    filepath = f"{server_files_dir}/{filename}"
+                    filepath = server_files_dir / filename
                 else:
                     err(
                         lang.get_string("server.error.invalidFilename")

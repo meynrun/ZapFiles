@@ -1,7 +1,8 @@
 import hashlib
+from os import PathLike
 
 
-def get_file_hash(file_path: str, algorithm: str = "sha256") -> str:
+def get_file_hash(file_path: PathLike[str], algorithm: str = "sha256") -> str:
     """
     Returns file hash.
     By default, uses sha256.

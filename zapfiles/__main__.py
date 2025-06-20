@@ -3,19 +3,19 @@ import ctypes
 import os
 import sys
 
-from cli import clear_console, title, color, ColorEnum
-from shared.localization import lang
-
-from config.app_configuration import config
-from shared.auto_update import check_for_updates
-
-from server import server
-from client import client
+from zapfiles.cli import clear_console, title, color, ColorEnum
+from zapfiles.client import client
+from zapfiles.core.config.app_configuration import config
+from zapfiles.core.localization import lang
+from zapfiles.core.updater import check_for_updates
+from zapfiles.server import server
 
 if __name__ == "__main__":
     if os.name == "nt":
         windll = ctypes.windll.kernel32
-        windll.SetConsoleTitleW("⚡ZapFiles")
+        windll.SetConsoleTitleW(
+            "⚡ZapFiles" if config.get_value("enable_emojis") else "ZapFiles"
+        )
 
     try:
         clear_console()

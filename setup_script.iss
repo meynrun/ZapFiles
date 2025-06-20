@@ -2,10 +2,10 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ZapFiles"
-#define MyAppVersion "1.9.0"
-#define MyAppPublisher "MeynDev"
+#define MyAppVersion "2.0.0"
+#define MyAppPublisher "Meynrun"
 #define MyAppURL "https://github.com/meynrun/ZapFiles"
-#define MyAppExeName "main.exe"
+#define MyAppExeName "zapfiles.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -33,7 +33,7 @@ PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 OutputBaseFilename=Setup-x64
 SetupIconFile=.\assets\ZapFiles-icon.ico
-Compression=lzma
+Compression=lzma2/ultra
 SolidCompression=yes
 WizardStyle=modern
 
@@ -45,7 +45,6 @@ Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: ".\dist\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

@@ -1,29 +1,38 @@
 import asyncio
+import os
 from asyncio import StreamReader, StreamWriter
+from os import PathLike
+from pathlib import Path
 
-from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey, RSAPublicKey
-
-from config.experiments_configuration import experiments_config
-from config.app_configuration import config
-
-from cryptography.hazmat.primitives.asymmetric import rsa, padding
+from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
+from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey, RSAPublicKey
 from cryptography.hazmat.primitives.ciphers import (
     Cipher,
     algorithms,
     modes,
     CipherContext,
 )
-from cryptography.hazmat.backends import default_backend
-
-from shared.file_hash import get_file_hash
-from shared.localization import lang
-from cli import info, warn, err, success, clear_console, title, ColorEnum, color
-import os
 from tqdm import tqdm
 
+from zapfiles.cli import (
+    info,
+    warn,
+    err,
+    success,
+    clear_console,
+    title,
+    ColorEnum,
+    color,
+)
+from zapfiles.core.config.app_configuration import config
+from zapfiles.core.config.experiments_configuration import experiments_config
+from zapfiles.core.hash import get_file_hash
+from zapfiles.core.localization import lang
 
-def get_download_path(filename: str) -> str:
+
+def get_download_path(filename: str) -> Path:
     """
     Returns path to downloads directory.
 
@@ -35,11 +44,12 @@ def get_download_path(filename: str) -> str:
     """
     if "file_classification" in experiments_config.get_enabled_experiments():
         return (
-            config.get_value("downloads_path")
-            + f"{os.path.splitext(filename)[1]}/{filename}"
+            Path(config.get_value("downloads_path"))
+            / os.path.splitext(filename)[-1]
+            / filename
         )
     else:
-        return config.get_value("downloads_path") + "/" + filename
+        return Path(config.get_value("downloads_path")) / filename
 
 
 async def send_public_key(writer: StreamWriter, public_key: RSAPublicKey) -> None:
@@ -90,7 +100,7 @@ def create_aes_cipher(aes_key: bytes) -> Cipher:
 
 
 async def download_and_decrypt_file(
-    reader: StreamReader, file_path: str, decryptor: CipherContext, file_size: int
+    reader: StreamReader, file_path: Path, decryptor: CipherContext, file_size: int
 ) -> None:
     """
     Downloads file from server.
@@ -192,12 +202,12 @@ async def connect(ip: str, port: int, filename: str, file_hash: str) -> None:
     await writer.wait_closed()
 
 
-def validate_file(file_path: str, file_hash: str) -> None:
+def validate_file(file_path: PathLike[str], file_hash: str) -> None:
     """
     Validates file hash.
 
     Args:
-        file_path (str): path to file to validate
+        file_path (PathLike[str]): path to file to validate
         file_hash (str): file hash
 
     Returns:
@@ -212,12 +222,12 @@ def validate_file(file_path: str, file_hash: str) -> None:
         handle_file_deletion(file_path)
 
 
-def handle_file_deletion(file_path: str) -> None:
+def handle_file_deletion(file_path: PathLike[str]) -> None:
     """
     Handles file deletion.
 
     Args:
-        file_path (str): path to file to delete
+        file_path (PathLike[str]): path to file to delete
 
     Returns:
         None

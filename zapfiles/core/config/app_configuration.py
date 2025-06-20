@@ -19,7 +19,7 @@ DEFAULT_CONFIG = {
     "language": "auto",
     "enable_emojis": True,
     "clear_mode": "ASCII",
-    "downloads_path": get_default_download_directory(),
+    "downloads_path": str(get_default_download_directory()),
 }
 
 

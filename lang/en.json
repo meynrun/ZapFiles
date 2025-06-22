@@ -7,7 +7,6 @@
   "server.guide.filesMustBeIn": "❗ Hosted files MUST be in '{}'.",
   "server.input.networkType": "📨 Which IP address do you want to use?\n\n1. Public (determined automatically)\n2. Custom (manually entered)\n\n>> ",
   "server.input.customIp": "🔑 Enter your IP address: ",
-  "server.input.filename": ">> ",
   "server.info.filename": "💽 Choose file to send or type 'refresh' to refresh the list: ",
   "server.input.port": "🚢 Enter port (default: 8888): ",
   "server.info.serverKey": "🔑 Server key: {}",
@@ -22,8 +21,10 @@
   "server.error.connectionReset": "❌ Connection reset by peer.",
   "server.error.connectionAborted": "❌ Connection aborted.",
   "server.error.connectionRefused": "❌ Connection refused.",
+  "server.info.createdZapfile": "⚡ ZapFile {} created.",
 
-  "main.choose.mode": "🚀 Enter mode\n\n 1. Host files\n 2. Get files\n\n>> ",
+  "main.choose.mode": "🚀 Enter mode\n\n 1. Host files\n 2. Get files",
+  "main.input": "\n\n>> ",
   "main.enterToExit": "Press Enter to exit...",
   "main.info.updateDescription": "✨ Configuration Update!\nNow the configuration is not an experiment\n",
 
@@ -56,5 +57,8 @@
   "universal.error.fileNotFound": "❌ File not found.",
 
   "experiments.file_classification.name": "File Classification",
-  "experiments.file_classification.description": "Classify files based on their file extension."
+  "experiments.file_classification.description": "Classify files based on their file extension.",
+  "experiments.lan_broadcast.name": "LAN File Announce",
+  "experiments.lan_broadcast.description": "Automatically responds to LAN requests with the current file being shared.",
+  "experiments.lan_broadcast.mode": "\n 3. Scan for files on the local network"
 }

@@ -237,7 +237,7 @@ async def server() -> None:
             selected_filename = (
                 input(
                     color(
-                        lang.get_string("server.input.filename"),
+                        lang.get_string("main.input"),
                         ColorEnum.WARN,
                         ColorEnum.SUCCESS,
                     )
@@ -299,11 +299,23 @@ async def server() -> None:
         server_config.add_row([key_ip, port, filename])
         print(server_config)
 
+        file_hash = get_file_hash(filepath)
+
         # Generating server key
         server_key = "{}:{}:{}:{}".format(
-            key_ip, port, filename, get_file_hash(filepath)
+            key_ip, port, filename, file_hash
         )
         success(lang.get_string("server.info.serverKey").format(server_key))
+
+        with open(filename + '.zapfile', 'w', encoding='utf-8') as f:
+            zapfile = {
+                "host": key_ip,
+                "port": port,
+                "filename": filename,
+                "hash": file_hash
+            }
+            f.write(json.dumps(zapfile, indent=4, ensure_ascii=False))
+            success(lang.get_string("server.info.createdZapfile").format(filename + '.zapfile'))
 
         async with host:
             info(lang.get_string("server.info.running"))

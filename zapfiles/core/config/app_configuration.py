@@ -29,9 +29,8 @@ class Configuration(BaseConfig):
         self._check_downloads_path()
 
     def _check_downloads_path(self):
-        if not os.path.isdir(self.get_value("downloads_path")) or not os.path.exists(
-            self.get_value("downloads_path")
-        ):
+        downloads_path = Path(self.get_value("downloads_path"))
+        if not downloads_path.exists() or not downloads_path.is_dir():
             print(
                 "Config path does not exist or is not a directory, using default path"
             )

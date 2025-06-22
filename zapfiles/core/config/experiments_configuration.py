@@ -10,7 +10,12 @@ DEFAULT_EXPERIMENTS = {
         "name": lang.get_string("experiments.file_classification.name"),
         "description": lang.get_string("experiments.file_classification.description"),
         "enabled": False,
-    }
+    },
+    # "lan_broadcast": {
+    #     "name": lang.get_string("experiments.lan_broadcast.name"),
+    #     "description": lang.get_string("experiments.lan_broadcast.description"),
+    #     "enabled": False,
+    # }
 }
 
 

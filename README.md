@@ -1,77 +1,92 @@
 ![ZapFiles](./assets/ZapFiles-banner.png)
 
-[![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE)
+---
+
+<!-- TOC -->
+  * [🧾 About the Project](#-about-the-project)
+  * [🖥️ Platform & License](#-platform--license)
+  * [🌐 Languages](#-languages)
+  * [⬇️ Download](#-download)
+  * [📦 Installing from Source](#-installing-from-source)
+  * [🛠️ Building the Installer (Windows)](#-building-the-installer-windows)
+  * [⚙️ Configuration](#-configuration)
+<!-- TOC -->
+
+---
+
+## 🧾 About the Project
+
+**ZapFiles** is a simple and secure file transfer tool that ensures your privacy through end-to-end encryption.
+
+---
+
+## 🖥️ Platform & License
+
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+[![License](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE)
+
+---
+
+## 🌐 Languages
 
 [![English](https://img.shields.io/badge/English-0078D4?style=for-the-badge&logo=download&logoColor=white)](./README.md)
 [![Русский](https://img.shields.io/badge/Русский-D52B1E?style=for-the-badge&logo=download&logoColor=white)](./README-ru.md)
-[![Latest build](https://img.shields.io/badge/Download%20latest-66CC00?style=for-the-badge&logo=download&logoColor=white)](https://github.com/meynrun/ZapFiles/releases/latest/download/Setup-x64.exe)
 
-### **ZapFiles** is a secure file transfer tool that ensures the privacy of your data through end-to-end encryption.
+---
 
-# How to Use
-### Downloading a File
-1. Select the "Get files" mode.
-2. Enter the server key in the input field.
-3. Wait for the file to download.
+## ⬇️ Download
 
-### Sharing Files
-1. Select the "Host files" mode.
-2. Choose the IP type for file transfer:
-   - Public — to send files over the internet;
-   - Local — to send files over a local network (e.g., within the same Wi-Fi).
-3. Enter the name of the file to send.
-4. Specify the desired port or leave it blank (default is 8888).
-5. Copy and share the server key with the recipient to initiate the transfer.
+[![Latest Release](https://img.shields.io/badge/Download%20Latest%20Version-66CC00?style=for-the-badge&logo=download&logoColor=white)](https://github.com/meynrun/ZapFiles/releases/latest/download/Setup-x64.exe)
 
-# Building
-1. Clone the repository: 
-```shell
+---
+
+## 📦 Installing from Source
+
+> **Note:** If `uv` is not installed, follow the instructions here: [astral.sh/uv](https://github.com/astral-sh/uv)
+
+1. Clone the repository:
+```sh
 git clone https://github.com/meynrun/ZapFiles.git
+cd ZapFiles
+````
+
+2. Create and activate a virtual environment:
+
+```sh
+uv venv
 ```
-2. Create virtual environment:
-### Linux
-```shell
-python3 -m venv .venv
-source .venv/Scripts/activate
+
+3. Install dependencies:
+
+```sh
+uv sync
 ```
-### Windows
-```shell
-python -m venv .venv
-.venv\Scripts\activate
+
+---
+
+## 🛠️ Building the Installer (Windows)
+
+1. Install [Inno Setup](https://jrsoftware.org/download.php/is.exe)
+2. Run the build script:
+
+```sh
+uv run build.py
 ```
-3. Install the dependencies: 
-```shell
-pip3 install -r requirements.txt
-```
-4. Install [Inno Setup](https://jrsoftware.org/download.php/is.exe)
-5. Run build.bat
 
-# ToDo
-- [x] Port selection
-- [x] Progress bar
-- [x] Configuration file
-- [x] Configuration file for experiments
-- [x] Distributing a file to multiple clients simultaneously
+The script will build ZapFiles into the `./dist/` directory, and the installer `Setup-x64.exe` will be placed in the `./Output/` directory using Inno Setup.
 
-# Experiments
-- [x] Classify files by type (e.g., documents, presentations, or videos)
-- [ ] Password to access the file on the server
+---
 
-# Possible Future Features
-- [ ] Included port forwarding
-- [ ] Intermediate servers
-- [ ] Plugin system
+## ⚙️ Configuration
 
-# Config
-- **check_for_updates** (bool): toggles update checking _(default: **true**)_  
-- **language** (str): sets the language, e.g., **"auto", "en", "ru"** _(default: **"auto"**)_  
-- **enable_emojis** (bool): toggles (almost) all emojis _(default: **true**)_  
-- **clear_mode** (str): screen clearing mode, e.g., **"ASCII", "ASCII2", "command"** _(default: **"ASCII"**)_
-- **downloads_path** (str): path to downloads dir, e.g., **"C:/Users/USER/Downloads/ZapFiles Downloads/"**
+|         Key         |  Type   | Description                                |        Allowed Values        |             Default Value             |
+|:-------------------:|:-------:|:-------------------------------------------|:----------------------------:|:-------------------------------------:|
+| `check_for_updates` | boolean | Automatically check for updates on launch  |       `true`, `false`        |                `true`                 |
+|     `language`      | string  | Interface language                         |      `auto`, `en`, `ru`      |                `auto`                 |
+|   `enable_emojis`   | boolean | Whether to display emojis in the interface |       `true`, `false`        |                `true`                 |
+|    `clear_mode`     | string  | Console clear method                       | `ASCII`, `ASCII2`, `command` |                `ASCII`                |
+|   `download_path`   | string  | Path to the download folder                |        absolute path         | `%user%/Downloads/ZapFiles Downloads` |
+|    `enable_tips`    | boolean | Enable tips                                |       `true`, `false`        |                `true`                 |
 
-## Credits
-The application logo uses emoji icons from Windows 11, which are the property of Microsoft. 
-## Disclaimer
-The use of emoji icons from Windows 11 is subject to Microsoft's terms of use. The MIT License applies to the source code of the application, but does not grant rights to use Microsoft's intellectual property outside the scope of this application.
+---

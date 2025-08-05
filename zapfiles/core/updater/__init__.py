@@ -1,12 +1,24 @@
 import os
 import sys
+import subprocess
+import platform
 
+import questionary
 import requests
 import tqdm
 
 from zapfiles.cli import info, err, success
 from zapfiles.constants import VERSION
 from zapfiles.core.localization import lang
+
+
+def open_file(path):
+    if platform.system() == "Windows":
+        os.startfile(path)  # type: ignore[attr-defined] # because pylance fails on os != windows
+    elif platform.system() == "Darwin":  # macOS
+        subprocess.run(["open", path])
+    else:  # Linux
+        subprocess.run(["xdg-open", path])
 
 
 def download_update() -> None:
@@ -36,7 +48,7 @@ def download_update() -> None:
         os.remove("Setup-x64.exe")
     else:
         success(lang.get_string("update.info.updateDownloaded"))
-        os.startfile("Setup-x64.exe")
+        open_file("Setup-x64.exe")
         sys.exit(0)
 
 
@@ -62,8 +74,10 @@ def check_for_updates() -> None:
                         latest_version
                     )
                 )
-                update = input(lang.get_string("update.info.updateUser")) or "y"
-                if update.lower() == "y":
+                update = questionary.confirm(
+                    lang.get_string("update.info.confirmUpdate")
+                ).ask()
+                if update:
                     info(lang.get_string("update.info.updateDownloading"))
                     download_update()
             else:

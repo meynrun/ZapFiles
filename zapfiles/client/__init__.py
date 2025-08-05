@@ -4,6 +4,7 @@ from asyncio import StreamReader, StreamWriter
 from os import PathLike
 from pathlib import Path
 
+import questionary
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
@@ -16,16 +17,7 @@ from cryptography.hazmat.primitives.ciphers import (
 )
 from tqdm import tqdm
 
-from zapfiles.cli import (
-    info,
-    warn,
-    err,
-    success,
-    clear_console,
-    title,
-    ColorEnum,
-    color,
-)
+from zapfiles.cli import info, warn, err, success, clear_console, title, ColorEnum
 from zapfiles.core.config.app_configuration import config
 from zapfiles.core.config.experiments_configuration import experiments_config
 from zapfiles.core.hash import get_file_hash
@@ -196,13 +188,13 @@ async def connect(ip: str, port: int, filename: str, file_hash: str) -> None:
     await download_and_decrypt_file(reader, file_path, decryptor, file_size)
 
     success(lang.get_string("client.info.fileReceived"))
-    validate_file(file_path, file_hash)
+    await validate_file(file_path, file_hash)
 
     writer.close()
     await writer.wait_closed()
 
 
-def validate_file(file_path: PathLike[str], file_hash: str) -> None:
+async def validate_file(file_path: PathLike[str], file_hash: str) -> None:
     """
     Validates file hash.
 
@@ -219,10 +211,10 @@ def validate_file(file_path: PathLike[str], file_hash: str) -> None:
         success(lang.get_string("client.hash.correct"))
     else:
         err(lang.get_string("client.hash.incorrect"))
-        handle_file_deletion(file_path)
+        await handle_file_deletion(file_path)
 
 
-def handle_file_deletion(file_path: PathLike[str]) -> None:
+async def handle_file_deletion(file_path: PathLike[str]) -> bool | None:
     """
     Handles file deletion.
 
@@ -230,26 +222,29 @@ def handle_file_deletion(file_path: PathLike[str]) -> None:
         file_path (PathLike[str]): path to file to delete
 
     Returns:
-        None
+        bool: True if file was deleted
     """
     try:
         if os.path.exists(file_path):
-            if input(lang.get_string("client.choose.delete")).strip().lower() == "y":
+            if await questionary.confirm(
+                lang.get_string("client.choose.delete")
+            ).ask_async():
                 os.remove(file_path)
                 success(lang.get_string("client.info.fileDeleted"))
+                return True
             else:
                 success(lang.get_string("client.info.fileSaved"))
-                return
+                return False
     except PermissionError:
         err(lang.get_string("client.error.filePermissionError"))
-        return
+        return False
     except FileNotFoundError:
-        return
+        return False
     except EOFError:
-        return
+        return False
     except Exception as e:
         err(str(e))
-        return
+        return False
 
 
 async def client() -> None:
@@ -262,13 +257,8 @@ async def client() -> None:
     clear_console()
     title()
 
-    try:
-        server_key = input(
-            color(
-                lang.get_string("client.input.key"), ColorEnum.WARN, ColorEnum.SUCCESS
-            )
-        )
-    except EOFError:
+    server_key = await questionary.text(lang.get_string("client.input.key")).ask_async()
+    if not server_key:
         return
 
     # Parsing server key
@@ -283,11 +273,13 @@ async def client() -> None:
     file_path = get_download_path(filename)
     if os.path.exists(file_path) and get_file_hash(file_path) == file_hash:
         warn(lang.get_string("client.warning.fileAlreadyExists"))
-        handle_file_deletion(file_path)
+        if not await handle_file_deletion(file_path):
+            return  # if file was not deleted don't download it again
 
     elif os.path.exists(file_path):
         warn(lang.get_string("client.warning.fileWithSameNameExists"))
-        handle_file_deletion(file_path)
+        if not await handle_file_deletion(file_path):
+            return
 
     await connect(ip, port, filename, file_hash)
 

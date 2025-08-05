@@ -87,5 +87,6 @@ The script will build ZapFiles into the `./dist/` directory, and the installer `
 |   `enable_emojis`   | boolean | Whether to display emojis in the interface |       `true`, `false`        |                `true`                 |
 |    `clear_mode`     | string  | Console clear method                       | `ASCII`, `ASCII2`, `command` |                `ASCII`                |
 |   `download_path`   | string  | Path to the download folder                |        absolute path         | `%user%/Downloads/ZapFiles Downloads` |
+|    `enable_tips`    | boolean | Enable tips                                |       `true`, `false`        |                `true`                 |
 
 ---

@@ -4,8 +4,9 @@ import json
 import os
 import sys
 from pathlib import Path
+import questionary
 
-from zapfiles.cli import clear_console, title, color, ColorEnum
+from zapfiles.cli import clear_console, title
 from zapfiles.client import client, connect
 from zapfiles.core.config.app_configuration import config
 from zapfiles.core.config.experiments_configuration import experiments_config
@@ -14,31 +15,21 @@ from zapfiles.core.updater import check_for_updates
 from zapfiles.server import server
 
 
-def get_modes() -> str:
-    if "lan_broadcast" in experiments_config.get_enabled_experiments():
-        return (
-            lang.get_string("main.choose.mode") +
-            lang.get_string("experiments.lan_broadcast.mode") +
-            lang.get_string("main.input")
-            )
-    return (
-            lang.get_string("main.choose.mode") +
-            lang.get_string("main.input")
-    )
-
-
 async def handle_zapfile() -> int:
     if len(sys.argv) > 1:
-        file_path = Path(sys.argv[1])
-        if file_path.is_file():
-            with open(file_path, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-                host = data.get("host", "localhost")
-                port = data.get("port", 8888)
-                filename = data.get("filename", "filename")
-                file_hash = data.get("hash", "hash")
-                await connect(host, port, filename, file_hash)
-                return 1
+        try:
+            file_path = Path(sys.argv[1])
+            if file_path.is_file():
+                with open(file_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    host = data.get("host", "localhost")
+                    port = data.get("port", 8888)
+                    filename = data.get("filename", "filename")
+                    file_hash = data.get("hash", "hash")
+                    await connect(host, port, filename, file_hash)
+                    return 1
+        except Exception as e:
+            print(e)
     return 0
 
 
@@ -56,30 +47,35 @@ def main() -> None:
         if asyncio.run(handle_zapfile()) == 1:
             return
 
-        if config.get_value("check_for_updates"):
+        if config.get_value("check_for_updates") and os.name == "nt":
             check_for_updates()
 
-        mode = (
-            input(
-                color(
-                    get_modes(),
-                    ColorEnum.WARN,
-                    ColorEnum.SUCCESS,
-                ) or "2"
+        choices = [
+            {"name": lang.get_string("main.mode.host"), "value": "host"},
+            {"name": lang.get_string("main.mode.get"), "value": "get"},
+        ]
+
+        if "lan_broadcast" in experiments_config.get_enabled_experiments():
+            choices.append(
+                {
+                    "name": lang.get_string("experiments.lan_broadcast.scan_mode"),
+                    "value": "scan_lan",
+                }
             )
-        )
+
+        mode = questionary.select(
+            message=lang.get_string("main.mode.select"), choices=choices
+        ).ask()
 
         clear_console()
         title()
 
-        if mode == "1":
+        if mode == "host":
             asyncio.run(server())
-        elif mode == "2":
+        elif mode == "get":
             asyncio.run(client())
-
-        if "lan_broadcast" in experiments_config.get_enabled_experiments() and mode == "3":
-            # TODO: lan broadcast
-            pass
+        elif mode == "scan_lan":
+            print("Not implemented yet")
 
     except KeyboardInterrupt:
         sys.exit(0)

@@ -7,6 +7,7 @@ from os import PathLike
 from pathlib import Path
 from typing import Optional
 
+import questionary
 import requests
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes, serialization
@@ -29,6 +30,7 @@ from zapfiles.cli import (
 from zapfiles.constants import ROOT_DIR
 from zapfiles.core.hash import get_file_hash
 from zapfiles.core.localization import lang
+from zapfiles.core.config.app_configuration import config
 
 server_config = PrettyTable(
     [
@@ -52,15 +54,16 @@ def get_public_ip() -> Optional[str]:
     Returns:
         str: public IP address
     """
-    info(lang.get_string("server.info.gettingIp"))
+    print(color(lang.get_string("server.info.gettingIp"), ColorEnum.INFO), end=" ")
 
     try:
         response = requests.get("https://api.ipify.org?format=json", timeout=3)
 
         if response.status_code == 200:
             data = response.content.decode("utf-8")
-            ip_info = json.loads(data)
-            return ip_info.get("ip")
+            ip = json.loads(data).get("ip")
+            print(color(ip, ColorEnum.WARN))
+            return ip
         else:
             err(
                 lang.get_string("universal.err").format(
@@ -75,6 +78,10 @@ def get_public_ip() -> Optional[str]:
 
     except requests.exceptions.ConnectionError:
         err(lang.get_string("update.error.connectionError"))
+        return None
+
+    except requests.exceptions.ReadTimeout:
+        err(lang.get_string("update.error.connectionTimedOut"))
         return None
 
 
@@ -185,137 +192,102 @@ async def server() -> None:
             success(lang.get_string("server.info.directoryCreated"))
 
         # Setting up server
-        warn(lang.get_string("server.guide.filesMustBeIn").format(server_files_dir))
-
-        host_ip = (
-            "custom"
-            if input(
-                color(
-                    lang.get_string("server.input.networkType"),
-                    ColorEnum.WARN,
-                    ColorEnum.SUCCESS,
-                )
-            )
-            == "2"
-            else "default"
-        )
+        host_ip = await questionary.select(
+            message=lang.get_string("server.input.networkType"),
+            choices=[
+                {
+                    "name": lang.get_string("server.input.networkType.public"),
+                    "value": "public",
+                },
+                {
+                    "name": lang.get_string("server.input.networkType.custom"),
+                    "value": "custom",
+                },
+            ],
+        ).ask_async()
 
         key_ip = (
             get_public_ip()
-            if host_ip == "default"
-            else input(
-                color(
-                    lang.get_string("server.input.customIp"),
-                    ColorEnum.WARN,
-                    ColorEnum.SUCCESS,
-                )
-            )
+            if host_ip == "public"
+            else await questionary.text(
+                lang.get_string("server.input.customIp")
+            ).ask_async()
         )
 
         if not key_ip:
-            err(lang.get_string("server.error.publicIpNotFound"))
+            err(lang.get_string("server.error.invalidIp"))
             return
 
-        filepath: Path = Path()
-        # Input filename
+        if config.get_value("enable_tips"):
+            info(lang.get_string("server.tip.storageDirectory"))
+            info(lang.get_string("server.tip.fileNavigation"))
+
         while True:
-            files = os.listdir(server_files_dir)
-
-            if len(files) == 0:
-                err(lang.get_string("server.error.noFiles"))
-
-            print(
-                color(
-                    lang.get_string("server.info.filename"),
-                    ColorEnum.WARN,
-                    ColorEnum.SUCCESS,
-                )
-            )
-            for i, file in enumerate(files):
-                print(f"    {i + 1}. {file}")
-
-            selected_filename = (
-                input(
-                    color(
-                        lang.get_string("main.input"),
-                        ColorEnum.WARN,
-                        ColorEnum.SUCCESS,
-                    )
-                )
-                or "1"
-            )  # Default to the first file if no input is provided
-
-            if selected_filename == "refresh":
-                continue
-
-            if os.path.exists(selected_filename):
-                filepath = Path(selected_filename)
-                break
-
+            file_path = await questionary.path(
+                message=lang.get_string("server.info.filePath")
+            ).ask_async()
             try:
-                selected_filename = int(selected_filename)
-                if 1 <= selected_filename <= len(files):
-                    filename = files[selected_filename - 1]
-                    filepath = server_files_dir / filename
-                else:
-                    err(
-                        lang.get_string("server.error.invalidFilename")
-                    )  # Invalid number input
-                    continue
-            except ValueError:
-                err(
-                    lang.get_string("server.error.invalidFilename")
-                )  # Not a number input
-                continue
+                if Path(file_path).is_file():
+                    break
+                err(lang.get_string("server.error.fileNotFound").format(file=file_path))
+            except TypeError:
+                if not file_path:
+                    return
+                err(lang.get_string("server.error.fileNotFound").format(file=file_path))
 
-            if not os.path.exists(filepath):
-                err(lang.get_string("universal.error.fileNotFound"))
-                continue
+        # Input port
+        while True:
+            port_input = ""
+            try:
+                port_input = (
+                    await questionary.text(
+                        lang.get_string("server.input.port")
+                    ).ask_async()
+                    or 8888
+                )
+                port = int(port_input)
+                if port <= 0 or port > 65535:
+                    raise ValueError
+            except ValueError:
+                err(lang.get_string("server.error.invalidPort").format(port=port_input))
             else:
                 break
 
-        # Input port
-        port = int(
-            input(
-                color(
-                    lang.get_string("server.input.port"),
-                    ColorEnum.WARN,
-                    ColorEnum.SUCCESS,
-                )
-            )
-            or 8888
-        )
-
         # Starting server
-        server_args = partial(handle_client, filepath=filepath)
+        server_args = partial(handle_client, filepath=file_path)
         host = await asyncio.start_server(server_args, "0.0.0.0", port)
 
         clear_console()
         title()
 
-        filename: str = os.path.basename(filepath)
+        filename: str = os.path.basename(file_path)
 
         # Printing server information
         server_config.add_row([key_ip, port, filename])
         print(server_config)
 
-        file_hash = get_file_hash(filepath)
+        file_hash = get_file_hash(file_path)
 
         # Generating server key
-        server_key = "{}:{}:{}:{}".format(
-            key_ip, port, filename, file_hash
-        )
+        server_key = "{}:{}:{}:{}".format(key_ip, port, filename, file_hash)
         success(lang.get_string("server.info.serverKey").format(server_key))
 
-        with open(filename + '.zapfile', 'w', encoding='utf-8') as f:
+        os.makedirs("generated_zapfiles", exist_ok=True)
+        with open(
+            Path("generated_zapfiles") / f"{filename}.zapfile", "w", encoding="utf-8"
+        ) as f:
             zapfile = {
                 "host": key_ip,
                 "port": port,
                 "filename": filename,
-                "hash": file_hash
+                "hash": file_hash,
             }
             f.write(json.dumps(zapfile, indent=4, ensure_ascii=False))
-            success(lang.get_string("server.info.createdZapfile").format(filename + '.zapfile'))
+            success(
+                lang.get_string("server.info.createdZapfile").format(
+                    filename + ".zapfile"
+                )
+            )
 
         async with host:
             info(lang.get_string("server.info.running"))

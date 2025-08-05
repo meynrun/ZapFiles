@@ -80,12 +80,13 @@ uv run build.py
 
 ## ⚙️ Конфигурация
 
-|        Ключ         |   Тип   | Описание                                       |     Допустимые значения      |             По умолчанию              |
-|:-------------------:|:-------:|:-----------------------------------------------|:----------------------------:|:-------------------------------------:|
-| `check_for_updates` | boolean | Автоматическая проверка обновлений при запуске |       `true`, `false`        |                `true`                 |
-|     `language`      | string  | Язык интерфейса ZapFiles                       |      `auto`, `en`, `ru`      |                `auto`                 |
-|   `enable_emojis`   | boolean | Использовать ли эмодзи в интерфейсе            |       `true`, `false`        |                `true`                 |
-|    `clear_mode`     | string  | Метод очистки экрана                           | `ASCII`, `ASCII2`, `command` |                `ASCII`                |
-|   `download_path`   | string  | Путь к папке загрузок                          |       абсолютный путь        | `%user%/Downloads/ZapFiles Downloads` |
+|        Ключ         |   Тип   | Описание                                       |            Допустимые значения             |             По умолчанию              |
+|:-------------------:|:-------:|:-----------------------------------------------|:------------------------------------------:|:-------------------------------------:|
+| `check_for_updates` | boolean | Автоматическая проверка обновлений при запуске |              `true`, `false`               |                `true`                 |
+|     `language`      | string  | Язык интерфейса ZapFiles                       |             `auto`, `en`, `ru`             |                `auto`                 |
+|   `enable_emojis`   | boolean | Использовать ли эмодзи в интерфейсе            |              `true`, `false`               |                `true`                 |
+|    `clear_mode`     | string  | Метод очистки экрана                           |        `ASCII`, `ASCII2`, `command`        |                `ASCII`                |
+|   `download_path`   | string  | Путь к папке загрузок                          |              абсолютный путь               | `%user%/Downloads/ZapFiles Downloads` |
+|    `enable_tips`    | boolean | Включить советы                                |              `true`, `false`               |                `true`                 |
 
 ---

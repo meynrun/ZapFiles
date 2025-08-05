@@ -32,7 +32,6 @@ def main():
     try:
         subprocess.run(
             ["nuitka", "--version"],
-            shell=True,
             check=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -58,7 +57,7 @@ def main():
     ]
 
     # Запускаем компиляцию
-    result = subprocess.run(command, shell=True)
+    result = subprocess.run(command)
 
     if result.returncode != 0:
         print("Compilation failed!")

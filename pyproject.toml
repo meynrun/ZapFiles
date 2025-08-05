@@ -6,16 +6,17 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "colorama>=0.4.6",
-    "cryptography>=45.0.4",
+    "cryptography>=45.0.5",
     "prettytable>=3.16.0",
+    "questionary>=2.1.0",
     "requests>=2.32.4",
     "tqdm>=4.67.1",
 ]
 
 [dependency-groups]
 dev = [
-    "nuitka>=2.7.10",
+    "nuitka>=2.7.12",
     "pre-commit>=4.2.0",
-    "pyright[nodejs]>=1.1.402",
-    "ruff>=0.12.0",
+    "pyright[nodejs]>=1.1.403",
+    "ruff>=0.12.7",
 ]

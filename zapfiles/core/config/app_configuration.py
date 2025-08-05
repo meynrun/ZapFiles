@@ -20,6 +20,7 @@ DEFAULT_CONFIG = {
     "enable_emojis": True,
     "clear_mode": "ASCII",
     "downloads_path": str(get_default_download_directory()),
+    "enable_tips": True,
 }
 
 

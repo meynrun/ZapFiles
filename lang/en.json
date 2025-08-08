@@ -54,6 +54,7 @@
   "update.error.connectionTimedOut": "❌ Timed out, please check your internet connection.",
   "update.error.connectionError": "❌ Connection error, please check your internet connection.",
   "update.info.latestVersion": "🫠 You're running the latest version.",
+  "update.error.platformNotSupported": "❌ Unfortunately, your platform does not support automatic updates. You can build the new version from the source code.",
 
   "experiments.file_classification.name": "File Classification",
   "experiments.file_classification.description": "Classify files based on their file extension.",

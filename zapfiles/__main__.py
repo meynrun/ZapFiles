@@ -44,10 +44,12 @@ def main() -> None:
         clear_console()
         title()
 
-        if asyncio.run(handle_zapfile()) == 1:
+        if (
+            asyncio.run(handle_zapfile()) == 1
+        ):  # if argv[1] was a valid zapfile then return
             return
 
-        if config.get_value("check_for_updates") and os.name == "nt":
+        if config.get_value("check_for_updates"):
             check_for_updates()
 
         choices = [

@@ -57,7 +57,9 @@ def get_public_ip() -> Optional[str]:
     print(color(lang.get_string("server.info.gettingIp"), ColorEnum.INFO), end=" ")
 
     try:
-        response = requests.get("https://api.ipify.org?format=json", timeout=3)
+        response = requests.get(
+            "https://api.ipify.org?format=json", timeout=3, verify=True
+        )
 
         if response.status_code == 200:
             data = response.content.decode("utf-8")

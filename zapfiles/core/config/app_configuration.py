@@ -15,7 +15,7 @@ def get_default_download_directory():
 
 
 DEFAULT_CONFIG = {
-    "check_for_updates": True,
+    "check_for_updates": True if os.name == "nt" else False,
     "language": "auto",
     "enable_emojis": True,
     "clear_mode": "ASCII",

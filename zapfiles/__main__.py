@@ -39,31 +39,36 @@ def main() -> None:
             "⚡ZapFiles" if config.get_value("enable_emojis") else "ZapFiles"
         )
 
-    clear_console()
-    title()
+    try:
+        clear_console()
+        title()
 
-    if asyncio.run(handle_zapfile()) == 1:  # if argv[1] was a valid zapfile then return
+        if (
+            asyncio.run(handle_zapfile()) == 1
+        ):  # if argv[1] was a valid zapfile then return
+            return
+
+        if config.get_value("check_for_updates"):
+            check_for_updates()
+
+        choices = [
+            {"name": lang.get_string("main.mode.host"), "value": "host"},
+            {"name": lang.get_string("main.mode.get"), "value": "get"},
+        ]
+
+        mode = questionary.select(
+            message=lang.get_string("main.mode.select"), choices=choices
+        ).ask()
+
+        clear_console()
+        title()
+
+        if mode == "host":
+            asyncio.run(server())
+        elif mode == "get":
+            asyncio.run(client())
+    except KeyboardInterrupt:
         return
-
-    if config.get_value("check_for_updates"):
-        check_for_updates()
-
-    choices = [
-        {"name": lang.get_string("main.mode.host"), "value": "host"},
-        {"name": lang.get_string("main.mode.get"), "value": "get"},
-    ]
-
-    mode = questionary.select(
-        message=lang.get_string("main.mode.select"), choices=choices
-    ).ask()
-
-    clear_console()
-    title()
-
-    if mode == "host":
-        asyncio.run(server())
-    elif mode == "get":
-        asyncio.run(client())
 
 
 if __name__ == "__main__":

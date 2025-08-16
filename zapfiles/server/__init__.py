@@ -113,8 +113,9 @@ async def handle_client(
             )
         )
 
-        # Генерация симметричного AES-ключа
+        # Generating random AES key
         aes_key = os.urandom(32)
+        nonce = os.urandom(16)
 
         # Encrypting AES key by public RSA key
         encrypted_aes_key = public_key.encrypt(
@@ -126,8 +127,21 @@ async def handle_client(
             ),
         )
 
+        encrypted_nonce = public_key.encrypt(
+            nonce,
+            padding.OAEP(
+                mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                algorithm=hashes.SHA256(),
+                label=None,
+            ),
+        )
+
         # Sending encrypted AES key to client
         writer.write(encrypted_aes_key)
+        await writer.drain()
+
+        # Sending encrypted nonce to client
+        writer.write(encrypted_nonce)
         await writer.drain()
 
         # Sending file size to client
@@ -137,7 +151,7 @@ async def handle_client(
 
         # Encryption and transferring file by chunks
         aes_cipher = Cipher(
-            algorithms.AES(aes_key), modes.CTR(b"0" * 16), backend=default_backend()
+            algorithms.AES(aes_key), modes.CTR(nonce), backend=default_backend()
         )
         encryptor = aes_cipher.encryptor()
 
@@ -229,7 +243,8 @@ async def server() -> None:
                 message=lang.get_string("server.info.filePath")
             ).ask_async()
             try:
-                if Path(file_path).is_file():
+                resolved_file_path = Path(file_path).expanduser().resolve()
+                if resolved_file_path.is_file():
                     break
                 err(lang.get_string("server.error.fileNotFound").format(file=file_path))
             except TypeError:
@@ -256,19 +271,19 @@ async def server() -> None:
                 break
 
         # Starting server
-        server_args = partial(handle_client, filepath=file_path)
+        server_args = partial(handle_client, filepath=resolved_file_path)
         host = await asyncio.start_server(server_args, "0.0.0.0", port)
 
         clear_console()
         title()
 
-        filename: str = os.path.basename(file_path)
+        filename: str = os.path.basename(resolved_file_path)
 
         # Printing server information
         server_config.add_row([key_ip, port, filename])
         print(server_config)
 
-        file_hash = get_file_hash(file_path)
+        file_hash = get_file_hash(resolved_file_path)
 
         # Generating server key
         server_key = "{}:{}:{}:{}".format(key_ip, port, filename, file_hash)

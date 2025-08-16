@@ -63,32 +63,33 @@ async def send_public_key(writer: StreamWriter, public_key: RSAPublicKey) -> Non
     await writer.drain()
 
 
-async def receive_encrypted_key(reader: StreamReader) -> bytes:
-    """
-    Receives encrypted AES key from server.
-
-    Args:
-        reader (StreamReader): asyncio StreamReader
-
-    Returns:
-        bytes: encrypted AES key
-    """
-    return await reader.read(256)
-
-
-def create_aes_cipher(aes_key: bytes) -> Cipher:
+def create_aes_cipher(aes_key: bytes, nonce: bytes) -> Cipher:
     """
     Creates AES cipher.
 
     Args:
         aes_key (bytes): AES key
+        nonce (bytes): nonce
 
     Returns:
         Cipher: AES cipher
     """
-    return Cipher(
-        algorithms.AES(aes_key), modes.CTR(b"0" * 16), backend=default_backend()
-    )
+    return Cipher(algorithms.AES(aes_key), modes.CTR(nonce), backend=default_backend())
+
+
+def decrypt_using_private_key(private_key: RSAPrivateKey, data: bytes) -> bytes:
+    try:
+        return private_key.decrypt(
+            data,
+            padding.OAEP(
+                mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                algorithm=hashes.SHA256(),
+                label=None,
+            ),
+        )
+    except ValueError:
+        err(lang.get_string("client.error.failedToDecryptData"))
+        return b""
 
 
 async def download_and_decrypt_file(
@@ -157,21 +158,14 @@ async def connect(ip: str, port: int, filename: str, file_hash: str) -> None:
     reader, writer = await asyncio.open_connection(ip, port)
     await send_public_key(writer, public_key)
 
-    # Getting encrypted AES key from server
-    encrypted_aes_key = await receive_encrypted_key(reader)
+    # Getting encrypted AES key and nonse from server
+    encrypted_aes_key = await reader.read(256)
+    encrypted_nonce = await reader.read(256)
 
-    try:
-        # Decrypting AES key
-        aes_key = private_key.decrypt(
-            encrypted_aes_key,
-            padding.OAEP(
-                mgf=padding.MGF1(algorithm=hashes.SHA256()),
-                algorithm=hashes.SHA256(),
-                label=None,
-            ),
-        )
-    except ValueError:
-        err(lang.get_string("client.error.invalidEncryptionKey"))
+    aes_key = decrypt_using_private_key(private_key, encrypted_aes_key)
+    nonce = decrypt_using_private_key(private_key, encrypted_nonce)
+
+    if not aes_key or not nonce:
         return
 
     # Getting total size of file from server
@@ -179,7 +173,7 @@ async def connect(ip: str, port: int, filename: str, file_hash: str) -> None:
     file_size = int.from_bytes(file_size_data, "big")
 
     # Creating decryptor
-    decryptor = create_aes_cipher(aes_key).decryptor()
+    decryptor = create_aes_cipher(aes_key, nonce).decryptor()
 
     # Creating file path
     file_path = get_download_path(filename)

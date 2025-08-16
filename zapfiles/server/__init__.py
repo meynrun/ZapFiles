@@ -1,6 +1,7 @@
 import asyncio
 import json
 import os
+import secrets
 from asyncio import StreamReader, StreamWriter
 from functools import partial
 from os import PathLike
@@ -114,8 +115,8 @@ async def handle_client(
         )
 
         # Generating random AES key
-        aes_key = os.urandom(32)
-        nonce = os.urandom(16)
+        aes_key = secrets.token_bytes(32)
+        nonce = secrets.token_bytes(16)
 
         # Encrypting AES key by public RSA key
         encrypted_aes_key = public_key.encrypt(

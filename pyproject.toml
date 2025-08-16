@@ -1,9 +1,11 @@
 [project]
 name = "zapfiles"
-version = "2.0.0"
+version = "2.1.0"
 description = "A secure file transfer tool that ensures the privacy of your data through end-to-end encryption."
 readme = "README.md"
 requires-python = ">=3.13"
+license = {file = "LICENSE"}
+authors = [{name = "Meynrun"}]
 dependencies = [
     "colorama>=0.4.6",
     "cryptography>=45.0.6",
@@ -19,4 +21,20 @@ dev = [
     "pre-commit>=4.3.0",
     "pyright[nodejs]>=1.1.403",
     "ruff>=0.12.9",
+    "setuptools>=80.9.0",
+    "wheel>=0.45.1",
 ]
+
+[project.scripts]
+zapfiles = "zapfiles.__main__:main"
+
+[build-system]
+requires = ["setuptools>=80.9.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["zapfiles*"]
+exclude = ["assets", "config", "lang", "server_files", "generated_zapfiles"]
+
+[tool.setuptools.package-data]
+zapfiles = ["lang/*"]

@@ -58,7 +58,4 @@
 
   "experiments.file_classification.name": "Классификация файлов",
   "experiments.file_classification.description": "Объединяет файлы основываясь на их расширении.",
-  "experiments.lan_broadcast.name": "LAN-анонс файла",
-  "experiments.lan_broadcast.description": "Обеспечивает ответ клиентам в сети с информацией о раздающемся файле.",
-  "experiments.lan_broadcast.scan_mode": "Поиск файлов в локальной сети"
 }

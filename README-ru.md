@@ -20,7 +20,7 @@
 
 ---
 
-## 🖥️ Платформа и лицензия
+## 💻 Платформа и лицензия
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
@@ -28,7 +28,7 @@
 
 ---
 
-## 🌐 Языки
+## 💾 Языки
 
 [![English](https://img.shields.io/badge/English-0078D4?style=for-the-badge&logo=download&logoColor=white)](./README.md)
 [![Русский](https://img.shields.io/badge/Русский-D52B1E?style=for-the-badge&logo=download&logoColor=white)](./README-ru.md)
@@ -65,7 +65,7 @@ uv sync
 
 ---
 
-## 🛠️ Сборка установщика (Windows)
+## 🔨 Сборка установщика (Windows)
 
 1. Установите [Inno Setup](https://jrsoftware.org/download.php/is.exe)
 2. Запустите скрипт сборки:
@@ -78,7 +78,7 @@ uv run build.py
 
 ---
 
-## ⚙️ Конфигурация
+## 🔧 Конфигурация
 
 |        Ключ         |   Тип   | Описание                                       |            Допустимые значения             |             По умолчанию              |
 |:-------------------:|:-------:|:-----------------------------------------------|:------------------------------------------:|:-------------------------------------:|

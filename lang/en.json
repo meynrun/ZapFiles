@@ -58,7 +58,4 @@
 
   "experiments.file_classification.name": "File Classification",
   "experiments.file_classification.description": "Classify files based on their file extension.",
-  "experiments.lan_broadcast.name": "LAN File Announce",
-  "experiments.lan_broadcast.description": "Automatically responds to LAN requests with the current file being shared.",
-  "experiments.lan_broadcast.scan_mode": "Scan for files on the local network"
 }

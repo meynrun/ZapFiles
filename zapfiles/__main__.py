@@ -9,7 +9,6 @@ import questionary
 from zapfiles.cli import clear_console, title
 from zapfiles.client import client, connect
 from zapfiles.core.config.app_configuration import config
-from zapfiles.core.config.experiments_configuration import experiments_config
 from zapfiles.core.localization import lang
 from zapfiles.core.updater import check_for_updates
 from zapfiles.server import server
@@ -57,14 +56,6 @@ def main() -> None:
             {"name": lang.get_string("main.mode.get"), "value": "get"},
         ]
 
-        if "lan_broadcast" in experiments_config.get_enabled_experiments():
-            choices.append(
-                {
-                    "name": lang.get_string("experiments.lan_broadcast.scan_mode"),
-                    "value": "scan_lan",
-                }
-            )
-
         mode = questionary.select(
             message=lang.get_string("main.mode.select"), choices=choices
         ).ask()
@@ -76,8 +67,6 @@ def main() -> None:
             asyncio.run(server())
         elif mode == "get":
             asyncio.run(client())
-        elif mode == "scan_lan":
-            print("Not implemented yet")
 
     except KeyboardInterrupt:
         sys.exit(0)

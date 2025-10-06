@@ -229,13 +229,15 @@ async def server() -> None:
                 message=lang.get_string("server.info.filePath")
             ).ask_async()
             try:
-                if Path(file_path).is_file():
+                if Path(file_path).expanduser().resolve().is_file():
                     break
                 err(lang.get_string("server.error.fileNotFound").format(file=file_path))
             except TypeError:
                 if not file_path:
                     return
                 err(lang.get_string("server.error.fileNotFound").format(file=file_path))
+
+        file_path = Path(file_path).expanduser().resolve()
 
         # Input port
         while True:

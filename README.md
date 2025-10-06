@@ -4,12 +4,12 @@
 
 <!-- TOC -->
   * [🧾 About the Project](#-about-the-project)
-  * [🖥️ Platform & License](#-platform--license)
+  * [💻 Platform & License](#-platform--license)
   * [🌐 Languages](#-languages)
-  * [⬇️ Download](#-download)
+  * [💾 Download](#-download)
   * [📦 Installing from Source](#-installing-from-source)
-  * [🛠️ Building the Installer (Windows)](#-building-the-installer-windows)
-  * [⚙️ Configuration](#-configuration)
+  * [🔨 Building the Installer (Windows)](#-building-the-installer-windows)
+  * [🔧 Configuration](#-configuration)
 <!-- TOC -->
 
 ---
@@ -20,7 +20,7 @@
 
 ---
 
-## 🖥️ Platform & License
+## 💻 Platform & License
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
@@ -35,7 +35,7 @@
 
 ---
 
-## ⬇️ Download
+## 💾 Download
 
 [![Latest Release](https://img.shields.io/badge/Download%20Latest%20Version-66CC00?style=for-the-badge&logo=download&logoColor=white)](https://github.com/meynrun/ZapFiles/releases/latest/download/Setup-x64.exe)
 
@@ -65,7 +65,7 @@ uv sync
 
 ---
 
-## 🛠️ Building the Installer (Windows)
+## 🔨 Building the Installer (Windows)
 
 1. Install [Inno Setup](https://jrsoftware.org/download.php/is.exe)
 2. Run the build script:
@@ -78,7 +78,7 @@ The script will build ZapFiles into the `./dist/` directory, and the installer `
 
 ---
 
-## ⚙️ Configuration
+## 🔧 Configuration
 
 |         Key         |  Type   | Description                                |        Allowed Values        |             Default Value             |
 |:-------------------:|:-------:|:-------------------------------------------|:----------------------------:|:-------------------------------------:|

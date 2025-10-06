@@ -43,7 +43,7 @@
   "client.warning.fileAlreadyExists": "⚠️ File already exists.",
   "client.warning.fileWithSameNameExists": "⚠️ File with this name already exists, but with a different hash.",
   "client.error.filePermissionError": "❌ Permission denied.",
-  "client.error.invalidEncryptionKey": "❌ Invalid encryption key. This is usually due to a VPN enabled on the server.",
+  "client.error.failedToDecryptData": "❌ Failed to decrypt data.",
 
   "update.info.updateAvailable": "🤩 New version available: {}",
   "update.info.confirmUpdate": "👉 Do you want to update?",

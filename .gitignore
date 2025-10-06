@@ -9,3 +9,5 @@ __pycache__/
 *.zapfile
 /generated_zapfiles/
 /ZapFiles Downloads/
+*.egg-info
+/build/

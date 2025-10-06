@@ -242,6 +242,15 @@ wheels = [
 ]
 
 [[package]]
+name = "packaging"
+version = "25.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/a1/d4/1fc4078c65507b51b96ca8f8c3ba19e6a61c8253c72794544580a7b6c24d/packaging-25.0.tar.gz", hash = "sha256:d443872c98d677bf60f6a1f2f8c1cb748e8fe762d2bf9d3148b5599295b0fc4f", size = 165727, upload-time = "2025-04-19T11:48:59.673Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/20/12/38679034af332785aac8774540895e234f4d07f7545804097de4b666afd8/packaging-25.0-py3-none-any.whl", hash = "sha256:29572ef2b1f17581046b3a2227d5c611fb25ec70ca1ba8554b24b0e69331a484", size = 66469, upload-time = "2025-04-19T11:48:57.875Z" },
+]
+
+[[package]]
 name = "platformdirs"
 version = "4.4.0"
 source = { registry = "https://pypi.org/simple" }
@@ -484,6 +493,7 @@ source = { editable = "." }
 dependencies = [
     { name = "colorama" },
     { name = "cryptography" },
+    { name = "packaging" },
     { name = "prettytable" },
     { name = "questionary" },
     { name = "requests" },
@@ -504,6 +514,7 @@ dev = [
 requires-dist = [
     { name = "colorama", specifier = ">=0.4.6" },
     { name = "cryptography", specifier = ">=46.0.2" },
+    { name = "packaging", specifier = ">=25.0" },
     { name = "prettytable", specifier = ">=3.16.0" },
     { name = "questionary", specifier = ">=2.1.1" },
     { name = "requests", specifier = ">=2.32.5" },

@@ -9,6 +9,7 @@ authors = [{ name = "Meynrun" }]
 dependencies = [
     "colorama>=0.4.6",
     "cryptography>=46.0.2",
+    "packaging>=25.0",
     "prettytable>=3.16.0",
     "questionary>=2.1.1",
     "requests>=2.32.5",

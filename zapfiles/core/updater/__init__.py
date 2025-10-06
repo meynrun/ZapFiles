@@ -4,6 +4,7 @@ import subprocess
 import sys
 from pathlib import Path
 from typing import Any
+from packaging import version
 
 import questionary
 import requests
@@ -77,7 +78,7 @@ def download_update(assets: list[dict[str, Any]]) -> None:
 
 def check_for_updates() -> None:
     """
-    Checks for updates and calls download_update() if new version is available and user wants to update.
+    Checks for updates and calls download_update() if a newer version is available and user wants to update.
 
     Returns:
         None
@@ -92,14 +93,16 @@ def check_for_updates() -> None:
 
         if response.status_code == 200:
             response_json = response.json()
-            latest_version = response_json.get(
-                "tag_name", f"v{VERSION}"
-            )  # if, for some reason, there is no tag_name, fall back to the currently installed version
+            latest_version = response_json.get("tag_name", f"v{VERSION}").lstrip(
+                "v"
+            )  # Remove 'v' prefix
+            current_version = VERSION  # Current version from constants
 
-            if latest_version != f"v{VERSION}":
+            # Compare versions using packaging.version
+            if version.parse(latest_version) > version.parse(current_version):
                 info(
                     lang.get_string("update.info.updateAvailable").format(
-                        latest_version
+                        f"v{latest_version}"
                     )
                 )
                 update = questionary.confirm(

@@ -3,6 +3,8 @@ import shutil
 import stat
 import subprocess
 import sys
+import time
+from pathlib import Path
 
 import questionary
 
@@ -35,19 +37,32 @@ def main():
         print("Please activate the virtual environment first.")
         sys.exit(1)
 
+    # Determine the path to the nuitka executable in the virtual environment
+    venv_scripts_dir = Path(sys.prefix) / "Scripts"
+    nuitka_executable = (
+        venv_scripts_dir / "nuitka" if os.name == "nt" else venv_scripts_dir / "nuitka"
+    )
+    nuitka_executable = nuitka_executable.with_suffix(".cmd" if os.name == "nt" else "")
+
     try:
+        # Check if nuitka is accessible by running it directly
         subprocess.run(
-            ["nuitka", "--version"],
+            [str(nuitka_executable), "--version"],
             check=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            capture_output=True,
+            text=True,  # Ensure output is decoded as text
         )
     except FileNotFoundError:
-        print("Nuitka is not installed. Please install it first.")
+        print(
+            f"Nuitka is not installed or not found at {nuitka_executable}. Please install it in the virtual environment."
+        )
+        sys.exit(1)
+    except subprocess.CalledProcessError as e:
+        print(f"Error running Nuitka: {e.stderr}")
         sys.exit(1)
 
     command = [
-        "nuitka",
+        str(nuitka_executable),  # Use the explicit path to nuitka
         "zapfiles",
         "--standalone",
         "--no-pyi-file",
@@ -102,13 +117,17 @@ def main():
         except ValueError:
             print("Please enter a valid number.")
 
+    print(f"Compiling {VERSION} using {compiler} compiler.")
+    start_time = time.perf_counter()
     result = subprocess.run(command)
 
     if result.returncode != 0:
-        print("Compilation failed!")
+        print(f"Compilation failed: {result.stderr}")
         sys.exit(1)
     else:
-        print("Compilation successful!")
+        print(
+            f"Compilation successful! It took {time.perf_counter() - start_time} seconds."
+        )
 
     localization_dir = "./lang"
     target_lang_dir = os.path.join(build_dir, "zapfiles.dist", "lang")
@@ -128,7 +147,7 @@ def main():
         shutil.copytree(
             f"{os.path.join(build_dir, 'zapfiles.dist')}", build_dir, dirs_exist_ok=True
         )
-        print("Localization files copied successfully!")
+        print("Compiled distribution files copied successfully!")
     except Exception as e:
         print(f"Failed to copy localization files: {e}")
         sys.exit(1)
@@ -136,17 +155,18 @@ def main():
     rmdir(os.path.join(build_dir, "zapfiles.dist"))
 
     if os.name == "nt":
-        build_setup = questionary.confirm("Build a setup using InnoSetup script?")
+        build_setup = questionary.confirm("Build a setup using InnoSetup script?").ask()
 
         if build_setup:
+            start_time = time.perf_counter()
             result = subprocess.run([INNO_SETUP_PATH, ISS_FILE])
             if result.returncode != 0:
-                print("Inno setup build failed!")
+                print(f"Inno setup build failed: {result.stderr}")
                 sys.exit(1)
             else:
-                print("Inno setup build successful!")
-
-            print("Setup compiled successfully!")
+                print(
+                    f"Inno setup build successful! It took {time.perf_counter() - start_time} seconds."
+                )
 
 
 if __name__ == "__main__":

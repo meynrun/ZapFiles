@@ -25,12 +25,10 @@
   "server.info.createdZapfile": "⚡ ZapFile {} created.",
   "server.tip.storageDirectory": "❕ Tip: For easy access to sent files, place them in the *server_files* directory located in the root of ZapFiles.",
   "server.tip.fileNavigation": "❕ Tip: When selecting a file, press Tab to open a list of available files. Use the arrow keys to navigate, or press Tab again to move to the next file.",
-
   "main.mode.select": "🚀 Select mode",
   "main.mode.host": "Host file",
   "main.mode.get": "Get file",
   "main.enterToExit": "Press Enter to exit...",
-
   "client.info.fileReceived": "✅ File received and decrypted.",
   "client.hash.checking": "🔍 Checking file hash...",
   "client.hash.correct": "✅ File hash is correct.",
@@ -44,7 +42,6 @@
   "client.warning.fileWithSameNameExists": "⚠️ File with this name already exists, but with a different hash.",
   "client.error.filePermissionError": "❌ Permission denied.",
   "client.error.failedToDecryptData": "❌ Failed to decrypt data.",
-
   "update.info.updateAvailable": "🤩 New version available: {}",
   "update.info.confirmUpdate": "👉 Do you want to update?",
   "update.info.updateDownloading": "⏳ Downloading update...",
@@ -55,7 +52,6 @@
   "update.error.connectionError": "❌ Connection error, please check your internet connection.",
   "update.info.latestVersion": "🫠 You're running the latest version.",
   "update.error.platformNotSupported": "❌ Unfortunately, your platform does not support automatic updates. You can build the new version from the source code.",
-
   "experiments.file_classification.name": "File Classification",
-  "experiments.file_classification.description": "Classify files based on their file extension.",
+  "experiments.file_classification.description": "Classify files based on their file extension."
 }

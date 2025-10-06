@@ -1,7 +1,7 @@
 import os
-import sys
-import subprocess
 import platform
+import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -40,7 +40,7 @@ def download_update(assets: list[dict[str, Any]]) -> None:
     for asset in assets:
         if asset.get("name") == "Setup-x64.exe":
             update_setup = requests.get(
-                asset.get("browser_download_url"), stream=True, verify=True
+                asset.get("browser_download_url", ""), stream=True, verify=True
             )
 
             total_size = int(update_setup.headers.get("content-length", 0))
@@ -63,7 +63,7 @@ def download_update(assets: list[dict[str, Any]]) -> None:
 
                 info(lang.get_string("client.hash.checking"))
                 downloaded_file_hash = get_file_hash(Path("Setup-x64.exe"))
-                valid_hash = asset.get("digest")[7:]
+                valid_hash = asset.get("digest", "")[7:]
 
                 if downloaded_file_hash != valid_hash:
                     err(lang.get_string("client.hash.incorrect"))

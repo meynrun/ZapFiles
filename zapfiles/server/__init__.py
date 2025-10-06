@@ -28,9 +28,9 @@ from zapfiles.cli import (
     ColorEnum,
 )
 from zapfiles.constants import ROOT_DIR
+from zapfiles.core.config.app_configuration import config
 from zapfiles.core.hash import get_file_hash
 from zapfiles.core.localization import lang
-from zapfiles.core.config.app_configuration import config
 
 server_config = PrettyTable(
     [

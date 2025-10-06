@@ -3,13 +3,15 @@
 ---
 
 <!-- TOC -->
-  * [🧾 About the Project](#-about-the-project)
-  * [💻 Platform & License](#-platform--license)
-  * [🌐 Languages](#-languages)
-  * [💾 Download](#-download)
-  * [📦 Installing from Source](#-installing-from-source)
-  * [🔨 Building the Installer (Windows)](#-building-the-installer-windows)
-  * [🔧 Configuration](#-configuration)
+
+* [🧾 About the Project](#-about-the-project)
+* [💻 Platform & License](#-platform--license)
+* [🌐 Languages](#-languages)
+* [💾 Download](#-download)
+* [📦 Installing from Source](#-installing-from-source)
+* [🔨 Building the Installer (Windows)](#-building-the-installer-windows)
+* [🔧 Configuration](#-configuration)
+
 <!-- TOC -->
 
 ---
@@ -46,6 +48,7 @@
 > **Note:** If `uv` is not installed, follow the instructions here: [astral.sh/uv](https://github.com/astral-sh/uv)
 
 1. Clone the repository:
+
 ```sh
 git clone https://github.com/meynrun/ZapFiles.git
 cd ZapFiles
@@ -74,7 +77,8 @@ uv sync
 uv run build.py
 ```
 
-The script will build ZapFiles into the `./dist/` directory, and the installer `Setup-x64.exe` will be placed in the `./Output/` directory using Inno Setup.
+The script will build ZapFiles into the `./dist/` directory, and the installer `Setup-x64.exe` will be placed in the
+`./Output/` directory using Inno Setup.
 
 ---
 

@@ -25,7 +25,7 @@ def rmdir(path: str) -> None:
 def main():
     print("Building " + VERSION)
     print(
-        "Before building an update make sure you changed version in zapfiles/constants/__init__.py and in setup_script.iss!"
+        "Before building an update make sure you changed version in zapfiles/constants/__init__.py, pyproject.toml and in setup_script.iss!"
     )
     build_dir = "./dist"
 

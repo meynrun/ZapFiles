@@ -1,6 +1,7 @@
 import asyncio
 import json
 import os
+import secrets
 from asyncio import StreamReader, StreamWriter
 from functools import partial
 from os import PathLike
@@ -109,12 +110,14 @@ async def handle_client(
         # Getting public key
         public_key = assert_rsa_key(
             serialization.load_pem_public_key(
-                await reader.read(450), backend=default_backend()
+                await reader.readuntil(b"-----END PUBLIC KEY-----"),
+                backend=default_backend(),
             )
         )
 
         # Генерация симметричного AES-ключа
-        aes_key = os.urandom(32)
+        aes_key = secrets.token_bytes(32)
+        nonce = secrets.token_bytes(16)
 
         # Encrypting AES key by public RSA key
         encrypted_aes_key = public_key.encrypt(
@@ -126,8 +129,21 @@ async def handle_client(
             ),
         )
 
+        encrypted_nonce = public_key.encrypt(
+            nonce,
+            padding.OAEP(
+                mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                algorithm=hashes.SHA256(),
+                label=None,
+            ),
+        )
+
         # Sending encrypted AES key to client
         writer.write(encrypted_aes_key)
+        await writer.drain()
+
+        # Sending encrypted nonce to client
+        writer.write(encrypted_nonce)
         await writer.drain()
 
         # Sending file size to client
@@ -137,7 +153,7 @@ async def handle_client(
 
         # Encryption and transferring file by chunks
         aes_cipher = Cipher(
-            algorithms.AES(aes_key), modes.CTR(b"0" * 16), backend=default_backend()
+            algorithms.AES(aes_key), modes.CTR(nonce), backend=default_backend()
         )
         encryptor = aes_cipher.encryptor()
 
@@ -225,19 +241,23 @@ async def server() -> None:
             info(lang.get_string("server.tip.fileNavigation"))
 
         while True:
-            file_path = await questionary.path(
-                message=lang.get_string("server.info.filePath")
-            ).ask_async()
+            file_path = (
+                Path(
+                    await questionary.path(
+                        message=lang.get_string("server.info.filePath")
+                    ).ask_async()
+                )
+                .expanduser()
+                .resolve()
+            )
             try:
-                if Path(file_path).expanduser().resolve().is_file():
+                if file_path.is_file():
                     break
                 err(lang.get_string("server.error.fileNotFound").format(file=file_path))
             except TypeError:
                 if not file_path:
                     return
                 err(lang.get_string("server.error.fileNotFound").format(file=file_path))
-
-        file_path = Path(file_path).expanduser().resolve()
 
         # Input port
         while True:

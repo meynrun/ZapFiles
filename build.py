@@ -24,6 +24,44 @@ def rmdir(path: str) -> None:
         shutil.rmtree(path, onerror=remove_readonly)
 
 
+def create_version_file(version: str, output_path: str) -> str:
+    """Создаёт временный файл версии для PyInstaller."""
+    # Убедимся, что директория output_path существует
+    os.makedirs(output_path, exist_ok=True)
+
+    version_content = f"""
+VSVersionInfo(
+  ffi=FixedFileInfo(
+    filevers=({version.replace(".", ", ")}, 0),
+    prodvers=({version.replace(".", ", ")}, 0),
+    mask=0x3f,
+    flags=0x0,
+    OS=0x40004,
+    fileType=0x1,
+    subtype=0x0,
+    date=(0, 0)
+  ),
+  kids=[
+    StringFileInfo(
+      [
+        StringStruct('CompanyName', 'Meynrun'),
+        StringStruct('FileDescription', 'ZapFiles'),
+        StringStruct('FileVersion', '{version}'),
+        StringStruct('ProductName', 'ZapFiles'),
+        StringStruct('ProductVersion', '{version}'),
+        StringStruct('OriginalFilename', 'ZapFiles.exe')
+      ]
+    ),
+    VarFileInfo([VarStruct('Translation', [0x0409, 1252])])
+  ]
+)
+"""
+    version_file = os.path.join(output_path, "version.txt")
+    with open(version_file, "w", encoding="utf-8") as f:
+        f.write(version_content)
+    return version_file
+
+
 def main():
     print("Building " + VERSION)
     print(
@@ -37,87 +75,57 @@ def main():
         print("Please activate the virtual environment first.")
         sys.exit(1)
 
-    # Determine the path to the nuitka executable in the virtual environment
+    # Determine the path to the pyinstaller executable in the virtual environment
     venv_scripts_dir = Path(sys.prefix) / "Scripts"
-    nuitka_executable = (
-        venv_scripts_dir / "nuitka" if os.name == "nt" else venv_scripts_dir / "nuitka"
+    pyinstaller_executable = (
+        venv_scripts_dir / "pyinstaller"
+        if os.name == "nt"
+        else venv_scripts_dir / "pyinstaller"
     )
-    nuitka_executable = nuitka_executable.with_suffix(".cmd" if os.name == "nt" else "")
+    pyinstaller_executable = pyinstaller_executable.with_suffix(
+        ".exe" if os.name == "nt" else ""
+    )
 
     try:
-        # Check if nuitka is accessible by running it directly
+        # Check if pyinstaller is accessible by running it directly
         subprocess.run(
-            [str(nuitka_executable), "--version"],
+            [str(pyinstaller_executable), "--version"],
             check=True,
             capture_output=True,
-            text=True,  # Ensure output is decoded as text
+            text=True,
         )
     except FileNotFoundError:
         print(
-            f"Nuitka is not installed or not found at {nuitka_executable}. Please install it in the virtual environment."
+            f"PyInstaller is not installed or not found at {pyinstaller_executable}. Please install it in the virtual environment."
         )
         sys.exit(1)
     except subprocess.CalledProcessError as e:
-        print(f"Error running Nuitka: {e.stderr}")
+        print(f"Error running PyInstaller: {e.stderr}")
         sys.exit(1)
 
     command = [
-        str(nuitka_executable),  # Use the explicit path to nuitka
-        "zapfiles",
-        "--standalone",
-        "--no-pyi-file",
-        "--output-dir=dist",
-        "--show-progress",
+        str(pyinstaller_executable),
+        Path("zapfiles") / "__main__.py",
+        "--distpath=dist",
+        "--workpath=build",
+        "--noconfirm",
+        "--log-level=INFO",
     ]
 
     if os.name == "nt":
+        # Создаём временный файл версии
+        version_file = create_version_file(VERSION, build_dir)
         command.extend(
             [
-                "--windows-icon-from-ico=./assets/ZapFiles-icon.ico",
-                "--windows-product-name=ZapFiles",
-                "--windows-company-name=Meynrun",
-                f"--windows-file-version={VERSION}",
-                f"--windows-product-version={VERSION}",
+                "--icon=./assets/ZapFiles-icon.ico",
+                f"--version-file={version_file}",
+                "--name=zapfiles",
+                "--add-data=lang;lang",
             ]
         )
 
-    while True:
-        compiler = (
-            questionary.select(
-                "What compiler would you like to use?",
-                choices=[
-                    "Default",
-                    "Clang",
-                    "MinGW64",
-                    "MSVC=latest",
-                ],
-            )
-            .ask()
-            .lower()
-        )
-
-        if compiler:
-            if compiler != "default":
-                command.extend([f"--{compiler}"])
-            break
-
-    while True:
-        try:
-            jobs = int(
-                questionary.text(
-                    "How many jobs would you like to run?",
-                ).ask()
-            )
-
-            if jobs < 1:
-                raise ValueError
-            else:
-                command.extend([f"--jobs={jobs}"])
-                break
-        except ValueError:
-            print("Please enter a valid number.")
-
-    print(f"Compiling {VERSION} using {compiler} compiler.")
+    # PyInstaller не поддерживает опцию --jobs, поэтому она исключена
+    print(f"Compiling {VERSION} using PyInstaller.")
     start_time = time.perf_counter()
     result = subprocess.run(command)
 
@@ -129,30 +137,21 @@ def main():
             f"Compilation successful! It took {time.perf_counter() - start_time} seconds."
         )
 
-    localization_dir = "./lang"
-    target_lang_dir = os.path.join(build_dir, "zapfiles.dist", "lang")
+    # # Копирование локализаций (на случай, если --add-data не сработал)
+    # localization_dir = "./lang"
+    # target_lang_dir = os.path.join(build_dir, "ZapFiles", "lang")
+    #
+    # os.makedirs(target_lang_dir, exist_ok=True)
+    #
+    # try:
+    #     shutil.copytree(localization_dir, target_lang_dir, dirs_exist_ok=True)
+    #     print("Localization files copied successfully!")
+    # except Exception as e:
+    #     print(f"Failed to copy localization files: {e}")
+    #     sys.exit(1)
 
-    os.makedirs(target_lang_dir, exist_ok=True)
-
-    try:
-        shutil.copytree(localization_dir, target_lang_dir, dirs_exist_ok=True)
-        print("Localization files copied successfully!")
-    except Exception as e:
-        print(f"Failed to copy localization files: {e}")
-        sys.exit(1)
-
-    rmdir(os.path.join(build_dir, "zapfiles.build"))
-
-    try:
-        shutil.copytree(
-            f"{os.path.join(build_dir, 'zapfiles.dist')}", build_dir, dirs_exist_ok=True
-        )
-        print("Compiled distribution files copied successfully!")
-    except Exception as e:
-        print(f"Failed to copy localization files: {e}")
-        sys.exit(1)
-
-    rmdir(os.path.join(build_dir, "zapfiles.dist"))
+    # Удаление временной папки build
+    rmdir("./build")
 
     if os.name == "nt":
         build_setup = questionary.confirm("Build a setup using InnoSetup script?").ask()
@@ -167,6 +166,10 @@ def main():
                 print(
                     f"Inno setup build successful! It took {time.perf_counter() - start_time} seconds."
                 )
+
+    # Удаление временного файла версии
+    if os.name == "nt" and os.path.exists(version_file):
+        os.remove(version_file)
 
 
 if __name__ == "__main__":

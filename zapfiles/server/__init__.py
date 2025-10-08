@@ -241,16 +241,11 @@ async def server() -> None:
             info(lang.get_string("server.tip.fileNavigation"))
 
         while True:
-            file_path = (
-                Path(
-                    await questionary.path(
-                        message=lang.get_string("server.info.filePath")
-                    ).ask_async()
-                )
-                .expanduser()
-                .resolve()
-            )
+            file_path = await questionary.path(
+                message=lang.get_string("server.input.filePath")
+            ).ask_async()
             try:
+                file_path = Path(file_path).expanduser().resolve()
                 if file_path.is_file():
                     break
                 err(lang.get_string("server.error.fileNotFound").format(file=file_path))

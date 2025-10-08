@@ -8,7 +8,7 @@
   "server.input.networkType.public": "Public (determined automatically)",
   "server.input.networkType.custom": "Custom (manually entered)",
   "server.input.customIp": "🔑 Enter your IP address: ",
-  "server.info.filePath": "💽 Enter path to file to send: ",
+  "server.input.filePath": "💽 Enter path to file to send: ",
   "server.input.port": "🚢 Enter port (default: 8888): ",
   "server.info.serverKey": "🔑 Server key: {}",
   "server.info.running": "🌐 Server is running...",

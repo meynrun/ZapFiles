@@ -8,7 +8,7 @@
   "server.input.networkType.public": "Публичный (определяется автоматически)",
   "server.input.networkType.custom": "Кастомный (ручной ввод)",
   "server.input.customIp": "🔑 Введите ваш IP адрес: ",
-  "server.info.filePath": "💽 Введите путь до файла, который хотите отправить: ",
+  "server.input.filePath": "💽 Введите путь до файла, который хотите отправить: ",
   "server.input.port": "🚢 Введите порт (по умолчанию: 8888): ",
   "server.info.serverKey": "🔑 Ключ сервера: {}",
   "server.info.running": "🌐 Сервер запущен...",

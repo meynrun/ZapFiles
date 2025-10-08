@@ -4,12 +4,12 @@
 
 <!-- TOC -->
   * [🧾 О проекте](#-о-проекте)
-  * [🖥️ Платформа и лицензия](#-платформа-и-лицензия)
+  * [💻 Платформа и лицензия](#-платформа-и-лицензия)
   * [🌐 Языки](#-языки)
-  * [⬇️ Скачать](#-скачать)
+  * [💾 Скачать](#-скачать)
   * [📦 Установка из исходников](#-установка-из-исходников)
-  * [🛠️ Сборка установщика (Windows)](#-сборка-установщика-windows)
-  * [⚙️ Конфигурация](#-конфигурация)
+  * [🔨 Сборка установщика (Windows)](#-сборка-установщика-windows)
+  * [🔧 Конфигурация](#-конфигурация)
 <!-- TOC -->
 
 ---
@@ -20,7 +20,7 @@
 
 ---
 
-## 🖥️ Платформа и лицензия
+## 💻 Платформа и лицензия
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
@@ -35,7 +35,7 @@
 
 ---
 
-## ⬇️ Скачать
+## 💾 Скачать
 
 [![Последняя сборка](https://img.shields.io/badge/Скачать%20последнюю%20версию-66CC00?style=for-the-badge&logo=download&logoColor=white)](https://github.com/meynrun/ZapFiles/releases/latest/download/Setup-x64.exe)
 
@@ -46,6 +46,7 @@
 > **Примечание:** если `uv` не установлен, следуйте инструкции: [astral.sh/uv](https://github.com/astral-sh/uv)
 
 1. Клонируйте репозиторий:
+
 ```sh
 git clone https://github.com/meynrun/ZapFiles.git
 cd ZapFiles
@@ -65,7 +66,7 @@ uv sync
 
 ---
 
-## 🛠️ Сборка установщика (Windows)
+## 🔨 Сборка установщика (Windows)
 
 1. Установите [Inno Setup](https://jrsoftware.org/download.php/is.exe)
 2. Запустите скрипт сборки:
@@ -74,19 +75,20 @@ uv sync
 uv run build.py
 ```
 
-Скрипт соберёт ZapFiles в директорию `.\dist\` и установочный `Setup-x64.exe` в директорию `.\Output\` с помощью Inno Setup.
+Скрипт соберёт ZapFiles в директорию `.\dist\` и установочный `Setup-x64.exe` в директорию `.\Output\` с помощью Inno
+Setup.
 
 ---
 
-## ⚙️ Конфигурация
+## 🔧 Конфигурация
 
-|        Ключ         |   Тип   | Описание                                       |            Допустимые значения             |             По умолчанию              |
-|:-------------------:|:-------:|:-----------------------------------------------|:------------------------------------------:|:-------------------------------------:|
-| `check_for_updates` | boolean | Автоматическая проверка обновлений при запуске |              `true`, `false`               |                `true`                 |
-|     `language`      | string  | Язык интерфейса ZapFiles                       |             `auto`, `en`, `ru`             |                `auto`                 |
-|   `enable_emojis`   | boolean | Использовать ли эмодзи в интерфейсе            |              `true`, `false`               |                `true`                 |
-|    `clear_mode`     | string  | Метод очистки экрана                           |        `ASCII`, `ASCII2`, `command`        |                `ASCII`                |
-|   `download_path`   | string  | Путь к папке загрузок                          |              абсолютный путь               | `%user%/Downloads/ZapFiles Downloads` |
-|    `enable_tips`    | boolean | Включить советы                                |              `true`, `false`               |                `true`                 |
+|        Ключ         |   Тип   | Описание                                       |     Допустимые значения      |             По умолчанию              |
+|:-------------------:|:-------:|:-----------------------------------------------|:----------------------------:|:-------------------------------------:|
+| `check_for_updates` | boolean | Автоматическая проверка обновлений при запуске |       `true`, `false`        |                `true`                 |
+|     `language`      | string  | Язык интерфейса ZapFiles                       |      `auto`, `en`, `ru`      |                `auto`                 |
+|   `enable_emojis`   | boolean | Использовать ли эмодзи в интерфейсе            |       `true`, `false`        |                `true`                 |
+|    `clear_mode`     | string  | Метод очистки экрана                           | `ASCII`, `ASCII2`, `command` |                `ASCII`                |
+|   `download_path`   | string  | Путь к папке загрузок                          |       абсолютный путь        | `%user%/Downloads/ZapFiles Downloads` |
+|    `enable_tips`    | boolean | Включить советы                                |       `true`, `false`        |                `true`                 |
 
 ---

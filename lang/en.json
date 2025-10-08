@@ -8,7 +8,7 @@
   "server.input.networkType.public": "Public (determined automatically)",
   "server.input.networkType.custom": "Custom (manually entered)",
   "server.input.customIp": "🔑 Enter your IP address: ",
-  "server.info.filePath": "💽 Enter path to file to send: ",
+  "server.input.filePath": "💽 Enter path to file to send: ",
   "server.input.port": "🚢 Enter port (default: 8888): ",
   "server.info.serverKey": "🔑 Server key: {}",
   "server.info.running": "🌐 Server is running...",
@@ -25,12 +25,10 @@
   "server.info.createdZapfile": "⚡ ZapFile {} created.",
   "server.tip.storageDirectory": "❕ Tip: For easy access to sent files, place them in the *server_files* directory located in the root of ZapFiles.",
   "server.tip.fileNavigation": "❕ Tip: When selecting a file, press Tab to open a list of available files. Use the arrow keys to navigate, or press Tab again to move to the next file.",
-
   "main.mode.select": "🚀 Select mode",
   "main.mode.host": "Host file",
   "main.mode.get": "Get file",
   "main.enterToExit": "Press Enter to exit...",
-
   "client.info.fileReceived": "✅ File received and decrypted.",
   "client.hash.checking": "🔍 Checking file hash...",
   "client.hash.correct": "✅ File hash is correct.",
@@ -43,8 +41,7 @@
   "client.warning.fileAlreadyExists": "⚠️ File already exists.",
   "client.warning.fileWithSameNameExists": "⚠️ File with this name already exists, but with a different hash.",
   "client.error.filePermissionError": "❌ Permission denied.",
-  "client.error.invalidEncryptionKey": "❌ Invalid encryption key. This is usually due to a VPN enabled on the server.",
-
+  "client.error.failedToDecryptData": "❌ Failed to decrypt data.",
   "update.info.updateAvailable": "🤩 New version available: {}",
   "update.info.confirmUpdate": "👉 Do you want to update?",
   "update.info.updateDownloading": "⏳ Downloading update...",
@@ -54,10 +51,7 @@
   "update.error.connectionTimedOut": "❌ Timed out, please check your internet connection.",
   "update.error.connectionError": "❌ Connection error, please check your internet connection.",
   "update.info.latestVersion": "🫠 You're running the latest version.",
-
+  "update.error.platformNotSupported": "❌ Unfortunately, your platform does not support automatic updates. You can build the new version from the source code.",
   "experiments.file_classification.name": "File Classification",
-  "experiments.file_classification.description": "Classify files based on their file extension.",
-  "experiments.lan_broadcast.name": "LAN File Announce",
-  "experiments.lan_broadcast.description": "Automatically responds to LAN requests with the current file being shared.",
-  "experiments.lan_broadcast.scan_mode": "Scan for files on the local network"
+  "experiments.file_classification.description": "Classify files based on their file extension."
 }

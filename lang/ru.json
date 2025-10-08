@@ -8,7 +8,7 @@
   "server.input.networkType.public": "Публичный (определяется автоматически)",
   "server.input.networkType.custom": "Кастомный (ручной ввод)",
   "server.input.customIp": "🔑 Введите ваш IP адрес: ",
-  "server.info.filePath": "💽 Введите путь до файла, который хотите отправить: ",
+  "server.input.filePath": "💽 Введите путь до файла, который хотите отправить: ",
   "server.input.port": "🚢 Введите порт (по умолчанию: 8888): ",
   "server.info.serverKey": "🔑 Ключ сервера: {}",
   "server.info.running": "🌐 Сервер запущен...",
@@ -25,12 +25,10 @@
   "server.info.createdZapfile": "⚡ ZapFile {} создан.",
   "server.tip.storageDirectory": "❕ Совет: для удобного доступа к отправляемым файлам поместите их в директорию *server_files* в корне ZapFiles.",
   "server.tip.fileNavigation": "❕ Совет: при выборе файла нажмите Tab, чтобы открыть список доступных файлов. Для навигации используйте стрелки на клавиатуре или повторно нажимайте Tab для перехода к следующему файлу.",
-
   "main.mode.select": "🚀 Выберите режим",
   "main.mode.host": "Раздать файл",
   "main.mode.get": "Скачать файл",
   "main.enterToExit": "Нажмите Enter для выхода...",
-
   "client.info.fileReceived": "✅ Файл получен и расшифрован.",
   "client.hash.checking": "🔍 Проверка хэша...",
   "client.hash.correct": "✅ Хэш файла верный.",
@@ -43,8 +41,7 @@
   "client.warning.fileAlreadyExists": "⚠️ Файл уже существует.",
   "client.warning.fileWithSameNameExists": "⚠️ Файл с этим именем уже существует, но с другим хэшем.",
   "client.error.filePermissionError": "❌ Нет прав для доступа к файлу.",
-  "client.error.invalidEncryptionKey": "❌ Неверный ключ шифрования. Обычно это происходит из-за включенного VPN на сервере.",
-
+  "client.error.failedToDecryptData": "❌ Не удалось расшифровать данные.",
   "update.info.updateAvailable": "🤩 Вышла новая версия: {}",
   "update.info.confirmUpdate": "👉 Хотите обновиться?",
   "update.info.updateDownloading": "⏳ Загрузка обновления...",
@@ -54,10 +51,7 @@
   "update.error.connectionTimedOut": "❌ Превышено время ожидания, пожалуйста проверьте подключение к интернету.",
   "update.error.connectionError": "❌ При обращение к API произошла ошибка, пожалуйста проверьте подключение к интернету.",
   "update.info.latestVersion": "🫠 Вы используете последнюю версию.",
-
+  "update.error.platformNotSupported": "❌ К сожалению ваша платформа не поддерживает автоматическую установку обновлений. Вы можете собрать новую версию из исходников.",
   "experiments.file_classification.name": "Классификация файлов",
-  "experiments.file_classification.description": "Объединяет файлы основываясь на их расширении.",
-  "experiments.lan_broadcast.name": "LAN-анонс файла",
-  "experiments.lan_broadcast.description": "Обеспечивает ответ клиентам в сети с информацией о раздающемся файле.",
-  "experiments.lan_broadcast.scan_mode": "Поиск файлов в локальной сети"
+  "experiments.file_classification.description": "Объединяет файлы основываясь на их расширении."
 }

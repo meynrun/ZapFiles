@@ -42,4 +42,5 @@ assignees: meynrun
 
 ---
 
-**Note**: This application officially supports only Windows. Please ensure you are using a supported version of Windows before submitting a bug report.
+**Note**: This application officially supports only Windows. Please ensure you are using a supported version of Windows
+before submitting a bug report.

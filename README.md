@@ -3,13 +3,15 @@
 ---
 
 <!-- TOC -->
-  * [🧾 About the Project](#-about-the-project)
-  * [🖥️ Platform & License](#-platform--license)
-  * [🌐 Languages](#-languages)
-  * [⬇️ Download](#-download)
-  * [📦 Installing from Source](#-installing-from-source)
-  * [🛠️ Building the Installer (Windows)](#-building-the-installer-windows)
-  * [⚙️ Configuration](#-configuration)
+
+* [🧾 About the Project](#-about-the-project)
+* [💻 Platform & License](#-platform--license)
+* [🌐 Languages](#-languages)
+* [💾 Download](#-download)
+* [📦 Installing from Source](#-installing-from-source)
+* [🔨 Building the Installer (Windows)](#-building-the-installer-windows)
+* [🔧 Configuration](#-configuration)
+
 <!-- TOC -->
 
 ---
@@ -20,7 +22,7 @@
 
 ---
 
-## 🖥️ Platform & License
+## 💻 Platform & License
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
@@ -35,7 +37,7 @@
 
 ---
 
-## ⬇️ Download
+## 💾 Download
 
 [![Latest Release](https://img.shields.io/badge/Download%20Latest%20Version-66CC00?style=for-the-badge&logo=download&logoColor=white)](https://github.com/meynrun/ZapFiles/releases/latest/download/Setup-x64.exe)
 
@@ -46,6 +48,7 @@
 > **Note:** If `uv` is not installed, follow the instructions here: [astral.sh/uv](https://github.com/astral-sh/uv)
 
 1. Clone the repository:
+
 ```sh
 git clone https://github.com/meynrun/ZapFiles.git
 cd ZapFiles
@@ -65,7 +68,7 @@ uv sync
 
 ---
 
-## 🛠️ Building the Installer (Windows)
+## 🔨 Building the Installer (Windows)
 
 1. Install [Inno Setup](https://jrsoftware.org/download.php/is.exe)
 2. Run the build script:
@@ -74,11 +77,12 @@ uv sync
 uv run build.py
 ```
 
-The script will build ZapFiles into the `./dist/` directory, and the installer `Setup-x64.exe` will be placed in the `./Output/` directory using Inno Setup.
+The script will build ZapFiles into the `./dist/` directory, and the installer `Setup-x64.exe` will be placed in the
+`./Output/` directory using Inno Setup.
 
 ---
 
-## ⚙️ Configuration
+## 🔧 Configuration
 
 |         Key         |  Type   | Description                                |        Allowed Values        |             Default Value             |
 |:-------------------:|:-------:|:-------------------------------------------|:----------------------------:|:-------------------------------------:|

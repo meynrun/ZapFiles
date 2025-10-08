@@ -18,8 +18,8 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "nuitka>=2.7.16",
     "pre-commit>=4.3.0",
+    "pyinstaller>=6.16.0",
     "pyright[nodejs]>=1.1.406",
     "ruff>=0.13.3",
     "setuptools>=80.9.0",

@@ -11,3 +11,4 @@ __pycache__/
 /ZapFiles Downloads/
 *.egg-info
 /build/
+*.spec
